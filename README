@@ -1,0 +1,8 @@
+Zebra Z-Machine Interpreter
+
+an interpreter for the Z-machine
+(c) zsteve 2013
+
+Current status :
+	- Completed most z-text routines
+	- Completed z-stack

@@ -1,0 +1,3 @@
+<FILELIST>
+G:\code\c++\zmachine_interpreter\zebra-zmachine-interpreter\.git
+G:\code\c++\zmachine_interpreter\zebra-zmachine-interpreter\bot

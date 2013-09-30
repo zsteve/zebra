@@ -1,0 +1,46 @@
+# depslib dependency file v1.0
+1379826139 source:c:\users\user\desktop\zmachine\src\zstack\zstack\zstack.cpp
+	"zstack.h"
+	"..\..\zerror\zerror\zerror.h"
+
+1379826722 c:\users\user\desktop\zmachine\src\zstack\zstack\zstack.h
+	<exception>
+	"..\..\zglobal\zglobal.h"
+
+1379824926 c:\users\user\desktop\zmachine\src\zstack\zglobal\zglobal.h
+
+1379826606 source:c:\users\user\desktop\zmachine\src\zstack\zstack\main.cpp
+	<iostream>
+	"zstack.h"
+	"conio.h"
+	"..\..\zglobal\zglobal.h"
+
+1379826553 c:\users\user\desktop\zmachine\src\zglobal\zglobal.h
+	"..\zerror\zerror\zerror.h"
+
+1379825606 c:\users\user\desktop\zmachine\src\zerror\zerror\zerror.h
+	<string>
+
+1379826698 source:c:\users\user\desktop\zmachine\src\zglobal\zglobal.cpp
+	"zglobal.h"
+
+1379826608 source:c:\users\zsteve\my documents\code\zmachine_interpreter\src\zstack\zstack\main.cpp
+	<iostream>
+	"zstack.h"
+	"conio.h"
+	"..\..\zglobal\zglobal.h"
+
+1379826724 c:\users\zsteve\my documents\code\zmachine_interpreter\src\zstack\zstack\zstack.h
+	<exception>
+	"..\..\zglobal\zglobal.h"
+
+1379996194 c:\users\zsteve\my documents\code\zmachine_interpreter\src\zglobal\zglobal.h
+	"../zerror/zerror/zerror.h"
+
+1379842726 c:\users\zsteve\my documents\code\zmachine_interpreter\src\zerror\zerror\zerror.h
+	<string>
+
+1379826140 source:c:\users\zsteve\my documents\code\zmachine_interpreter\src\zstack\zstack\zstack.cpp
+	"zstack.h"
+	"..\..\zerror\zerror\zerror.h"
+
