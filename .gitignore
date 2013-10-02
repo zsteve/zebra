@@ -12,7 +12,6 @@
 *.lai
 *.la
 *.a
-<<<<<<< HEAD
 
 # IDE Generated files
 
@@ -33,7 +32,7 @@
 
 # Bot
 
-./bot/*.*
+./bot
 
 # Z Story files
 *.z3
