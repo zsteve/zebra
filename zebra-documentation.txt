@@ -19,29 +19,146 @@ Purpose : takes care of translation and manipulation of Z-machine formatted
 strings. Allows for conversion between z-characters and ZSCII/ASCII text.
 
 Functions : 
-	zCharStrLen(zword* str) - returns the length of the input z-character string
+	zCharStrLen(zword* str)
+	returns the length of the input z-character string
 	
-	ZSCIIStrLen(zchar* str) - returns the length of the input ZSCII(ASCII) string
-	synonymous to strlen()
+	ZSCIIStrLen(zchar* str)
+	returns the length of the input ZSCII(ASCII) string synonymous to strlen()
 	
-	ZSCIIStrCat(zchar* src, zchar* cat) - concatecenates two ZSCII strings
+	ZSCIIStrCat(zchar* src, zchar* cat)
+	concatecenates two ZSCII strings
 	
-	ZSCIIGetResidentAlphabet(zchar zch) - returns the resident alphabet of the input
-	ZSCII character, and throws IllegalZCharException if it is an invalid Z-char
+	ZSCIIGetResidentAlphabet(zchar zch)
+	returns the resident alphabet of the input ZSCII character,
+	and throws IllegalZCharException if it is an invalid Z-char
 	
-	getZCharAlphaSHiftCharacter(int currentAlpha, int desiredAlpha) - returns the correct
-	Z-string alphabet shift character in order to switch from currentAlpha to desiredAlpha.
+	getZCharAlphaSHiftCharacter(int currentAlpha, int desiredAlpha)
+	returns the correct Z-string alphabet shift character in order to switch from 
+	currentAlpha to desiredAlpha.
 	
 	zCharStringtoZSCII(zword* zCharString) - converts a z-character string to a ZSCII string
 	
-	zChartoZSCII(zword zChar, bool resetShifts=false) - converts a single z-character to a string of 3 or
-	less ZSCII characters. If resetShifts is set as true, it resets its static members for alphabet shifting
-	and returns without doing anything. calling it with resetShifts is useful for resetting the state
-	before decoding separate strings.
+	zChartoZSCII(zword zChar, bool resetShifts=false)
+	converts a single z-character to a string of 3 or less ZSCII characters.
+	If resetShifts is set as true, it resets its static members for alphabet shifting
+	and returns without doing anything. calling it with resetShifts is useful
+	for resetting the state before decoding separate strings.
 	
-	ZSCIItoZChar(zchar* zscii, int& bytesConverted) - converts 3 or less ZSCII characters to a zword containing 3
-	or less z-characters. bytesConverted is a reference to an integer which recieves the number of characters
+	ZSCIItoZChar(zchar* zscii, int& bytesConverted)
+	converts 3 or less ZSCII characters to a zword containing 3 or less z-characters. 
+	bytesConverted is a reference to an integer which recieves the number of characters
 	processed in one function call (this can vary)
 	
-	ZSCIItoZCharString(zchar* zscii) - converts a ZSCII string to a string of zwords (z-characters)
+	ZSCIItoZCharString(zchar* zscii)
+	converts a ZSCII string to a string of zwords (z-characters)
 	
+ZMemory
+~~~~~~
+
+Purpose : simulates the Z-machine's memory. Provides for error checking such as address validity
+	  also has functions for the ZObject subsystem (for managing the Z-machine's object table)
+
+Subsystem : ZMemory (main ZMemory class), simulates main memory
+	Functions:
+		ZMemory::ZMemory() 
+		default constructor (don't use this if you want to do anything useful)
+		
+		ZMemory::Zmemory(zbyte* zData, ulong zDataLength)
+		constructor for ZMemory object. zData is pointer to the memory location of the story file
+		data, and zDataLength is the size of the file.
+		
+		ZMemory::getRawDataPtr()
+		returns a zbyte pointer to the base of the memory of the Z-machine allocated by new.
+		Use with caution
+		
+		ZMemory::getMemSize()
+		Returns the size of the Z-machine's memory in bytes as an ulong
+		
+		ZMemory::getZDynamicMemoryLower/Upper()
+		Returns the Lower/Upper bound of the Z-machine's dynamic memory section
+		(the dynamic memory section spans from lower bound to upper bound inclusive)
+		
+		ZMemory::getZStaticMemoryLower/Upper()
+		Same as getZDynamicMemoryLower/Upper() except it is for static memory
+		
+		ZMemory::getZHighMemoryLower/Upper()
+		Same as getZDynamicMemoryLower/Upper() except it is for high memory
+		
+		ZMemory:readZWord(zword addr)
+		reads a zword from a 16-bit zword location, performs endian correction on 
+		the result. Throws ZMemoryReadOutOfBounds exception on failure (address out of range)
+		
+		ZMemory:readZWordPackedAddr(zword addr)
+		reads a zword from a 16-bit zword packed address location. performs endian correction
+		on the result. Throws ZMemoryReadOutOfBounds exception on failure (address out of range)
+		
+		ZMemory:readZByte(zword addr)
+		reads a zbyte from a 16-bit zword location. Throws ZMemoryReadOutOfBounds exception on 
+		failure (address out of range)
+		
+		ZMemory:readZBytePackedAddr(zword addr)
+		reads a zbyte from a 16-bit zword packed address. Throws ZMemoryReadOutOfBounds exception
+		on failure (address out of range)
+		
+		ZMemory:storeZWord(zword addr, zword data)
+		stores a zword at addr. Throws ZMemoryWriteOutOfBounds exception on failure.
+		
+		ZMemory:storeZWordPackedAddr(zword addr, zword data)
+		stores a zword at 16-bit packed address addr. Throws ZMemoryWriteOutOfBounds exception on
+		failure.
+		
+		ZMemory:storeZByte(zword addr, zbyte data)
+		stores a zbyte at 16 bit address addr. Throws ZMemoryWriteOutOfBounds exception on failure.
+		
+		ZMemory:storeZBytePackedAddr(zword addr, zbyte data)
+		stores a zbyte at 16 bit packed address addr. Throws ZMemoryWriteOutOfBounds exception on
+		failure.
+		
+Subsystem : ZObject (object table class : provides functions for manipulation of the object table in memory)
+	Functions:
+		*** note : object indexes are specified as ulong because z-machine versions
+		1 to 3 use 8-bit indices into the object table, while 4 and up use 16-bit indices ***
+		*** note : all object table functions except for constructors will throw the IllegalObjectIndex
+		exception if the object specified does not exist or is out of range ***
+		*** note : getObject<something> will return 0 if object does not have <something> ***
+		ZObjectTable::ZObjectTable()
+		default constructor for zObjectTable. don't use this if you want to do anything useful with it
+		
+		ZObjectTable::ZObjectTable(ZMemory* zMemObj)
+		constructore for ZObjectTable, takes ZMemory* as a pointer to the ZMemory object it is supposed
+		to work with
+		
+		ZObjectTable::getDefaultProperty(ulong index)
+		returns the default property as a zword for given object index
+		
+		ZObjectTable::getObjectAddr(ulong index)
+		returns the address of the specified object as a byte address (byte index into object table)
+		return type is ulong, as this is not supposed to be directly used by the z-machine
+		
+		ZObjectTable::getObjectAttributeFlags32(ulong index) 
+		returns the 32-bit attribute flags dword as an ulong
+		
+		ZObjectTable::getObjectAttributeFlags48(ulong index)
+		not implemented, should function as getObjectAttributeFlags32, except it should return 48 
+		bits of attribute flags, for versions 4 and up
+		
+		ZObjectTable::getObjectParent(ulong index)
+		returns the index of the parent of the specified object. 
+	
+		ZObjectTable::getObjectSibling(ulong index)
+		returns the index of the sibling of the specified object.
+		
+		ZObjectTable::getObjectChild(ulong index)
+		returns the child of the specified object.
+		
+		ZObjectTable::getObjectPropertyListAddr(ulong index)
+		returns the byte address of the object's property list.
+		
+		ZObjectTable:setObjectParent(ulong indexChild, ulong indexParent)
+		sets indexChild's parent to indexParent
+		
+		ZObjectTable::setObjectSibling(ulong indexObject, ulong indexSibling)
+		sets indexObject's sibling to indexSibling
+		
+		ZObjectTable::setObjectChild(ulong indexParent, indexChild)
+		sets indexParent's child to indexChild

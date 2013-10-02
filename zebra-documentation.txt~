@@ -1,0 +1,65 @@
+documentation for zebra - z machine game interpreter
+
+modules implemented so far: (*) marks incomplete module
+	ZText		- Text translation/manipulation functions
+	ZStack		- Z-machine stack
+	ZError		- Interpreter's error logger
+	*ZMemory	- Z-machine main memory
+
+Global Functions
+~~~~~~~~~~~~~~~~
+
+	endianize(zword in) - endianizes the zword in (converts from big-endian to little-endian and vice versa)
+	
+
+ZText
+~~~~~
+
+Purpose : takes care of translation and manipulation of Z-machine formatted
+strings. Allows for conversion between z-characters and ZSCII/ASCII text.
+
+Functions : 
+	zCharStrLen(zword* str)
+	returns the length of the input z-character string
+	
+	ZSCIIStrLen(zchar* str)
+	returns the length of the input ZSCII(ASCII) string synonymous to strlen()
+	
+	ZSCIIStrCat(zchar* src, zchar* cat)
+	concatecenates two ZSCII strings
+	
+	ZSCIIGetResidentAlphabet(zchar zch)
+	returns the resident alphabet of the input ZSCII character,
+	and throws IllegalZCharException if it is an invalid Z-char
+	
+	getZCharAlphaSHiftCharacter(int currentAlpha, int desiredAlpha)
+	returns the correct Z-string alphabet shift character in order to switch from 
+	currentAlpha to desiredAlpha.
+	
+	zCharStringtoZSCII(zword* zCharString) - converts a z-character string to a ZSCII string
+	
+	zChartoZSCII(zword zChar, bool resetShifts=false)
+	converts a single z-character to a string of 3 or less ZSCII characters.
+	If resetShifts is set as true, it resets its static members for alphabet shifting
+	and returns without doing anything. calling it with resetShifts is useful
+	for resetting the state before decoding separate strings.
+	
+	ZSCIItoZChar(zchar* zscii, int& bytesConverted)
+	converts 3 or less ZSCII characters to a zword containing 3 or less z-characters. 
+	bytesConverted is a reference to an integer which recieves the number of characters
+	processed in one function call (this can vary)
+	
+	ZSCIItoZCharString(zchar* zscii)
+	converts a ZSCII string to a string of zwords (z-characters)
+	
+ZMemory
+~~~~~~
+
+Purpose : simulates the Z-machine's memory. Provides for error checking such as address validity
+	  also has functions for the ZObject subsystem (for managing the Z-machine's object table)
+
+Subsystem : ZMemory (main ZMemory class), simulates main memory
+	Functions:
+		ZMemory::getRawDataPtr()
+		
+	

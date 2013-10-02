@@ -1,5 +1,6 @@
 #include "zglobal.h"
-
+
+ZError zErrorLogger;
 zword endianize(zword in)
 {
     // converts a zword from big-endian to little-endian

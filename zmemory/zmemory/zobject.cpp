@@ -180,6 +180,12 @@ zword ZObjectTable::getObjectChild(ulong index) throw (IllegalObjectIndex)
     return objectChild;
 }
 
+//  TODO : FIX UP THE SET.. FUNCTIONS
+//  CURRENTLY THEY ARE FAILING TO UPDATE THE OTHER OBJECT
+//  I.E SETOBJECTCHILD(OBJECT1, OBJECT2)
+// OBJECT1.CHILD=OBJECT2
+// BUT OBJECT2.PARENT SHOULD = 0BJECT1
+
 zword ZObjectTable::setObjectParent(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex)
 {
     // sets object[indexParent]'s parent to indexChild, and returns the previous parent.

@@ -2,7 +2,7 @@
 1379842609 source:c:\users\user\desktop\zmachine\src\ztext\ztext\ztext.cpp
 	"ztext.h"
 
-1380031038 
+1380272186 
 
 1379831044 c:\users\user\desktop\zmachine\src\ztext\ztext\ztext.h
 	<exception>
@@ -30,12 +30,12 @@
 	<exception>
 	"../../zglobal/zglobal.h"
 
-1379996156 obal/zglobal.h"
+1380188376 obal/zglobal.h"
 
 1379996194 g:\code\c++\zmachine_interpreter\src\zglobal\zglobal.h
 	"../zerror/zerror/zerror.h"
 
-1379996194 /zerror/zerror.h"
+1380277874 /zerror/zerror.h"
 
 1379842726 g:\code\c++\zmachine_interpreter\src\zerror\zerror\zerror.h
 	<string>
@@ -113,6 +113,8 @@
 	"ztext.h"
 	"../../zerror/zerror/zerror.h"
 
+1380272164 ror/zerror/zerror.h"
+
 1380268394 /home/zsteve/Code/zmachine_interpreter/zebra-zmachine-interpreter/ztext/ztext/ztext.h
 	<exception>
 	"../../zglobal/zglobal.h"
@@ -152,5 +154,31 @@
 	<cstdio>
 
 1380272186 source:h:\code\c++\zmachine_interpreter\zebra-zmachine-interpreter\ztext\ztext\ztext.cpp
+	"ztext.h"
+
+1380226520 source:/home/zsteve/Code/zebra-zmachine-interpreter/zerror/zerror/zerror.cpp
+	"zerror.h"
+	<cstdio>
+
+1380268474 /home/zsteve/Code/zebra-zmachine-interpreter/zerror/zerror/zerror.h
+	<string>
+
+1380609752 source:/home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobal.cpp
+	"zglobal.h"
+
+1380443294 /home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobal.h
+	"../zerror/zerror/zerror.h"
+
+1380609976 source:/home/zsteve/Code/zebra-zmachine-interpreter/ztext/ztext/main.cpp
+	<iostream>
+	"ztext.h"
+	"../../zerror/zerror/zerror.h"
+
+1380272164 /home/zsteve/Code/zebra-zmachine-interpreter/ztext/ztext/ztext.h
+	<exception>
+	"../../zglobal/zglobal.h"
+	"../../zerror/zerror/zerror.h"
+
+1380609976 source:/home/zsteve/Code/zebra-zmachine-interpreter/ztext/ztext/ztext.cpp
 	"ztext.h"
 

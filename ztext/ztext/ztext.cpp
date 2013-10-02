@@ -1,6 +1,5 @@
 #include "ztext.h"
 
-
 #define ALPHABET_1 1
 #define ALPHABET_2 2
 #define ALPHABET_0 0

@@ -12,9 +12,16 @@
 extern ZError zErrorLogger;
 
 class IllegalZCharString : std::exception{
+    public:
+    IllegalZCharString(){
+        zErrorLogger.addError("Error : IllegalZCharString thrown");
+    }
 };
 
 class IllegalZCharException : std::exception{
+    IllegalZCharException(){
+        zErrorLogger.addError("Error : IllegalZCharException thrown");
+    }
 };
 
 int zCharStrLen(zword* str);

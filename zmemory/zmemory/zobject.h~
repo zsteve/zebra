@@ -35,7 +35,6 @@ class ZObjectTable{
         ZObjectTable();
         ZObjectTable(ZMemory* zMemObj);
         ~ZObjectTable();
-// todo : change ulong to zword?
         ulong getObjectAddr(ulong index) throw (IllegalObjectIndex);
         zword getDefaultProperty(ulong index) throw (IllegalPropertyIndex);
         ulong getObjectAttributeFlags32(ulong index) throw (IllegalObjectIndex);

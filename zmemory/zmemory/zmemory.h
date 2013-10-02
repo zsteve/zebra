@@ -3,17 +3,27 @@
 
 #include "../../zglobal/zglobal.h"
 #include "../../zerror/zerror/zerror.h"
+#include <exception>
 
 #define ZMEMORY_DYNAMIC 0
 #define ZMEMORY_STATIC 1
 #define ZMEMORY_HIGH 2
 
 extern int zVersion;
+extern ZError zErrorLogger;
 
-class ZMemoryWriteOutOfBounds{
+class ZMemoryWriteOutOfBounds : std::exception{
+    public:
+    ZMemoryWriteOutOfBounds(){
+        zErrorLogger.addError("Error : ZMemoryWriteOutOfBounds thrown");
+    }
 };
 
-class ZMemoryReadOutOfBounds{
+class ZMemoryReadOutOfBounds : std::exception{
+    public:
+    ZMemoryReadOutOfBounds(){
+        zErrorLogger.addError("Error : ZMemoryReadOutOfBounds thrown");
+    }
 };
 
 class ZMemory{

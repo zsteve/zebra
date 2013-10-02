@@ -4,5 +4,7 @@ an interpreter for the Z-machine
 (c) zsteve 2013
 
 Current status :
-	- Completed most z-text routines
-	- Completed z-stack
+	- Implemented Z-text routines (ztext)
+	- Implemented Z machine memory (zmemory)
+	- Implemented Z machine object table (zobject)
+	- Completed z-stack (zstack)

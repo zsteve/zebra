@@ -4,8 +4,6 @@
 #include "zobject.h"
 #include "../../zerror/zerror/zerror.h"
 
-ZError zErrorLogger;
-
 using namespace std;
 
 long filesize(FILE *stream)
@@ -49,5 +47,7 @@ int main()
     zObj.setObjectChild(224, 3);
     cout << (int)zObj.getObjectParent(224) << ", " << (int)zObj.getObjectSibling(224) << ", " <<\
             (int)zObj.getObjectChild(224) << endl;
+    zMem.storeZWord(0, 12345);
+    cout << zMem.readZWord(0);
     return 0;
 }

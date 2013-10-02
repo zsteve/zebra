@@ -113,3 +113,40 @@
 1380447033 source:/home/zsteve/Code/zmachine_interpreter/zebra-zmachine-interpreter/zmemory/zmemory/zobject.cpp
 	"zobject.h"
 
+1380226520 source:/home/zsteve/Code/zebra-zmachine-interpreter/zerror/zerror/zerror.cpp
+	"zerror.h"
+	<cstdio>
+
+1380268474 /home/zsteve/Code/zebra-zmachine-interpreter/zerror/zerror/zerror.h
+	<string>
+
+1380337506 source:/home/zsteve/Code/zebra-zmachine-interpreter/zmemory/zmemory/zmemory.cpp
+	"zmemory.h"
+	"../../zglobal/zglobal.h"
+
+1380609854 /home/zsteve/Code/zebra-zmachine-interpreter/zmemory/zmemory/zmemory.h
+	"../../zglobal/zglobal.h"
+	"../../zerror/zerror/zerror.h"
+	<exception>
+
+1380443294 /home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobal.h
+	"../zerror/zerror/zerror.h"
+
+1380616032 source:/home/zsteve/Code/zebra-zmachine-interpreter/zmemory/zmemory/zobject.cpp
+	"zobject.h"
+
+1380611514 /home/zsteve/Code/zebra-zmachine-interpreter/zmemory/zmemory/zobject.h
+	"../../zglobal/zglobal.h"
+	"../../zerror/zerror/zerror.h"
+	"zmemory.h"
+
+1380609752 source:/home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobal.cpp
+	"zglobal.h"
+
+1380611188 source:/home/zsteve/Code/zebra-zmachine-interpreter/zmemory/zmemory/main.cpp
+	<iostream>
+	<cstdio>
+	"zmemory.h"
+	"zobject.h"
+	"../../zerror/zerror/zerror.h"
+
