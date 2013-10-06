@@ -1,0 +1,32 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+<<<<<<< HEAD
+
+# IDE Generated files
+
+*.save
+
+# Archives
+*.zip
+*.7z
+*.rar
+
+# Bot
+
+./bot/*.*
+
+# Z Story files
+*.z3
+=======
+>>>>>>> 59e9f2ba31f812e8ff8bbf0872c3fbba31958593

@@ -41,6 +41,8 @@
 		<Unit filename="zmemory.h" />
 		<Unit filename="zobject.cpp" />
 		<Unit filename="zobject.h" />
+		<Unit filename="../../ztext/ztext/ztext.cpp" />
+		<Unit filename="../../ztext/ztext/ztext.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

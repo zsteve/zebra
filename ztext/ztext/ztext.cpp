@@ -8,7 +8,7 @@ char zAlphaTable0[]={"abcdefghijklmnopqrstuvwxyz"};
 char zAlphaTable1[]={"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 char zAlphaTable2[]={" ^0123456789.,!?_#'\"/-:()"};
 
-int zVersion=3;
+extern int zVersion;
 
 int defaultAlpha=ALPHABET_0;
 

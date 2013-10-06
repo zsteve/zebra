@@ -31,6 +31,12 @@ class ZObjectTable{
         zword zObjectTable;    // pointer to base of object table
         zword zObjectTree;     // pointer to base of object tree
 
+        zword setObjectChildHelper(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex);
+        zword setObjectSiblingHelper(ulong indexObject, ulong indexSibling) throw (IllegalObjectIndex);
+        zword setObjectParentHelper(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex);
+        zword getPropertyListLengthHelper(zword addr) throw (ZMemoryReadOutOfBounds);
+        zword getPropertyListLengthHelper(zword addr, bool &isWordSizeFlag) throw (ZMemoryReadOutOfBounds);
+
     public:
         ZObjectTable();
         ZObjectTable(ZMemory* zMemObj);
@@ -44,6 +50,8 @@ class ZObjectTable{
         zword getObjectSibling(ulong index) throw (IllegalObjectIndex);
         zword getObjectChild(ulong index) throw (IllegalObjectIndex);
         zword getObjectPropertyListAddr(ulong index) throw (IllegalObjectIndex);
+        zword getObjectPropertyHeaderAddr(ulong index) throw (IllegalObjectIndex);
+        zword* getObjectName(ulong index) throw (IllegalObjectIndex);
         zword setObjectParent(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex);
         zword setObjectSibling(ulong indexObject, ulong indexSibling) throw (IllegalObjectIndex);
         zword setObjectChild(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex);

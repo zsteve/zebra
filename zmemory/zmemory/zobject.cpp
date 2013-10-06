@@ -180,13 +180,7 @@ zword ZObjectTable::getObjectChild(ulong index) throw (IllegalObjectIndex)
     return objectChild;
 }
 
-//  TODO : FIX UP THE SET.. FUNCTIONS
-//  CURRENTLY THEY ARE FAILING TO UPDATE THE OTHER OBJECT
-//  I.E SETOBJECTCHILD(OBJECT1, OBJECT2)
-// OBJECT1.CHILD=OBJECT2
-// BUT OBJECT2.PARENT SHOULD = 0BJECT1
-
-zword ZObjectTable::setObjectParent(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex)
+zword ZObjectTable::setObjectParentHelper(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex)
 {
     // sets object[indexParent]'s parent to indexChild, and returns the previous parent.
     if(((indexChild>255 || indexChild==0) && zVersion<=3) || ((indexChild>65535 || indexChild==0) && zVersion>3))
@@ -215,7 +209,7 @@ zword ZObjectTable::setObjectParent(ulong indexChild, ulong indexParent) throw (
     return oldParent;
 }
 
-zword ZObjectTable::setObjectSibling(ulong indexObject, ulong indexSibling) throw (IllegalObjectIndex)
+zword ZObjectTable::setObjectSiblingHelper(ulong indexObject, ulong indexSibling) throw (IllegalObjectIndex)
 {
     // sets object[indexSibling]'s sibling to indexObject, and returns the previous sibling.
     if(((indexObject>255 || indexObject==0) && zVersion<=3) || ((indexObject>65535 || indexObject==0) && zVersion>3))
@@ -244,7 +238,7 @@ zword ZObjectTable::setObjectSibling(ulong indexObject, ulong indexSibling) thro
     return oldSibling;
 }
 
-zword ZObjectTable::setObjectChild(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex)
+zword ZObjectTable::setObjectChildHelper(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex)
 {
     // sets object[indexParent]'s child to indexChild, and returns the previous child.
     if(((indexParent>255 || indexParent==0) && zVersion<=3) || ((indexParent>65535 || indexParent==0) && zVersion>3))
@@ -273,7 +267,24 @@ zword ZObjectTable::setObjectChild(ulong indexParent, ulong indexChild) throw (I
     return oldChild;
 }
 
-zword ZObjectTable::getObjectPropertyListAddr(ulong index) throw (IllegalObjectIndex)
+zword ZObjectTable::setObjectParent(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex)
+{
+    setObjectChildHelper(indexParent, indexChild);
+    return setObjectParentHelper(indexChild, indexParent);
+}
+
+zword ZObjectTable::setObjectSibling(ulong indexObject, ulong indexSibling) throw (IllegalObjectIndex)
+{
+    return setObjectSiblingHelper(indexObject, indexSibling);
+}
+
+zword ZObjectTable::setObjectChild(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex)
+{
+    setObjectParentHelper(indexChild, indexParent);
+    return setObjectChildHelper(indexParent, indexChild);
+}
+
+zword ZObjectTable::getObjectPropertyHeaderAddr(ulong index) throw (IllegalObjectIndex)
 {
     // returns the word address of object's property list
     if(((index>255 || index==0) && zVersion<=3) || ((index>65535 || index==0) && zVersion>3))
@@ -294,4 +305,75 @@ zword ZObjectTable::getObjectPropertyListAddr(ulong index) throw (IllegalObjectI
         throw IllegalObjectIndex();
     }
     return listAddr;
+}
+
+zword ZObjectTable::getObjectPropertyListAddr(ulong index) throw (IllegalObjectIndex)
+{
+    // returns the word address of object's property list
+    if(((index>255 || index==0) && zVersion<=3) || ((index>65535 || index==0) && zVersion>3))
+    {
+        throw IllegalObjectIndex();
+    }
+    try{
+        zword addr=getObjectPropertyHeaderAddr(index);
+        zbyte textLength=zMemObjPtr->readZByte(addr+0);
+        addr+=textLength*2+1;
+        return addr;
+    }catch(ZMemoryReadOutOfBounds e){
+        throw e;
+    }catch (IllegalObjectIndex e){
+        throw e;
+    }
+}
+
+zword* ZObjectTable::getObjectName(ulong index) throw (IllegalObjectIndex)
+{
+    // returns a zword pointer to the z-character string of given object's name
+    try{
+        zword addr=getObjectPropertyHeaderAddr(index);
+        zbyte nameLength=zMemObjPtr->readZByte(addr+0);
+        zword* zString=new zword[nameLength];
+        for(int i=0; i<(int)nameLength; i++)
+        {
+            zString[i]=zMemObjPtr->readZWord(addr+(1+2*i));
+        }
+        return zString;
+    }catch(ZMemoryReadOutOfBounds e){
+        throw e;
+    }catch(IllegalObjectIndex e){
+        throw e;
+    }
+}
+
+zword ZObjectTable::getPropertyListLengthHelper(zword addr) throw (ZMemoryReadOutOfBounds)
+{
+    // returns the length in bytes of the specified property list
+    try{
+        if(zVersion<=3)
+        {
+            zbyte sizeByte=zMemObjPtr->readZByte(addr+0);   // get size byte
+            sizeByte=(sizeByte+1)/32;                       // fix value
+            return sizeByte;
+        }
+    }catch(ZMemoryReadOutOfBounds e){
+        throw e;
+    }
+}
+
+zword ZObjectTable::getPropertyListLengthHelper(zword addr, bool &isWordSizeFlag) throw (ZMemoryReadOutOfBounds)
+{
+    try{
+        if(zVersion>3){
+            zbyte sizeByte=zMemObjPtr->readZByte(addr+0);   // get size byte
+            if(sizeByte>>7){
+                // if (sizeByte>>7)==1, then there are two size bytes
+                isWordSizeFlag=true;
+                zbyte sizeByte2=zMemObjPtr->readZByte(addr+1);    // get next size byte
+            }else{
+                sizeByte=(sizeByte & 63);
+            }
+        }
+    }catch(ZMemoryReadOutOfBounds e){
+        throw e;
+    }
 }

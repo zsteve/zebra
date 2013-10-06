@@ -19,6 +19,7 @@ class IllegalZCharString : std::exception{
 };
 
 class IllegalZCharException : std::exception{
+    public:
     IllegalZCharException(){
         zErrorLogger.addError("Error : IllegalZCharException thrown");
     }

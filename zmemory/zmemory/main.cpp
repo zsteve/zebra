@@ -3,13 +3,13 @@
 #include "zmemory.h"
 #include "zobject.h"
 #include "../../zerror/zerror/zerror.h"
+#include "../../ztext/ztext/ztext.h"
 
 using namespace std;
 
 long filesize(FILE *stream)
 {
    long curpos, length;
-
    curpos = ftell(stream);
    fseek(stream, 0L, SEEK_END);
    length = ftell(stream);
@@ -48,6 +48,11 @@ int main()
     cout << (int)zObj.getObjectParent(224) << ", " << (int)zObj.getObjectSibling(224) << ", " <<\
             (int)zObj.getObjectChild(224) << endl;
     zMem.storeZWord(0, 12345);
-    cout << zMem.readZWord(0);
+    cout << zMem.readZWord(0) << endl;
+    int oldChild=zObj.getObjectChild(220);
+    zObj.setObjectChild(221, 220);
+    cout << (int)zObj.getObjectChild(221) << " & " << (int)zObj.getObjectParent(220) << endl;
+    cout << (int)zObj.getObjectPropertyHeaderAddr(1) << endl;
+    cout << zCharStringtoZSCII(zObj.getObjectName(1)) << endl;
     return 0;
 }
