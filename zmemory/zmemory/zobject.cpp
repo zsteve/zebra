@@ -345,35 +345,60 @@ zword* ZObjectTable::getObjectName(ulong index) throw (IllegalObjectIndex)
     }
 }
 
-zword ZObjectTable::getPropertyListLengthHelper(zword addr) throw (ZMemoryReadOutOfBounds)
+zbyte ZObjectTable::getPropertySize(zword addr, ulong propertyNumber) throw (ZMemoryReadOutOfBounds)
 {
-    // returns the length in bytes of the specified property list
+    // returns the byte size of a given property, not including its size byte
+    // this version for versions 1-3
     try{
-        if(zVersion<=3)
-        {
-            zbyte sizeByte=zMemObjPtr->readZByte(addr+0);   // get size byte
-            sizeByte=(sizeByte+1)/32;                       // fix value
-            return sizeByte;
+        zbyte size=zMemObjPtr->readZByte(addr);
+        if(size==0) return size;
+        size=(size/32);
+        return size+1;
+    }catch(ZMemoryReadOutOfBounds e){
+        throw e;
+    }
+};
+
+zword ZObjectTable::getPropertySize(zword addr, bool &isWordSizeFlag) throw (ZMemoryReadOutOfBounds)
+{
+    // returns the byte size of a given property, not including its size byte(s)
+    // this version for versions 4 and up
+    // isWordSizeFlag is a reference to a bool to hold true/false for
+    // whether the property uses a size byte (false) or size word (true)
+    try{
+        zbyte size=zMemObjPtr->readZByte(addr);
+        if(size&128){
+            // if bit 7 is set, there is a second byte
+            isWordSizeFlag=true;
+            zbyte size2=zMemObjPtr->readZByte(addr+0);
+            // size is in 2nd byte, for bits 0 to 5
+            return (size2&63);
+        }else{
+            // if bit 7 is clear, there is only one byte
+            // bit 6 : set for size == 1, clear for size==2
+            isWordSizeFlag=false;
+            size=(size&64)>>6;
+            size=((size==1) ? 2 : 1);
+            return size;
         }
     }catch(ZMemoryReadOutOfBounds e){
         throw e;
     }
 }
 
-zword ZObjectTable::getPropertyListLengthHelper(zword addr, bool &isWordSizeFlag) throw (ZMemoryReadOutOfBounds)
+zword ZObjectTable::getPropertyListElem(zword addr, ulong index) throw (IllegalPropertyIndex)
 {
+    // returns an ObjectProperty object for a certain property list element for a certain property list
     try{
-        if(zVersion>3){
-            zbyte sizeByte=zMemObjPtr->readZByte(addr+0);   // get size byte
-            if(sizeByte>>7){
-                // if (sizeByte>>7)==1, then there are two size bytes
-                isWordSizeFlag=true;
-                zbyte sizeByte2=zMemObjPtr->readZByte(addr+1);    // get next size byte
-            }else{
-                sizeByte=(sizeByte & 63);
-            }
+        if(zVersion<=3){
+            zword addr2=addr;
+            for(int i=0; i<index; i++)
+                addr2+=(getPropertySize(addr2, i)+1);
+            return getPropertySize(addr2, index);
         }
     }catch(ZMemoryReadOutOfBounds e){
-        throw e;
-    }
+
+    }catch(IllegalObjectIndex e){
+
+    };
 }

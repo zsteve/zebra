@@ -8,22 +8,22 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="80" topLine="0" />
+		<Cursor position="2219" topLine="35" />
 	</File>
-	<File name="zmemory.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="246" topLine="0" />
+	<File name="zmemory.cpp" open="1" top="1" tabpos="4">
+		<Cursor position="246" topLine="164" />
 	</File>
 	<File name="zmemory.h" open="1" top="0" tabpos="5">
 		<Cursor position="111" topLine="0" />
 	</File>
-	<File name="zobject.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="10178" topLine="325" />
+	<File name="zobject.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="10996" topLine="366" />
 	</File>
 	<File name="zobject.h" open="1" top="0" tabpos="3">
-		<Cursor position="1221" topLine="27" />
+		<Cursor position="2505" topLine="36" />
 	</File>
 	<File name="../../ztext/ztext/ztext.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="1493" topLine="60" />
+		<Cursor position="1493" topLine="398" />
 	</File>
 	<File name="../../ztext/ztext/ztext.h" open="1" top="0" tabpos="7">
 		<Cursor position="176" topLine="0" />

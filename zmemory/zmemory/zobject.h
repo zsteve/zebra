@@ -24,6 +24,12 @@ class IllegalPropertyIndex : std::exception{
     }
 };
 
+typedef struct ObjectProperty{
+    // object property structure
+    zword* propertyDataAddr; // byte address of property data
+    ulong propertyDataSize;  // byte size of property data
+};
+
 class ZObjectTable{
     private:
         ZMemory* zMemObjPtr;    // a pointer to the ZMemory object
@@ -34,8 +40,8 @@ class ZObjectTable{
         zword setObjectChildHelper(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex);
         zword setObjectSiblingHelper(ulong indexObject, ulong indexSibling) throw (IllegalObjectIndex);
         zword setObjectParentHelper(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex);
-        zword getPropertyListLengthHelper(zword addr) throw (ZMemoryReadOutOfBounds);
-        zword getPropertyListLengthHelper(zword addr, bool &isWordSizeFlag) throw (ZMemoryReadOutOfBounds);
+        zbyte getPropertySize(zword addr, ulong propertyNumber) throw (ZMemoryReadOutOfBounds);
+        zword getPropertySize(zword addr, bool &isWordSizeFlag) throw (ZMemoryReadOutOfBounds);
 
     public:
         ZObjectTable();
@@ -55,6 +61,8 @@ class ZObjectTable{
         zword setObjectParent(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex);
         zword setObjectSibling(ulong indexObject, ulong indexSibling) throw (IllegalObjectIndex);
         zword setObjectChild(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex);
+        zword getPropertyListLength(zword addr) throw (ZMemoryReadOutOfBounds);
+        zword getPropertyListElem(zword addr, ulong index) throw (IllegalPropertyIndex);
     protected:
 };
 
