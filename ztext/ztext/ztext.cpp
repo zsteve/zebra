@@ -1,4 +1,6 @@
 #include "ztext.h"
+#include "../../zmemory/zmemory/zmemory.h"
+#include <vector>
 
 #define ALPHABET_1 1
 #define ALPHABET_2 2
@@ -6,7 +8,7 @@
 
 char zAlphaTable0[]={"abcdefghijklmnopqrstuvwxyz"};
 char zAlphaTable1[]={"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
-char zAlphaTable2[]={" ^0123456789.,!?_#'\"/-:()"};
+char zAlphaTable2[]={" ^0123456789.,!?_#'\"/\-:()"};
 
 extern int zVersion;
 
@@ -28,7 +30,7 @@ int zCharStrLen(zword* str)
     j=3;
     for(;;i++, j+=3)
     {
-        if(str[i]>>15)
+        if(endianize(str[i])>>15)
         {
             break;
         }
@@ -45,40 +47,66 @@ void ZSCIIStrCat(zchar* src, zchar* cat)
     {
         src[i]=cat[j];
     }
+    src[i]=NULL;
 
 }
 
-zchar* zCharStringtoZSCII(zword* zCharString)
+std::vector<zchar> expandZChars(zword* zCharString)
+{
+    std::vector<zchar> charVector(0);
+    for(int i=0; ; i++)
+    {
+        zchar zUpper, zLower;
+        zUpper=(zchar)(endianize(zCharString[i])>>8);
+        zLower=(zchar)(endianize(zCharString[i])&255);
+        charVector.push_back((zUpper>>2) & 31);
+        charVector.push_back(((zUpper&3)<<3)|((zLower>>5)));
+        charVector.push_back((zLower&31));
+        if(endianize(zCharString[i])>>15) break;
+    }
+    return charVector;
+}
+
+zchar* zCharStringtoZSCII(zword* zCharString, ZMemory &zMem)
 {
     // converts an entire z-char string
     // to a ZSCII string
-    zchar* ZSCIIString=new zchar[zCharStrLen(zCharString)+1];
-    for(int len=zCharStrLen(zCharString)+1, i=0; i<len; i++)
-        ZSCIIString[i]=NULL;
-    bool exit=false;
-    for(int i=0; ; i)
-    {
-        // while bit 7 of H.O. byte of zCharString[i]
-        // is clear, keep going
-        if(zCharString[i]>>15)
-            exit=true;
-        zchar* out=zChartoZSCII(zCharString[i]);
-        ZSCIIStrCat(ZSCIIString, out);
-        delete[] out;
-        if(exit)
-            break;
-        i++;
-    }
-    zChartoZSCII(NULL, true);
-    return ZSCIIString;
+    std::vector<zchar> charVector=expandZChars(zCharString);
+    zCharStringtoZSCIIHelper(NULL, NULL, zMem, true);       // call zCharStringtoZSCIIHelper() once with resetShifts
+                                                            // true so we can reset everything
+    return zCharStringtoZSCIIHelper(charVector.data(), charVector.size(), zMem);
 }
-zchar* zChartoZSCII(zword zChar, bool resetShifts)
+
+zword lookupAbbreviationAddr(ZMemory &zMem, zbyte zControlChar, zbyte nextChar) throw (ZMemoryReadOutOfBounds)
 {
-    // converts a single z-character to
-    // a string of 3 or less ZSCII characters (in 16-bit zwords)
+    // returns address of abbreviation string
+    try{
+        zword abbrevTableAddr=zMem.readZWord(0x18);
+        zword entryOffset=(32*(zControlChar-1)+nextChar);
+        zword outAddr=zMem.readZWord(abbrevTableAddr+entryOffset*2);
+        return outAddr*2; // outAddr is a word address
+    }catch(ZMemoryReadOutOfBounds e){
+        throw e;
+    }
+}
+
+struct zCharStringtoZSCIIHelper_saveState{
+    int alphaShift;
+    bool shiftFlag;
+    zCharStringtoZSCIIHelper_saveState(int alphaShift, bool shiftFlag)
+    {
+        this->alphaShift=alphaShift;
+        this->shiftFlag=shiftFlag;
+    }
+};
+
+zchar* zCharStringtoZSCIIHelper(zchar* zCharString, ulong zStringLength, ZMemory& zMem, bool resetShifts)
+{
+    // converts a z-character string to
+    // a string of ZSCII characters (in 16-bit zwords)
     // terminated by NULL
     // it is the caller's responsibility to free the
-    // resulting value
+    // resulting array
     static int alphaShift;
     static bool shiftFlag;
     if(resetShifts)
@@ -87,27 +115,15 @@ zchar* zChartoZSCII(zword zChar, bool resetShifts)
         shiftFlag=0;
         return NULL;
     }
-    // check if bit 7 is on
-    zChar&=65535;
-    zchar zUpper, zLower;
-    zUpper=(zchar)(zChar>>8);
-    zLower=(zchar)(zChar&255);
-    zchar *zcharString=new zchar[4];
-    zchar *zsciiString=new zchar[4];
-    for(int i=0; i<4;)
-        zsciiString[i++]=NULL;
-    zcharString[0]=(zUpper>>2)&31;
-    zcharString[1]=((zUpper&3)<<3)|((zLower>>5));
-    zcharString[2]=(zLower&31);
-    zcharString[3]=NULL;
     // now we map the z-characters to the ZSCII equivalents
-    for(int j=0, i=0; i<3; i++)
+    std::vector<zchar> zsciiString(0);
+    for(int j=0, i=0; i<zStringLength; i++)
     {
-        char xlatChar=zcharString[i];
+        char xlatChar=zCharString[i];
         if(xlatChar==NULL)
         {
             // NULL == space
-            zsciiString[j++]=' ';
+            zsciiString.push_back(' ');
             shiftFlag=false;
             alphaShift=ALPHABET_0;
             continue;
@@ -159,8 +175,7 @@ zchar* zChartoZSCII(zword zChar, bool resetShifts)
                     defaultAlpha=ALPHABET_1;
                 continue;
             }else if(xlatChar==1 && zVersion==2){
-                /**** TODO ****/
-                // Add support for abbreviations
+                // abbreviations for z-version 2
             }
         }else if(zVersion>=3){
             // for versions 3 and above
@@ -188,11 +203,41 @@ zchar* zChartoZSCII(zword zChar, bool resetShifts)
             /**** TODO ****/
             // add support for abbreviations
             }else if(xlatChar==1){
-
+                zCharStringtoZSCIIHelper_saveState temp(alphaShift, shiftFlag); // this is necessary to preserve the state of this function's
+                                                                                // static members
+                zchar* abbrevStr=\
+                zCharStringtoZSCII(((zword*)(zMem.getRawDataPtr()+lookupAbbreviationAddr(zMem, xlatChar, zCharString[i+1]))), zMem);
+                for(int i=0; abbrevStr[i]!=0; i++)
+                    zsciiString.push_back(abbrevStr[i]);
+                delete[] abbrevStr;
+                i++;
+                alphaShift=temp.alphaShift;
+                shiftFlag=temp.shiftFlag;
+                continue;
             }else if(xlatChar==2){
-
+                zCharStringtoZSCIIHelper_saveState temp(alphaShift, shiftFlag); // this is necessary to preserve the state of this function's
+                                                                                // static members
+                zchar* abbrevStr=\
+                zCharStringtoZSCII(((zword*)(zMem.getRawDataPtr()+lookupAbbreviationAddr(zMem, xlatChar, zCharString[i+1]))), zMem);
+                for(int i=0; abbrevStr[i]!=0; i++)
+                    zsciiString.push_back(abbrevStr[i]);
+                delete[] abbrevStr;
+                i++;
+                alphaShift=temp.alphaShift;
+                shiftFlag=temp.shiftFlag;
+                continue;
             }else if(xlatChar==3){
-
+                zCharStringtoZSCIIHelper_saveState temp(alphaShift, shiftFlag); // this is necessary to preserve the state of this function's
+                                                                                // static members
+                zchar* abbrevStr=\
+                zCharStringtoZSCII(((zword*)(zMem.getRawDataPtr()+lookupAbbreviationAddr(zMem, xlatChar, zCharString[i+1]))), zMem);
+                for(int i=0; abbrevStr[i]!=0; i++)
+                    zsciiString.push_back(abbrevStr[i]);
+                delete[] abbrevStr;
+                i++;
+                alphaShift=temp.alphaShift;
+                shiftFlag=temp.shiftFlag;
+                continue;
             }
         }
         {
@@ -204,34 +249,38 @@ zchar* zChartoZSCII(zword zChar, bool resetShifts)
                     if(defaultAlpha==ALPHABET_0)
                     {
                         // no alphabet shift, use A0
-                        zsciiString[j++]=(zword)zAlphaTable0[xlatChar-6];
+                        zsciiString.push_back((zword)zAlphaTable0[xlatChar-6]);
                     }else if (defaultAlpha==ALPHABET_1){
-                        zsciiString[j++]=(zword)zAlphaTable1[xlatChar-6];
+                        zsciiString.push_back((zword)zAlphaTable1[xlatChar-6]);
                     }else if (defaultAlpha==ALPHABET_2){
-                        zsciiString[j++]=(zword)zAlphaTable2[xlatChar-6];
+                        zsciiString.push_back((zword)zAlphaTable2[xlatChar-6]);
                     }
                 }else{
                     // if shift flag is on
                     if(alphaShift==ALPHABET_0)
                     {
                         // no alphabet shift, use A0
-                        zsciiString[j++]=(zword)zAlphaTable0[xlatChar-6];
+                        zsciiString.push_back((zword)zAlphaTable0[xlatChar-6]);
                     }else if (alphaShift==ALPHABET_1){
-                        zsciiString[j++]=(zword)zAlphaTable1[xlatChar-6];
+                        zsciiString.push_back((zword)zAlphaTable1[xlatChar-6]);
                     }else if (alphaShift==ALPHABET_2){
-                        zsciiString[j++]=(zword)zAlphaTable2[xlatChar-6];
+                        zsciiString.push_back((zword)zAlphaTable2[xlatChar-6]);
                     }
                     shiftFlag=false;
                     alphaShift=ALPHABET_0;
                 }
             }else{
-                zsciiString[j++]=' ';
+                //zsciiString.push_back(' ');
                 shiftFlag=false;
                 alphaShift=ALPHABET_0;
             }
         }
     }
-    return zsciiString;
+    zsciiString.push_back(NULL);
+    zchar* outData=new zchar[zsciiString.size()];
+    int j=zsciiString.size();
+    for(int i=0; i<j; i++) outData[i]=zsciiString[i];
+    return outData;
 }
 
 int ZSCIIGetResidentAlphabet(zchar zch) throw (IllegalZCharException)
@@ -404,7 +453,7 @@ zword ZSCIItoZChar(zchar* zscii, int& bytesConverted)
     {
         outWord|=32768;
     }
-    return outWord;
+    return endianize(outWord);
 }
 zword* ZSCIItoZCharString(zchar* zscii)
 {

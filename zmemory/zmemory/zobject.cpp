@@ -345,7 +345,7 @@ zword* ZObjectTable::getObjectName(ulong index) throw (IllegalObjectIndex)
     }
 }
 
-zbyte ZObjectTable::getPropertySize(zword addr, ulong propertyNumber) throw (ZMemoryReadOutOfBounds)
+zbyte ZObjectTable::getPropertySize(zword addr) throw (ZMemoryReadOutOfBounds)
 {
     // returns the byte size of a given property, not including its size byte
     // this version for versions 1-3
@@ -386,19 +386,32 @@ zword ZObjectTable::getPropertySize(zword addr, bool &isWordSizeFlag) throw (ZMe
     }
 }
 
-zword ZObjectTable::getPropertyListElem(zword addr, ulong index) throw (IllegalPropertyIndex)
+ObjectProperty ZObjectTable::getPropertyListElem(zword addr, ulong index) throw (IllegalPropertyIndex)
 {
     // returns an ObjectProperty object for a certain property list element for a certain property list
+    // addr is the pointer to the base of the property list
+    // index is the property index
+    ObjectProperty objProp;
     try{
         if(zVersion<=3){
             zword addr2=addr;
             for(int i=0; i<index; i++)
-                addr2+=(getPropertySize(addr2, i)+1);
-            return getPropertySize(addr2, index);
+                addr2+=(getPropertySize(addr2)+1);
+            objProp.propertyDataSize=getPropertySize(addr2);
+            objProp.propertyDataAddr=addr2+1;
+            return objProp;
+        }else if(zVersion>3){
+            bool isWordSize=false;
+            zword addr2=addr;
+            for(int i=0; i<index; i++)
+            {
+                addr2+=getPropertySize(addr2, isWordSize)+1;
+                if(isWordSize) addr2+=1;
+            }
+            objProp.propertyDataSize=getPropertySize(addr2, isWordSize);
+            objProp.propertyDataAddr=(isWordSize==1 ? (addr2+1) : (addr2+2));
         }
-    }catch(ZMemoryReadOutOfBounds e){
-
-    }catch(IllegalObjectIndex e){
-
-    };
+    }catch(...){
+        throw IllegalPropertyIndex();
+    }
 }

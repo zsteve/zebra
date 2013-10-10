@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="../../zerror/zerror/zerror.cpp" open="1" top="0" tabpos="8">
+	<File name="..\..\zerror\zerror\zerror.cpp" open="1" top="0" tabpos="8">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="../../zerror/zerror/zerror.h" open="1" top="0" tabpos="9">
+	<File name="..\..\zerror\zerror\zerror.h" open="1" top="0" tabpos="9">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="2219" topLine="35" />
+	<File name="main.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="1228" topLine="26" />
 	</File>
-	<File name="zmemory.cpp" open="1" top="1" tabpos="4">
-		<Cursor position="246" topLine="164" />
+	<File name="zmemory.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="77" topLine="0" />
 	</File>
 	<File name="zmemory.h" open="1" top="0" tabpos="5">
-		<Cursor position="111" topLine="0" />
+		<Cursor position="1625" topLine="38" />
 	</File>
 	<File name="zobject.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="10996" topLine="366" />
+		<Cursor position="1074" topLine="36" />
 	</File>
 	<File name="zobject.h" open="1" top="0" tabpos="3">
-		<Cursor position="2505" topLine="36" />
+		<Cursor position="2856" topLine="15" />
 	</File>
-	<File name="../../ztext/ztext/ztext.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="1493" topLine="398" />
+	<File name="..\..\ztext\ztext\ztext.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="8829" topLine="329" />
 	</File>
-	<File name="../../ztext/ztext/ztext.h" open="1" top="0" tabpos="7">
+	<File name="..\..\ztext\ztext\ztext.h" open="1" top="0" tabpos="7">
 		<Cursor position="176" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

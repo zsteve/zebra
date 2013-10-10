@@ -7,6 +7,7 @@
 
 #include <exception>
 #include "../../zglobal/zglobal.h"
+#include "../../zmemory/zmemory/zmemory.h"
 #include "../../zerror/zerror/zerror.h"
 
 extern ZError zErrorLogger;
@@ -31,8 +32,8 @@ void ZSCIIStrCat(zchar* src, zchar* cat);
 int ZSCIIGetResidentAlphabet(zchar zch) throw (IllegalZCharException);
 zchar getZCharAlphaShiftCharacter(int currentAlpha, int desiredAlpha, bool shiftLock=false);
 
-zchar* zCharStringtoZSCII(zword* zCharString);
-zchar* zChartoZSCII(zword zChar, bool resetShifts=false);
+zchar* zCharStringtoZSCII(zword* zCharString, ZMemory& zMem);
+zchar* zCharStringtoZSCIIHelper(zchar* zCharString, ulong zStringLength, ZMemory& zMem, bool resetShifts=false);
 zword ZSCIItoZChar(zchar* zscii, int& bytesConverted);
 zword* ZSCIItoZCharString(zchar* zscii);
 

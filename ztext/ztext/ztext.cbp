@@ -36,6 +36,10 @@
 		<Unit filename="..\..\zerror\zerror\zerror.h" />
 		<Unit filename="..\..\zglobal\zglobal.cpp" />
 		<Unit filename="..\..\zglobal\zglobal.h" />
+		<Unit filename="..\..\zmemory\zmemory\zmemory.cpp" />
+		<Unit filename="..\..\zmemory\zmemory\zmemory.h" />
+		<Unit filename="..\..\zmemory\zmemory\zobject.cpp" />
+		<Unit filename="..\..\zmemory\zmemory\zobject.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="ztext.cpp" />
 		<Unit filename="ztext.h" />

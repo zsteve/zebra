@@ -19,6 +19,8 @@ long filesize(FILE *stream)
 
 int zVersion;
 
+
+
 int main()
 {
     cout << "zmemory unit test!" << endl;
@@ -54,6 +56,9 @@ int main()
     cout << (int)zObj.getObjectChild(221) << " & " << (int)zObj.getObjectParent(220) << endl;
     cout << (int)zObj.getObjectPropertyHeaderAddr(1) << endl;
     cout << zCharStringtoZSCII(zObj.getObjectName(250)) << endl;
-    cout << (int)zObj.getPropertyListElem(zObj.getObjectPropertyListAddr(250), 0) << endl;
+    cout << (int)(zObj.getPropertyListElem(zObj.getObjectPropertyListAddr(250), 0)).propertyDataSize << endl;
+    for(int i=0; i<(int)zObj.getPropertyListElem(zObj.getObjectPropertyListAddr(250), 0).propertyDataSize; i++)
+        printf("%X, ", (int)zMem.readZByte((zObj.getPropertyListElem(zObj.getObjectPropertyListAddr(250), 0)).propertyDataAddr+i));
+    printf("\n");
     return 0;
 }

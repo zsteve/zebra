@@ -26,7 +26,7 @@ class IllegalPropertyIndex : std::exception{
 
 typedef struct ObjectProperty{
     // object property structure
-    zword* propertyDataAddr; // byte address of property data
+    zword propertyDataAddr; // byte address of property data
     ulong propertyDataSize;  // byte size of property data
 };
 
@@ -40,7 +40,7 @@ class ZObjectTable{
         zword setObjectChildHelper(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex);
         zword setObjectSiblingHelper(ulong indexObject, ulong indexSibling) throw (IllegalObjectIndex);
         zword setObjectParentHelper(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex);
-        zbyte getPropertySize(zword addr, ulong propertyNumber) throw (ZMemoryReadOutOfBounds);
+        zbyte getPropertySize(zword addr) throw (ZMemoryReadOutOfBounds);
         zword getPropertySize(zword addr, bool &isWordSizeFlag) throw (ZMemoryReadOutOfBounds);
 
     public:
@@ -62,7 +62,7 @@ class ZObjectTable{
         zword setObjectSibling(ulong indexObject, ulong indexSibling) throw (IllegalObjectIndex);
         zword setObjectChild(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex);
         zword getPropertyListLength(zword addr) throw (ZMemoryReadOutOfBounds);
-        zword getPropertyListElem(zword addr, ulong index) throw (IllegalPropertyIndex);
+        ObjectProperty getPropertyListElem(zword addr, ulong index) throw (IllegalPropertyIndex);
     protected:
 };
 

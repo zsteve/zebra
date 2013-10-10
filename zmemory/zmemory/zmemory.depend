@@ -150,7 +150,7 @@
 1380272074 h:\code\c++\zebra-zmachine-interpreter\zerror\zerror\zerror.h
 	<string>
 
-1381337504 source:h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\main.cpp
+1381344346 source:h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\main.cpp
 	<iostream>
 	<cstdio>
 	"zmemory.h"
@@ -163,7 +163,7 @@
 	"../../zerror/zerror/zerror.h"
 	<exception>
 
-1381336608 h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zobject.h
+1381339662 h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zobject.h
 	"../../zglobal/zglobal.h"
 	"../../zerror/zerror/zerror.h"
 	"zmemory.h"
@@ -177,7 +177,7 @@
 	"zmemory.h"
 	"../../zglobal/zglobal.h"
 
-1381338696 source:h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zobject.cpp
+1381344160 source:h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zobject.cpp
 	"zobject.h"
 
 1381060184 source:h:\code\c++\zebra-zmachine-interpreter\ztext\ztext\ztext.cpp
