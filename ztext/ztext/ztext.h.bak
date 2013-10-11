@@ -34,9 +34,7 @@ zchar getZCharAlphaShiftCharacter(int currentAlpha, int desiredAlpha, bool shift
 
 zchar* zCharStringtoZSCII(zword* zCharString, ZMemory& zMem);
 zchar* zCharStringtoZSCIIHelper(zchar* zCharString, ulong zStringLength, ZMemory& zMem, bool resetShifts=false);
-zword ZSCIItoZChar(zchar* zscii, int& bytesConverted, bool resetShifts=false);
+zword ZSCIItoZChar(zchar* zscii, int& bytesConverted);
 zword* ZSCIItoZCharString(zchar* zscii);
-
-zword* zChartoDictionaryZCharString(zword* zstring);
 
 #endif

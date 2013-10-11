@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="main.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="1278" topLine="22" />
+	</File>
+	<File name="zdictionary.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="557" topLine="7" />
+	</File>
+	<File name="zdictionary.h" open="1" top="0" tabpos="3">
+		<Cursor position="1566" topLine="22" />
+	</File>
+	<File name="..\..\zglobal\zglobal.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="305" topLine="0" />
+	</File>
+	<File name="..\..\zmemory\zmemory\zmemory.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1448" topLine="11" />
+	</File>
+	<File name="..\..\zmemory\zmemory\zmemory.h" open="0" top="0" tabpos="0">
+		<Cursor position="350" topLine="0" />
+	</File>
+	<File name="..\..\ztext\ztext\ztext.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="18773" topLine="521" />
+	</File>
+	<File name="..\..\ztext\ztext\ztext.h" open="1" top="0" tabpos="4">
+		<Cursor position="840" topLine="6" />
+	</File>
+</CodeBlocks_layout_file>

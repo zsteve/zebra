@@ -1,0 +1,64 @@
+# depslib dependency file v1.0
+1381494818 source:h:\code\c++\zebra-zmachine-interpreter\zdictionary\zdictionary\zdictionary.cpp
+	"zdictionary.h"
+	<vector>
+	<string>
+	<cctype>
+
+1380341106 source:h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zmemory.cpp
+	"zmemory.h"
+	"../../zglobal/zglobal.h"
+
+1380613454 h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zmemory.h
+	"../../zglobal/zglobal.h"
+	"../../zerror/zerror/zerror.h"
+	<exception>
+
+1380446894 h:\code\c++\zebra-zmachine-interpreter\zglobal\zglobal.h
+	"../zerror/zerror/zerror.h"
+
+1380272074 h:\code\c++\zebra-zmachine-interpreter\zerror\zerror\zerror.h
+	<string>
+
+1381344160 source:h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zobject.cpp
+	"zobject.h"
+
+1381339662 h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zobject.h
+	"../../zglobal/zglobal.h"
+	"../../zerror/zerror/zerror.h"
+	"zmemory.h"
+
+1381501054 source:h:\code\c++\zebra-zmachine-interpreter\ztext\ztext\ztext.cpp
+	"ztext.h"
+	"../../zmemory/zmemory/zmemory.h"
+	<vector>
+
+1381496366 h:\code\c++\zebra-zmachine-interpreter\ztext\ztext\ztext.h
+	<exception>
+	"../../zglobal/zglobal.h"
+	"../../zmemory/zmemory/zmemory.h"
+	"../../zerror/zerror/zerror.h"
+
+1381500972 source:h:\code\c++\zebra-zmachine-interpreter\zdictionary\zdictionary\main.cpp
+	<iostream>
+	<cstdio>
+	"zdictionary.h"
+	"../../zglobal/zglobal.h"
+	"../../ztext/ztext/ztext.h"
+	"../../zmemory/zmemory/zmemory.h"
+	"../../zmemory/zmemory/zobject.h"
+	"../../zerror/zerror/zerror.h"
+
+1380613352 source:h:\code\c++\zebra-zmachine-interpreter\zglobal\zglobal.cpp
+	"zglobal.h"
+
+1380230120 source:h:\code\c++\zebra-zmachine-interpreter\zerror\zerror\zerror.cpp
+	"zerror.h"
+	<cstdio>
+
+1381495190 h:\code\c++\zebra-zmachine-interpreter\zdictionary\zdictionary\zdictionary.h
+	<exception>
+	"../../zglobal/zglobal.h"
+	"../../zmemory/zmemory/zmemory.h"
+	"../../ztext/ztext/ztext.h"
+

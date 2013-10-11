@@ -1,0 +1,52 @@
+#ifndef ZDICTIONARY_H
+#define ZDICTIONARY_H
+
+#include <exception>
+#include "../../zglobal/zglobal.h"
+#include "../../zmemory/zmemory/zmemory.h"
+#include "../../ztext/ztext/ztext.h"
+
+class IllegalDictionaryIndex : std::exception{
+	public:
+	IllegalDictionaryIndex(){
+		zErrorLogger.addError("Error : IllegalDictionaryIndex thrown");
+	}
+};
+
+struct zDictionaryWord{
+	zchar* wordData;
+	// assignment operators necessary for using STL vector
+	zDictionaryWord::zDictionaryWord(){}
+	zDictionaryWord::zDictionaryWord(zchar* wordData)
+	{
+		this->wordData=wordData;
+	}
+	const zDictionaryWord& zDictionaryWord::operator=(const zDictionaryWord &a)
+	{
+		this->wordData=a.wordData
+		return *this;
+	}
+};
+
+class ZDictionary{
+    private:
+		ZMemory* zMemObjPtr;
+		zword zDictionaryAddr;
+		zword zDictionaryEntriesBase;
+		// note : it is legal for the interpreter
+		// to copy the word separators to another memory loc
+		// because the dictionary resides in static memory
+		// therefore the game cannot alter it.
+		zchar* wordSeparators;
+		zbyte entryLength;
+		zword numOfEntries;
+    public:
+    ZDictionary();
+    ZDictionary(ZMemory *zMemObj);
+    ~ZDictionary();
+    getDictionaryEntryAddr(ulong index);
+
+    protected:
+};
+
+#endif
