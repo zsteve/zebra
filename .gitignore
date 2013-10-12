@@ -1,3 +1,7 @@
+# Compiled Executables
+
+*.exe
+
 # Compiled Object files
 *.slo
 *.lo

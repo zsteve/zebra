@@ -35,12 +35,8 @@ int main()
 
     cout << "Word separators : " << zDict.getWordSeparators() << endl;
 
-    cout << zCharStringtoZSCII(ZSCIItoZCharString((zchar*)"123"), zMem) << endl;
-    zword* tmp_=ZSCIItoZCharString((zchar*)"123");
-    // error occurs here :
-    // at this point : tmp == {15 25 28 ab}
-    zword* tmp=zChartoDictionaryZCharString(tmp_);
-    cout << zCharStringtoZSCII(tmp, zMem) << endl;
+    cout << zCharStringtoZSCII(ZSCIItoZCharString((zchar*)"floating-point"), zMem) << endl;
+    cout << zCharStringtoZSCII(zChartoDictionaryZCharString(ZSCIItoZCharString((zchar*)"floating-point")), zMem) << endl;
 
     cout << "Tokenizer test : type \"quit\" to exit" << endl;
     for(;;)
