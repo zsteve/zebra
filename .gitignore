@@ -50,3 +50,6 @@
 # cppcheck
 
 ./cppcheck
+
+# Doxygen
+./doxygen
