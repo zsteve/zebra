@@ -8,7 +8,7 @@
 
 char zAlphaTable0[]={"abcdefghijklmnopqrstuvwxyz"};
 char zAlphaTable1[]={"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
-char zAlphaTable2[]={" ^0123456789.,!?_#'\"/\-:()"};
+char zAlphaTable2[]={" \n0123456789.,!?_#'\"/\s\-:()"};
 
 extern int zVersion;
 
@@ -49,6 +49,14 @@ void ZSCIIStrCat(zchar* src, zchar* cat)
     }
     src[i]=NULL;
 
+}
+
+void ZSCIIStrCpy(zchar* src, zchar* dest)
+{
+	for(int i=0; src[i]!=NULL; i++)
+	{
+		dest[i]=src[i];
+	}
 }
 
 std::vector<zchar> expandZChars(zword* zCharString)
@@ -327,6 +335,7 @@ int ZSCIIGetResidentAlphabet(zchar zch) throw (IllegalZCharException)
         }
     }
     throw IllegalZCharException();
+    return 0;
 }
 
 zchar getZCharAlphaShiftCharacter(int currentAlpha, int desiredAlpha, bool shiftLock)
@@ -397,6 +406,7 @@ zword ZSCIItoZChar(zchar* zscii, int& bytesConverted, bool resetShifts)
     // to recieve number of characters actually
     // converted off the zscii string
     static int currentAlpha;
+    bool finalCharShiftWasTerminated=true;
     bool isTerminatingWord=false;
     zword outWord=NULL;
     zchar zBytes[3]={0, 0, 0};
@@ -410,7 +420,7 @@ zword ZSCIItoZChar(zchar* zscii, int& bytesConverted, bool resetShifts)
         if(zscii[i]==NULL)
         {
             // reached the end of the zscii string
-            for(; j<2; j++)
+            for(; j<3; j++)
             {
                 zBytes[j]=5;
             }
@@ -429,6 +439,7 @@ zword ZSCIItoZChar(zchar* zscii, int& bytesConverted, bool resetShifts)
                 if(j>2)
                 {
                     // filled 3 z-chars
+                    finalCharShiftWasTerminated=false;
                     bytesConverted=i+1;
                     break;
                 }
@@ -439,6 +450,10 @@ zword ZSCIItoZChar(zchar* zscii, int& bytesConverted, bool resetShifts)
                 zBytes[j++]=alphaIndex;
                 if(j>2)
                 {
+                    if(currentAlpha!=defaultAlpha)
+                    {
+                        finalCharShiftWasTerminated=true;
+                    }
                     bytesConverted=i+1;
                     break;
                 }
@@ -454,6 +469,10 @@ zword ZSCIItoZChar(zchar* zscii, int& bytesConverted, bool resetShifts)
                 }
                 currentAlpha=defaultAlpha;
         }
+    }
+    if(finalCharShiftWasTerminated)
+    {
+        currentAlpha=defaultAlpha;
     }
     // now we just glue all zBytes[] into a zword
     zchar zUpper, zLower;
@@ -510,13 +529,13 @@ zword* zChartoDictionaryZCharString(zword* zstring)
     if(zVersion<=3){
         // for versions 1 to 3, dictionary word length is 4 bytes (6 zchars)
         int done=0;
-        for(int i=0; i<vector1.size() && i<6; i++, done++)
+        for(int i=0; i<vector1.size() && i<7; i++, done++)
         {
             vector2.push_back(vector1[i]);
         }
-        if(done<6)
+        if(done<7)
         {
-            for(int i=done; i<6; i++)
+            for(int i=done; i<7; i++)
             {
                 vector2.push_back(5);
             }
@@ -550,9 +569,27 @@ zword* zChartoDictionaryZCharString(zword* zstring)
         outData[0]=packZChars(zcharArray);
         outData[1]=packZChars(zcharArray+3);
         outData[2]=packZChars(zcharArray+6);
-        outData[2]|=128;
+        outData[2]|=32768;
         for(int i=0; i<3; i++) outData[i]=endianize(outData[i]);
         delete[] zcharArray;
         return outData;
     }
+    return NULL;
+}
+
+zword* dictionaryZCharStringtoZCharString(zword* zstring)
+{
+    std::vector<zchar> vector1=expandZChars(zstring);
+    if(zVersion<=3){
+        zword* outData=new zword[2];
+        outData[0]=endianize(packZChars(vector1.data()));
+        outData[1]=endianize(packZChars(vector1.data()+3)|32768);
+        return outData;
+    }else if(zVersion>3){
+        zword* outData=new zword[9];
+        for(int i=0; i<9; i++) outData[i]=(vector1[2*i]<<8)|(vector1[2*i+1]);
+        outData[8]|=32768;
+        return outData;
+    }
+    return NULL;
 }

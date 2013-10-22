@@ -19,9 +19,10 @@ ZDictionary::ZDictionary(ZMemory *zMemObj) throw (ZMemoryReadOutOfBounds)
 		{
 			wordSeparators[i]=zMemObjPtr->readZByte(zDictionaryAddr+1+i);	// read 1 char of word separators list
 		}
+		wordSeparators[size]=NULL;
 		entryLength=zMemObjPtr->readZByte(zDictionaryAddr+size+1);
 		numOfEntries=zMemObjPtr->readZWord(zDictionaryAddr+size+2);
-		zDictionaryEntriesBase=(zDictionaryAddr+size+3);
+		zDictionaryEntriesBase=(zDictionaryAddr+size+4);
 	}catch(ZMemoryReadOutOfBounds e){
 		throw e;
 	}
@@ -64,40 +65,122 @@ void ZDictionary::makeLowerCase(zchar* zstring)
 	}
 }
 
-zDictionaryWord** ZDictionary::tokenizeZSCIIString(zchar* zstring)
+bool ZDictionary::compareWord(zword word1[2], zword word2[2])
 {
-	// tokenizes a ZSCII string into an array of zDictionaryWords
+    for(int i=0; i<2; i++)
+    {
+        if(word1[i]!=word2[i])
+         return false;
+    }
+    return true;
+}
+
+bool ZDictionary::compareWord(zword word1[3], zword word2[3], bool trash)
+{
+    for(int i=0; i<6; i++)
+    {
+        if(word1[i]!=word2[i])
+            return false;
+    }
+    return true;
+}
+
+ZSCIIDictionaryToken** ZDictionary::tokenizeZSCIIString(zchar* zstring)
+{
+	// tokenizes a ZSCII string into an array of ZSCIIDictionaryTokens
 	// first we must process the string
 	int len=ZSCIIStrLen(zstring);
 	makeLowerCase(zstring);
-	std::vector<zDictionaryWord*> tokenVector(0);	// vector for our tokens
+	std::vector<ZSCIIDictionaryToken*> tokenVector(0);	// vector for our tokens
 	string tempToken("");
-	for(int i=0; i<len; i++)
+	int wordBeginPos=0;
+	for(int i=0; ; i++)
 	{
 		if(zstring[i]==' '){	// space is always regarded as word separator
 													// and is always ignored (not taken as a word in itself)
 			if(!tempToken.empty()){	// if not empty
-				tokenVector.push_back(new zDictionaryWord((zchar*)tempToken.c_str()));
+				tokenVector.push_back(new ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
 				tempToken="";
+				wordBeginPos=i+1;
 			}else{
 				// else, its a trailing space and we ignore it
+				wordBeginPos++;
 			}
 		}else if(isWordSeparator(zstring[i])){
 			// if it's a word separator, it is treated as a word by itself
-			tokenVector.push_back(new zDictionaryWord((zchar*)tempToken.c_str()));
-			tempToken="";
+			if(!tempToken.empty())
+			{
+				tokenVector.push_back(new ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
+				tempToken="";
+				wordBeginPos=i;
+			}
 			tempToken+=zstring[i];
 			tempToken+="";
-			tokenVector.push_back(new zDictionaryWord((zchar*)tempToken.c_str()));
+			tokenVector.push_back(new ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
 			tempToken="";
-		}else{
+			wordBeginPos=i+1;
+		}else if(zstring[i]!=NULL){
 				tempToken+=zstring[i];
+		}else if(zstring[i]==NULL){
+			// null terminator char.
+			if(!tempToken.empty())
+			{
+				tokenVector.push_back(new ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
+				tempToken="";
+			}
+			tokenVector.push_back(NULL); // NULL pointer terminates pointer array
+			break;
 		}
 	}
-	zDictionaryWord** outArray=new zDictionaryWord*[tokenVector.size()];
+	ZSCIIDictionaryToken** outArray=new ZSCIIDictionaryToken*[tokenVector.size()];
 	for(int i=0; i<tokenVector.size(); i++)
 	{
 		outArray[i]=tokenVector[i];
 	}
 	return outArray;
+}
+
+/** performs lexical analysis on a ZSCII string
+ * @param zstring pointer to string
+ */
+
+ZDictionaryParseTable ZDictionary::performLexicalAnalysis(zchar* zstring)
+{
+    ZSCIIDictionaryToken** tokens=tokenizeZSCIIString(zstring);
+    std::vector<ZCharDictionaryToken> zCharTokenVector(0); /** vector for converted zchar tokens */
+    for(int i=0; tokens[i]!=NULL; i++)
+    {
+        zword* zcharString=ZSCIItoZCharString((*tokens[i]).wordData); /** converted zchars */
+
+        zword* zcharDictionaryToken=zChartoDictionaryZCharString(zcharString);
+        zCharTokenVector.push_back(ZCharDictionaryToken(zcharDictionaryToken, (*tokens[i]).textBufferPos));
+        delete[] zcharString;
+        delete[] zcharDictionaryToken;
+    }
+    // now we need to look these up in the dictionary
+    for(int i=0; i<zCharTokenVector.size(); i++)
+    {
+        zword* wordData;
+        if(zVersion<=3)
+        {
+            wordData=new zword[2];
+            wordData[0]=zCharTokenVector[i].wordData[0];
+            wordData[1]=zCharTokenVector[i].wordData[1];
+        }else if(zVersion>3){
+            wordData=new zword[3];
+            wordData[0]=zCharTokenVector[i].wordData[0];
+            wordData[1]=zCharTokenVector[i].wordData[1];
+            wordData[2]=zCharTokenVector[i].wordData[2];
+        }
+        for(int j=0; j<numOfEntries; j++)
+        {
+            if(zVersion<=3)
+            {
+                compareWord(&wordData[0], ((zword*)(zMemObjPtr->getRawDataPtr()+getDictionaryEntryAddr(j))));
+            }else if(zVersion>3){
+								compareWord(&wordData[0], ((zword*)(zMemObjPtr->getRawDataPtr()+getDictionaryEntryAddr(j))), false); /** false given just so we can differentiate
+																																																												between two types of compareWord() */
+            }
+        }
+    }
 }

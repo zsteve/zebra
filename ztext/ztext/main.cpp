@@ -4,6 +4,9 @@
 #include "../../zmemory/zmemory/zobject.h"
 #include "../../zerror/zerror/zerror.h"
 #include "ztext.h"
+#include <conio.h>
+#include <vector>
+#include <exception>
 
 using namespace std;
 
@@ -33,7 +36,7 @@ int main()
     fread(storyData, filesize(storyFile), 1, storyFile);
     ZMemory zMem(storyData, filesize(storyFile));
     ZObjectTable zObj(&zMem);
-
+    cout << zCharStringtoZSCII(ZSCIItoZCharString((zchar*)"A new line : \nand a new line : \n"), zMem) << endl;
     zword* zstr_w=(zword*)zstring;
     cout << zCharStringtoZSCII(zstr_w, zMem) << endl;
     cout << ZSCIIGetResidentAlphabet('-') << endl;
@@ -41,8 +44,8 @@ int main()
     int a=0;
     zword out;
     cout << (out=ZSCIItoZChar((zchar*)"Grue gets you ", a)) << endl;
-    cout << zCharStringtoZSCII(ZSCIItoZCharString((zchar*)"Hello World! This is me! asdf^^)("), zMem) << endl;
 
     cout << zCharStringtoZSCII((zword*)(zMem.getRawDataPtr()+0x15140), zMem);
+    getch();
     return 0;
 }

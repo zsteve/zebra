@@ -8,7 +8,7 @@
 
 char zAlphaTable0[]={"abcdefghijklmnopqrstuvwxyz"};
 char zAlphaTable1[]={"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
-char zAlphaTable2[]={" ^0123456789.,!?_#'\"/\-:()"};
+char zAlphaTable2[]={" \n0123456789.,!?_#'\"/\s\-:()"};
 
 extern int zVersion;
 
@@ -62,7 +62,7 @@ std::vector<zchar> expandZChars(zword* zCharString)
         charVector.push_back((zUpper>>2) & 31);
         charVector.push_back(((zUpper&3)<<3)|((zLower>>5)));
         charVector.push_back((zLower&31));
-        if(endianize(zCharString[i])>>15) break;
+        if(endianize((zCharString[i]))>>15) break;
     }
     return charVector;
 }
@@ -74,7 +74,11 @@ zchar* zCharStringtoZSCII(zword* zCharString, ZMemory &zMem)
     std::vector<zchar> charVector=expandZChars(zCharString);
     zCharStringtoZSCIIHelper(NULL, NULL, zMem, true);       // call zCharStringtoZSCIIHelper() once with resetShifts
                                                             // true so we can reset everything
-    return zCharStringtoZSCIIHelper(charVector.data(), charVector.size(), zMem);
+    zchar* charArray=new zchar[charVector.size()];
+    for(int i=0; i<charVector.size(); i++) charArray[i]=charVector[i];
+    zchar* outData=zCharStringtoZSCIIHelper(charArray, charVector.size(), zMem);
+    delete[] charArray;
+    return outData;
 }
 
 zword lookupAbbreviationAddr(ZMemory &zMem, zbyte zControlChar, zbyte nextChar) throw (ZMemoryReadOutOfBounds)
@@ -323,6 +327,7 @@ int ZSCIIGetResidentAlphabet(zchar zch) throw (IllegalZCharException)
         }
     }
     throw IllegalZCharException();
+    return 0;
 }
 
 zchar getZCharAlphaShiftCharacter(int currentAlpha, int desiredAlpha, bool shiftLock)
@@ -385,17 +390,23 @@ int getAlphabetIndex(zchar zscii, int alphabet)
     }
 }
 
-zword ZSCIItoZChar(zchar* zscii, int& bytesConverted)
+zword ZSCIItoZChar(zchar* zscii, int& bytesConverted, bool resetShifts)
 {
     // converts 3 or less chars of a ZSCII string to
     // a zword (zchar) string of 3 or less z-chars
     // bytesConverted is a reference to an integer
     // to recieve number of characters actually
     // converted off the zscii string
-    int currentAlpha=defaultAlpha;
+    static int currentAlpha;
+    bool finalCharShiftWasTerminated=true;
     bool isTerminatingWord=false;
     zword outWord=NULL;
     zchar zBytes[3]={0, 0, 0};
+    if(resetShifts)
+    {
+        currentAlpha=defaultAlpha;
+        return NULL;
+    }
     for(int i=0, j=0; ; i++)
     {
         if(zscii[i]==NULL)
@@ -420,6 +431,7 @@ zword ZSCIItoZChar(zchar* zscii, int& bytesConverted)
                 if(j>2)
                 {
                     // filled 3 z-chars
+                    finalCharShiftWasTerminated=false;
                     bytesConverted=i+1;
                     break;
                 }
@@ -430,6 +442,10 @@ zword ZSCIItoZChar(zchar* zscii, int& bytesConverted)
                 zBytes[j++]=alphaIndex;
                 if(j>2)
                 {
+                    if(currentAlpha!=defaultAlpha)
+                    {
+                        finalCharShiftWasTerminated=true;
+                    }
                     bytesConverted=i+1;
                     break;
                 }
@@ -445,6 +461,10 @@ zword ZSCIItoZChar(zchar* zscii, int& bytesConverted)
                 }
                 currentAlpha=defaultAlpha;
         }
+    }
+    if(finalCharShiftWasTerminated)
+    {
+        currentAlpha=defaultAlpha;
     }
     // now we just glue all zBytes[] into a zword
     zchar zUpper, zLower;
@@ -471,6 +491,7 @@ zword* ZSCIItoZCharString(zchar* zscii)
     int zStrlen=ZSCIIStrLen(zscii);
     int charsProcessed=0;
     zword* zCharBuf=new zword[zStrlen*3];
+    ZSCIItoZChar(NULL, charsProcessed, true);
     for(int i=0, j=0; i<zStrlen+1; j++)
     {
         zCharBuf[j]=ZSCIItoZChar(&zscii[i], charsProcessed);
@@ -488,61 +509,62 @@ zword packZChars(zchar* zchars)
 	outWord|=zchars[1];
 	outWord<<=5;
 	outWord|=zchars[2];
-	outWord<<=5;
-	return endianize(outWord);
+	return (outWord);
 }
 
 zword* zChartoDictionaryZCharString(zword* zstring)
 {
-		// converts a normal zchar string to a dictionary zchar string
-		// returns a zword* to either a 2 or 3 zword array.
-		std::vector<zchar> vector1=expandZChars(zstring);
-		std::vector<zchar> vector2(0);
-		if(zVersion<=3){
-			// for versions 1 to 3, dictionary word length is 4 bytes (6 zchars)
-			int done=0;
-			for(int i=0; i<vector1.size() && i<6; i++, done++)
-			{
-				vector2.push_back(vector1[i]);
-			}
-			if(done<6)
-			{
-				for(int i=done; i<6; i++)
-				{
-					vector2.push_back(5);
-				}
-			}
-			// now we need to pack them to 2x zwords.
-			zword* outData=new zword[2];
-			zchar* zcharArray=new zchar[vector2.size()];
-			for(int i=0; i<vector2.size(); i++) zcharArray[i]=vector2[i];
-			outData[0]=packZChars(zcharArray);
-			outData[1]=packZChars(zcharArray+3);
-			outData[1]|=128;
-			return outData;
-		}else if(zVersion>3){
-			// for versions 4 and up, dictionary word length is 6 bytes (9 zchars)
-			int done=0;
-			for(int i=0; i<vector1.size() && i<9; i++, done++)
-			{
-				vector2.push_back(vector1[i]);
-			}
-			if(done<9)
-			{
-				for(int i=done; i<9; i++)
-				{
-					vector2.push_back(5);
-				}
-			}
-			// now we need to pack them to 3x zwords.
-			zword* outData=new zword[3];
-			zchar* zcharArray=new zchar[vector2.size()];
-			for(int i=0; i<vector2.size(); i++) zcharArray[i]=vector2[i];
-			outData[0]=packZChars(zcharArray);
-			outData[1]=packZChars(zcharArray+3);
-			outData[2]=packZChars(zcharArray+6);
-			outData[2]|=128;
-			for(int i=0; i<3; i++) outData[i]=endianize(outData[i]);
-			return outData;
-		}
+    // converts a normal zchar string to a dictionary zchar string
+    // returns a zword* to either a 2 or 3 zword array.
+    std::vector<zchar> vector1=expandZChars(zstring);
+    std::vector<zchar> vector2(0);
+    if(zVersion<=3){
+        // for versions 1 to 3, dictionary word length is 4 bytes (6 zchars)
+        int done=0;
+        for(int i=0; i<vector1.size() && i<6; i++, done++)
+        {
+            vector2.push_back(vector1[i]);
+        }
+        if(done<6)
+        {
+            for(int i=done; i<6; i++)
+            {
+                vector2.push_back(5);
+            }
+        }
+        // now we need to pack them to 2x zwords.
+        zword* outData=new zword[2];
+        zchar* zcharArray=new zchar[vector2.size()];
+        for(int i=0; i<vector2.size(); i++) zcharArray[i]=vector2[i];
+        outData[0]=endianize(packZChars(zcharArray));
+        outData[1]=endianize(packZChars(zcharArray+3)|32768);
+        delete[] zcharArray;
+        return outData;
+    }else if(zVersion>3){
+        // for versions 4 and up, dictionary word length is 6 bytes (9 zchars)
+        int done=0;
+        for(int i=0; i<vector1.size() && i<9; i++, done++)
+        {
+            vector2.push_back(vector1[i]);
+        }
+        if(done<9)
+        {
+            for(int i=done; i<9; i++)
+            {
+                vector2.push_back(5);
+            }
+        }
+        // now we need to pack them to 3x zwords.
+        zword* outData=new zword[3];
+        zchar* zcharArray=new zchar[vector2.size()];
+        for(int i=0; i<vector2.size(); i++) zcharArray[i]=vector2[i];
+        outData[0]=packZChars(zcharArray);
+        outData[1]=packZChars(zcharArray+3);
+        outData[2]=packZChars(zcharArray+6);
+        outData[2]|=128;
+        for(int i=0; i<3; i++) outData[i]=endianize(outData[i]);
+        delete[] zcharArray;
+        return outData;
+    }
+    return NULL;
 }

@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="1087" topLine="18" />
+	<File name="main.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="2207" topLine="27" />
 	</File>
 	<File name="zdictionary.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="3128" topLine="62" />
+		<Cursor position="5209" topLine="145" />
 	</File>
 	<File name="zdictionary.h" open="1" top="0" tabpos="3">
-		<Cursor position="1566" topLine="22" />
+		<Cursor position="5426" topLine="160" />
 	</File>
-	<File name="../../zglobal/zglobal.cpp" open="1" top="0" tabpos="6">
+	<File name="..\..\zglobal\zglobal.cpp" open="0" top="0" tabpos="6">
 		<Cursor position="305" topLine="0" />
 	</File>
-	<File name="../../zmemory/zmemory/zmemory.cpp" open="0" top="0" tabpos="0">
+	<File name="..\..\zmemory\zmemory\zmemory.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="1448" topLine="11" />
 	</File>
-	<File name="../../zmemory/zmemory/zmemory.h" open="0" top="0" tabpos="0">
-		<Cursor position="350" topLine="0" />
+	<File name="..\..\zmemory\zmemory\zmemory.h" open="1" top="0" tabpos="6">
+		<Cursor position="1077" topLine="23" />
 	</File>
-	<File name="../../ztext/ztext/ztext.cpp" open="1" top="1" tabpos="5">
-		<Cursor position="17110" topLine="491" />
+	<File name="..\..\zmemory\zmemory\zobject.h" open="1" top="0" tabpos="5">
+		<Cursor position="707" topLine="12" />
 	</File>
-	<File name="../../ztext/ztext/ztext.h" open="1" top="0" tabpos="4">
-		<Cursor position="1189" topLine="6" />
+	<File name="..\..\ztext\ztext\ztext.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="19250" topLine="554" />
+	</File>
+	<File name="..\..\ztext\ztext\ztext.h" open="1" top="0" tabpos="7">
+		<Cursor position="4049" topLine="81" />
 	</File>
 </CodeBlocks_layout_file>

@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="..\..\zerror\zerror\zerror.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="497" topLine="0" />
+	<File name="..\..\zerror\zerror\zerror.cpp" open="0" top="0" tabpos="7">
+		<Cursor position="349" topLine="0" />
 	</File>
-	<File name="..\..\zerror\zerror\zerror.h" open="1" top="0" tabpos="6">
+	<File name="..\..\zerror\zerror\zerror.h" open="0" top="0" tabpos="6">
 		<Cursor position="215" topLine="0" />
 	</File>
-	<File name="..\..\zglobal\zglobal.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="344" topLine="6" />
+	<File name="..\..\zglobal\zglobal.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="1023" topLine="0" />
 	</File>
-	<File name="..\..\zglobal\zglobal.h" open="1" top="0" tabpos="2">
-		<Cursor position="74" topLine="0" />
+	<File name="..\..\zglobal\zglobal.h" open="1" top="0" tabpos="5">
+		<Cursor position="132" topLine="0" />
 	</File>
-	<File name="..\..\zmemory\zmemory\zmemory.cpp" open="1" top="0" tabpos="8">
+	<File name="..\..\zmemory\zmemory\zmemory.cpp" open="0" top="0" tabpos="8">
 		<Cursor position="1594" topLine="0" />
 	</File>
-	<File name="..\..\zmemory\zmemory\zmemory.h" open="1" top="0" tabpos="9">
+	<File name="..\..\zmemory\zmemory\zmemory.h" open="0" top="0" tabpos="9">
 		<Cursor position="1077" topLine="17" />
 	</File>
-	<File name="..\..\zmemory\zmemory\zobject.cpp" open="1" top="0" tabpos="10">
+	<File name="..\..\zmemory\zmemory\zobject.cpp" open="0" top="0" tabpos="10">
 		<Cursor position="436" topLine="90" />
 	</File>
-	<File name="..\..\zmemory\zmemory\zobject.h" open="1" top="0" tabpos="11">
+	<File name="..\..\zmemory\zmemory\zobject.h" open="0" top="0" tabpos="11">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="479" topLine="12" />
+	<File name="main.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="1130" topLine="8" />
 	</File>
-	<File name="ztext.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="13669" topLine="404" />
+	<File name="ztext.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="81" topLine="2" />
 	</File>
-	<File name="ztext.h" open="1" top="0" tabpos="5">
-		<Cursor position="1013" topLine="4" />
+	<File name="ztext.h" open="1" top="1" tabpos="3">
+		<Cursor position="1289" topLine="78" />
 	</File>
 </CodeBlocks_layout_file>

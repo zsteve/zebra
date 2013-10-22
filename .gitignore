@@ -34,9 +34,19 @@
 *.7z
 *.rar
 
+# Backups
+
+*.save
+*.bak
+*.backup
+
 # Bot
 
 ./bot
 
 # Z Story files
 *.z3
+
+# cppcheck
+
+./cppcheck

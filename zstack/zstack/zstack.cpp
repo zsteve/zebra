@@ -3,6 +3,7 @@
 
 ZStack::ZStack()
 {
+	stackPtr=NULL;
     stackData=NULL;
     stackSize=0;
 }
@@ -25,6 +26,7 @@ bool ZStack::isStackEmpty()
 
 bool ZStack::initStack(int size)
 {
+	if(stackData!=NULL) delete[] stackData;
     stackData=new zword[size];
     stackSize=size;
     stackPtr=size;

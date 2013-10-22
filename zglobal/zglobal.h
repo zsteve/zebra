@@ -1,6 +1,9 @@
 #ifndef ZGLOBAL_H
 #define ZGLOBAL_H
 #include "../zerror/zerror/zerror.h"
+#include <vector>
+
+using namespace std;
 
 // typedefs
 typedef unsigned short zword;

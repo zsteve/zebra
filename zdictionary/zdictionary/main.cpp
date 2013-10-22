@@ -35,20 +35,34 @@ int main()
 
     cout << "Word separators : " << zDict.getWordSeparators() << endl;
 
+    cout << "Address of dictionary header : " << zDict.zDictionaryAddr << endl;
+    cout << "Address of dictionary table : " << zDict.zDictionaryEntriesBase << endl;
+
     cout << zCharStringtoZSCII(ZSCIItoZCharString((zchar*)"floating-point"), zMem) << endl;
     cout << zCharStringtoZSCII(zChartoDictionaryZCharString(ZSCIItoZCharString((zchar*)"floating-point")), zMem) << endl;
 
+    cout << zCharStringtoZSCII(dictionaryZCharStringtoZCharString((zword*)(zMem.getRawDataPtr()+zDict.getDictionaryEntryAddr(1))), zMem) << endl;
+
+    cout << zCharStringtoZSCII(dictionaryZCharStringtoZCharString(zChartoDictionaryZCharString(ZSCIItoZCharString((zchar*)"dictionaryword"))), zMem) << endl;
     cout << "Tokenizer test : type \"quit\" to exit" << endl;
     for(;;)
     {
         string inString;
         getline(cin, inString);
         if(inString=="quit") break;
-        zDictionaryWord** tkns=zDict.tokenizeZSCIIString((zchar*)inString.c_str());
+        ZSCIIDictionaryToken** tkns=zDict.tokenizeZSCIIString((zchar*)inString.c_str());
         cout << endl << "Tokens:" << endl << endl;
         for(int i=0; tkns[i]!=NULL; i++)
-            cout << "[" << tkns[i]->wordData << "]" << endl;
+            cout << "[" << tkns[i]->wordData << "]" << tkns[i]->textBufferPos << endl;
+        ZDictionaryParseTable tbl=zDict.performLexicalAnalysis((zchar*)inString.c_str());
+        for(int i=0; i<tbl.entryVector.size(); i++)
+        {
+            cout << (int)tbl.entryVector[i].dictWordAddr << " "\
+                 << (int)tbl.entryVector[i].letterCount << " "\
+                 << (int)tbl.entryVector[i].textBufferPos << " " << endl;
+        }
         cout << endl;
     }
     return 0;
+
 }

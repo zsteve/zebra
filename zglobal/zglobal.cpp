@@ -1,4 +1,7 @@
 #include "zglobal.h"
+#include <vector>
+
+using namespace std;
 
 ZError zErrorLogger;
 zword endianize(zword in)
@@ -27,7 +30,7 @@ zword reverseBitSequence(zbyte in)
     bits[4]=(in&16)>>4;
     bits[5]=(in&32)>>5;
     bits[6]=(in&64)>>6;
-    bits[8]=(in&128)>>7;
+    bits[7]=(in&128)>>7;
     zbyte outByte=0;
     outByte=(outByte|(bits[0]<<7));
     outByte=(outByte|(bits[1]<<6));

@@ -1,29 +1,22 @@
 # depslib dependency file v1.0
-1381501190 source:h:\code\c++\zebra-zmachine-interpreter\zdictionary\zdictionary\zdictionary.cpp
+1382262012 source:h:\code\c++\zebra-zmachine-interpreter\zdictionary\zdictionary\zdictionary.cpp
 	"zdictionary.h"
 	<vector>
 	<string>
 	<cctype>
 
-1380230120 
-
 1380341106 source:h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zmemory.cpp
 	"zmemory.h"
 	"../../zglobal/zglobal.h"
-
-1380341106 obal/zglobal.h"
 
 1380613454 h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zmemory.h
 	"../../zglobal/zglobal.h"
 	"../../zerror/zerror/zerror.h"
 	<exception>
 
-1380613454 >
-
-1380446894 h:\code\c++\zebra-zmachine-interpreter\zglobal\zglobal.h
+1381685186 h:\code\c++\zebra-zmachine-interpreter\zglobal\zglobal.h
 	"../zerror/zerror/zerror.h"
-
-1380446894 /zerror/zerror.h"
+	<vector>
 
 1380272074 h:\code\c++\zebra-zmachine-interpreter\zerror\zerror\zerror.h
 	<string>
@@ -31,27 +24,23 @@
 1381344160 source:h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zobject.cpp
 	"zobject.h"
 
-1380613352 "
-
 1381339662 h:\code\c++\zebra-zmachine-interpreter\zmemory\zmemory\zobject.h
 	"../../zglobal/zglobal.h"
 	"../../zerror/zerror/zerror.h"
 	"zmemory.h"
 
-1381526550 source:h:\code\c++\zebra-zmachine-interpreter\ztext\ztext\ztext.cpp
+1382246528 source:h:\code\c++\zebra-zmachine-interpreter\ztext\ztext\ztext.cpp
 	"ztext.h"
 	"../../zmemory/zmemory/zmemory.h"
 	<vector>
 
-1381496366 h:\code\c++\zebra-zmachine-interpreter\ztext\ztext\ztext.h
+1382242652 h:\code\c++\zebra-zmachine-interpreter\ztext\ztext\ztext.h
 	<exception>
 	"../../zglobal/zglobal.h"
 	"../../zmemory/zmemory/zmemory.h"
 	"../../zerror/zerror/zerror.h"
 
-1381526426 ror/zerror/zerror.h"
-
-1381526426 source:h:\code\c++\zebra-zmachine-interpreter\zdictionary\zdictionary\main.cpp
+1382261896 source:h:\code\c++\zebra-zmachine-interpreter\zdictionary\zdictionary\main.cpp
 	<iostream>
 	<cstdio>
 	"zdictionary.h"
@@ -61,81 +50,17 @@
 	"../../zmemory/zmemory/zobject.h"
 	"../../zerror/zerror/zerror.h"
 
-1380613352 source:h:\code\c++\zebra-zmachine-interpreter\zglobal\zglobal.cpp
+1382172788 source:h:\code\c++\zebra-zmachine-interpreter\zglobal\zglobal.cpp
 	"zglobal.h"
+	<vector>
 
 1380230120 source:h:\code\c++\zebra-zmachine-interpreter\zerror\zerror\zerror.cpp
 	"zerror.h"
 	<cstdio>
 
-1381495190 h:\code\c++\zebra-zmachine-interpreter\zdictionary\zdictionary\zdictionary.h
+1382261302 h:\code\c++\zebra-zmachine-interpreter\zdictionary\zdictionary\zdictionary.h
 	<exception>
 	"../../zglobal/zglobal.h"
 	"../../zmemory/zmemory/zmemory.h"
 	"../../ztext/ztext/ztext.h"
-
-1381495190 xt/ztext/ztext.h"
-
-1381526426 source:/home/zsteve/Code/zebra-zmachine-interpreter/zdictionary/zdictionary/main.cpp
-	<iostream>
-	<cstdio>
-	"zdictionary.h"
-	"../../zglobal/zglobal.h"
-	"../../ztext/ztext/ztext.h"
-	"../../zmemory/zmemory/zmemory.h"
-	"../../zmemory/zmemory/zobject.h"
-	"../../zerror/zerror/zerror.h"
-
-1381495190 /home/zsteve/Code/zebra-zmachine-interpreter/zdictionary/zdictionary/zdictionary.h
-	<exception>
-	"../../zglobal/zglobal.h"
-	"../../zmemory/zmemory/zmemory.h"
-	"../../ztext/ztext/ztext.h"
-
-1380443294 /home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobal.h
-	"../zerror/zerror/zerror.h"
-
-1380268474 /home/zsteve/Code/zebra-zmachine-interpreter/zerror/zerror/zerror.h
-	<string>
-
-1380609854 /home/zsteve/Code/zebra-zmachine-interpreter/zmemory/zmemory/zmemory.h
-	"../../zglobal/zglobal.h"
-	"../../zerror/zerror/zerror.h"
-	<exception>
-
-1381496366 /home/zsteve/Code/zebra-zmachine-interpreter/ztext/ztext/ztext.h
-	<exception>
-	"../../zglobal/zglobal.h"
-	"../../zmemory/zmemory/zmemory.h"
-	"../../zerror/zerror/zerror.h"
-
-1381339662 /home/zsteve/Code/zebra-zmachine-interpreter/zmemory/zmemory/zobject.h
-	"../../zglobal/zglobal.h"
-	"../../zerror/zerror/zerror.h"
-	"zmemory.h"
-
-1381501190 source:/home/zsteve/Code/zebra-zmachine-interpreter/zdictionary/zdictionary/zdictionary.cpp
-	"zdictionary.h"
-	<vector>
-	<string>
-	<cctype>
-
-1380226520 source:/home/zsteve/Code/zebra-zmachine-interpreter/zerror/zerror/zerror.cpp
-	"zerror.h"
-	<cstdio>
-
-1380609752 source:/home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobal.cpp
-	"zglobal.h"
-
-1380337506 source:/home/zsteve/Code/zebra-zmachine-interpreter/zmemory/zmemory/zmemory.cpp
-	"zmemory.h"
-	"../../zglobal/zglobal.h"
-
-1381344160 source:/home/zsteve/Code/zebra-zmachine-interpreter/zmemory/zmemory/zobject.cpp
-	"zobject.h"
-
-1381559435 source:/home/zsteve/Code/zebra-zmachine-interpreter/ztext/ztext/ztext.cpp
-	"ztext.h"
-	"../../zmemory/zmemory/zmemory.h"
-	<vector>
 
