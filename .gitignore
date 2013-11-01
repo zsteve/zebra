@@ -41,6 +41,7 @@
 # Doxygen
 
 ./doxygen
+./doxygen/*
 
 # Z Story files
 *.z3
