@@ -1,0 +1,76 @@
+\hypertarget{class_z_dictionary}{\section{Z\-Dictionary Class Reference}
+\label{class_z_dictionary}\index{Z\-Dictionary@{Z\-Dictionary}}
+}
+
+
+{\ttfamily \#include $<$zdictionary.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_z_dictionary_a83a17daa48fba56e2ab0bf854f5a9318}{Z\-Dictionary} ()
+\item 
+\hyperlink{class_z_dictionary_aeca7959ca07a10b82e0179d4d17b9a22}{Z\-Dictionary} (\hyperlink{class_z_memory}{Z\-Memory} $\ast$z\-Mem\-Obj)  throw (\-Z\-Memory\-Read\-Out\-Of\-Bounds)
+\item 
+\hyperlink{class_z_dictionary_a302e3b83418ad1367f7bae991a270011}{$\sim$\-Z\-Dictionary} ()
+\item 
+\hyperlink{zglobal_8h_a6507dc55d18847442d5fb20b6c73fe73}{zword} \hyperlink{class_z_dictionary_a89cf4a5cbc0b770d8ac1aed19432d251}{get\-Dictionary\-Entry\-Addr} (\hyperlink{zglobal_8h_a718b4eb2652c286f4d42dc18a8e71a1a}{ulong} index)  throw (\-Illegal\-Dictionary\-Index)
+\item 
+\hyperlink{structz_dictionary_word}{z\-Dictionary\-Word} $\ast$$\ast$ \hyperlink{class_z_dictionary_a7ebd06ccc61abad818515d11cb0c39d3}{tokenize\-Z\-S\-C\-I\-I\-String} (\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$\hyperlink{ztext_2ztext_2main_8cpp_ae991afe9cf5a78d591f33cce735aa9c7}{zstring})
+\item 
+\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$ \hyperlink{class_z_dictionary_a1abd5cfd2321793d00ef62876bc3f3a9}{get\-Word\-Separators} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_z_dictionary_a83a17daa48fba56e2ab0bf854f5a9318}{\index{Z\-Dictionary@{Z\-Dictionary}!Z\-Dictionary@{Z\-Dictionary}}
+\index{Z\-Dictionary@{Z\-Dictionary}!ZDictionary@{Z\-Dictionary}}
+\subsubsection[{Z\-Dictionary}]{\setlength{\rightskip}{0pt plus 5cm}Z\-Dictionary\-::\-Z\-Dictionary (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_z_dictionary_a83a17daa48fba56e2ab0bf854f5a9318}
+\hypertarget{class_z_dictionary_aeca7959ca07a10b82e0179d4d17b9a22}{\index{Z\-Dictionary@{Z\-Dictionary}!Z\-Dictionary@{Z\-Dictionary}}
+\index{Z\-Dictionary@{Z\-Dictionary}!ZDictionary@{Z\-Dictionary}}
+\subsubsection[{Z\-Dictionary}]{\setlength{\rightskip}{0pt plus 5cm}Z\-Dictionary\-::\-Z\-Dictionary (
+\begin{DoxyParamCaption}
+\item[{{\bf Z\-Memory} $\ast$}]{z\-Mem\-Obj}
+\end{DoxyParamCaption}
+) throw  {\bf Z\-Memory\-Read\-Out\-Of\-Bounds}) }}\label{class_z_dictionary_aeca7959ca07a10b82e0179d4d17b9a22}
+\hypertarget{class_z_dictionary_a302e3b83418ad1367f7bae991a270011}{\index{Z\-Dictionary@{Z\-Dictionary}!$\sim$\-Z\-Dictionary@{$\sim$\-Z\-Dictionary}}
+\index{$\sim$\-Z\-Dictionary@{$\sim$\-Z\-Dictionary}!ZDictionary@{Z\-Dictionary}}
+\subsubsection[{$\sim$\-Z\-Dictionary}]{\setlength{\rightskip}{0pt plus 5cm}Z\-Dictionary\-::$\sim$\-Z\-Dictionary (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_z_dictionary_a302e3b83418ad1367f7bae991a270011}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_z_dictionary_a89cf4a5cbc0b770d8ac1aed19432d251}{\index{Z\-Dictionary@{Z\-Dictionary}!get\-Dictionary\-Entry\-Addr@{get\-Dictionary\-Entry\-Addr}}
+\index{get\-Dictionary\-Entry\-Addr@{get\-Dictionary\-Entry\-Addr}!ZDictionary@{Z\-Dictionary}}
+\subsubsection[{get\-Dictionary\-Entry\-Addr}]{\setlength{\rightskip}{0pt plus 5cm}{\bf zword} Z\-Dictionary\-::get\-Dictionary\-Entry\-Addr (
+\begin{DoxyParamCaption}
+\item[{{\bf ulong}}]{index}
+\end{DoxyParamCaption}
+) throw  {\bf Illegal\-Dictionary\-Index}) }}\label{class_z_dictionary_a89cf4a5cbc0b770d8ac1aed19432d251}
+\hypertarget{class_z_dictionary_a1abd5cfd2321793d00ef62876bc3f3a9}{\index{Z\-Dictionary@{Z\-Dictionary}!get\-Word\-Separators@{get\-Word\-Separators}}
+\index{get\-Word\-Separators@{get\-Word\-Separators}!ZDictionary@{Z\-Dictionary}}
+\subsubsection[{get\-Word\-Separators}]{\setlength{\rightskip}{0pt plus 5cm}{\bf zchar}$\ast$ Z\-Dictionary\-::get\-Word\-Separators (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_z_dictionary_a1abd5cfd2321793d00ef62876bc3f3a9}
+\hypertarget{class_z_dictionary_a7ebd06ccc61abad818515d11cb0c39d3}{\index{Z\-Dictionary@{Z\-Dictionary}!tokenize\-Z\-S\-C\-I\-I\-String@{tokenize\-Z\-S\-C\-I\-I\-String}}
+\index{tokenize\-Z\-S\-C\-I\-I\-String@{tokenize\-Z\-S\-C\-I\-I\-String}!ZDictionary@{Z\-Dictionary}}
+\subsubsection[{tokenize\-Z\-S\-C\-I\-I\-String}]{\setlength{\rightskip}{0pt plus 5cm}Z\-S\-C\-I\-I\-Dictionary\-Token $\ast$$\ast$ Z\-Dictionary\-::tokenize\-Z\-S\-C\-I\-I\-String (
+\begin{DoxyParamCaption}
+\item[{{\bf zchar} $\ast$}]{zstring}
+\end{DoxyParamCaption}
+)}}\label{class_z_dictionary_a7ebd06ccc61abad818515d11cb0c39d3}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+H\-:/code/c++/zebra-\/zmachine-\/interpreter/zdictionary/zdictionary/\hyperlink{zdictionary_8h}{zdictionary.\-h}\item 
+H\-:/code/c++/zebra-\/zmachine-\/interpreter/zdictionary/zdictionary/\hyperlink{zdictionary_8cpp}{zdictionary.\-cpp}\end{DoxyCompactItemize}

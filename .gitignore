@@ -38,7 +38,9 @@
 
 ./cppcheck
 
+# Doxygen
 
+./doxygen
 
 # Z Story files
 *.z3
