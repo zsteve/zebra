@@ -1,0 +1,317 @@
+\hypertarget{ztext_8cpp}{\section{H\-:/code/c++/zebra-\/zmachine-\/interpreter/ztext/ztext/ztext.cpp File Reference}
+\label{ztext_8cpp}\index{H\-:/code/c++/zebra-\/zmachine-\/interpreter/ztext/ztext/ztext.\-cpp@{H\-:/code/c++/zebra-\/zmachine-\/interpreter/ztext/ztext/ztext.\-cpp}}
+}
+{\ttfamily \#include \char`\"{}ztext.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../../zmemory/zmemory/zmemory.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structz_char_stringto_z_s_c_i_i_helper__save_state}{z\-Char\-Stringto\-Z\-S\-C\-I\-I\-Helper\-\_\-save\-State}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{ztext_8cpp_a6ce196e7cdf5a09434c27e3304171754}{A\-L\-P\-H\-A\-B\-E\-T\-\_\-1}~1
+\item 
+\#define \hyperlink{ztext_8cpp_a9b2b2f2c7b68f470b7f9c2158c19b142}{A\-L\-P\-H\-A\-B\-E\-T\-\_\-2}~2
+\item 
+\#define \hyperlink{ztext_8cpp_af22148e65407494603b105d040e1da7c}{A\-L\-P\-H\-A\-B\-E\-T\-\_\-0}~0
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{ztext_8cpp_adbae7420748e6fc16b889ca69fe37d3e}{Z\-S\-C\-I\-I\-Str\-Len} (\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$str)
+\item 
+int \hyperlink{ztext_8cpp_a47f99f33641c11c40bcaff032ab2bb07}{z\-Char\-Str\-Len} (\hyperlink{zglobal_8h_a6507dc55d18847442d5fb20b6c73fe73}{zword} $\ast$str)
+\item 
+void \hyperlink{ztext_8cpp_a1099a7a939f2758529062bceff394794}{Z\-S\-C\-I\-I\-Str\-Cat} (\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$src, \hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$cat)
+\item 
+std\-::vector$<$ \hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $>$ \hyperlink{ztext_8cpp_ad4b791626c4794822cee124168f0b61c}{expand\-Z\-Chars} (\hyperlink{zglobal_8h_a6507dc55d18847442d5fb20b6c73fe73}{zword} $\ast$z\-Char\-String)
+\item 
+\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$ \hyperlink{ztext_8cpp_a36cfc751cc2be464c30650ca2e56300d}{z\-Char\-Stringto\-Z\-S\-C\-I\-I} (\hyperlink{zglobal_8h_a6507dc55d18847442d5fb20b6c73fe73}{zword} $\ast$z\-Char\-String, \hyperlink{class_z_memory}{Z\-Memory} \&z\-Mem)
+\item 
+\hyperlink{zglobal_8h_a6507dc55d18847442d5fb20b6c73fe73}{zword} \hyperlink{ztext_8cpp_a2ad87f3dae373d95104357af8f2a6f6b}{lookup\-Abbreviation\-Addr} (\hyperlink{class_z_memory}{Z\-Memory} \&z\-Mem, \hyperlink{zglobal_8h_aab4ef09707609e67bcc5a552cde255d2}{zbyte} z\-Control\-Char, \hyperlink{zglobal_8h_aab4ef09707609e67bcc5a552cde255d2}{zbyte} next\-Char)  throw (\-Z\-Memory\-Read\-Out\-Of\-Bounds)
+\item 
+\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$ \hyperlink{ztext_8cpp_a8e1cd5708fd8fd1197378949a5d6861d}{z\-Char\-Stringto\-Z\-S\-C\-I\-I\-Helper} (\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$z\-Char\-String, \hyperlink{zglobal_8h_a718b4eb2652c286f4d42dc18a8e71a1a}{ulong} z\-String\-Length, \hyperlink{class_z_memory}{Z\-Memory} \&z\-Mem, bool reset\-Shifts)
+\item 
+int \hyperlink{ztext_8cpp_a794dfc92150aea346ae011e65b1e3110}{Z\-S\-C\-I\-I\-Get\-Resident\-Alphabet} (\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} zch)  throw (\-Illegal\-Z\-Char\-Exception)
+\item 
+\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} \hyperlink{ztext_8cpp_afd2271e6c8397c30c0bf8fd32302d38f}{get\-Z\-Char\-Alpha\-Shift\-Character} (int current\-Alpha, int desired\-Alpha, bool shift\-Lock)
+\item 
+int \hyperlink{ztext_8cpp_afe34f1fec246155628c0d2674e1d9ba7}{get\-Char\-Index} (\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$str, \hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} find)
+\item 
+int \hyperlink{ztext_8cpp_a8afdfd2826a1a8664f53bdb36d9a0a03}{get\-Alphabet\-Index} (\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} zscii, int alphabet)
+\item 
+\hyperlink{zglobal_8h_a6507dc55d18847442d5fb20b6c73fe73}{zword} \hyperlink{ztext_8cpp_a3b3a7ea20e5a2af5deedb50744630613}{Z\-S\-C\-I\-Ito\-Z\-Char} (\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$zscii, int \&bytes\-Converted, bool reset\-Shifts)
+\item 
+\hyperlink{zglobal_8h_a6507dc55d18847442d5fb20b6c73fe73}{zword} $\ast$ \hyperlink{ztext_8cpp_aadd51e863ad85545e4b3b5d723bc272c}{Z\-S\-C\-I\-Ito\-Z\-Char\-String} (\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$zscii)
+\item 
+\hyperlink{zglobal_8h_a6507dc55d18847442d5fb20b6c73fe73}{zword} \hyperlink{ztext_8cpp_af3059bedecd6d955539ab16db263af24}{pack\-Z\-Chars} (\hyperlink{zglobal_8h_aef68b14f6fcd84f18d5b177486e4999b}{zchar} $\ast$zchars)
+\item 
+\hyperlink{zglobal_8h_a6507dc55d18847442d5fb20b6c73fe73}{zword} $\ast$ \hyperlink{ztext_8cpp_a4757d14f8d543a6a2ead5123f1e697db}{z\-Charto\-Dictionary\-Z\-Char\-String} (\hyperlink{zglobal_8h_a6507dc55d18847442d5fb20b6c73fe73}{zword} $\ast$\hyperlink{ztext_2ztext_2main_8cpp_ae991afe9cf5a78d591f33cce735aa9c7}{zstring})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char \hyperlink{ztext_8cpp_aced9e1648b875c70bca76c898eedf8c1}{z\-Alpha\-Table0} \mbox{[}$\,$\mbox{]} =\{\char`\"{}abcdefghijklmnopqrstuvwxyz\char`\"{}\}
+\item 
+char \hyperlink{ztext_8cpp_aea0af5cd150ae7175c20d2bf1ba9fdb0}{z\-Alpha\-Table1} \mbox{[}$\,$\mbox{]} =\{\char`\"{}A\-B\-C\-D\-E\-F\-G\-H\-I\-J\-K\-L\-M\-N\-O\-P\-Q\-R\-S\-T\-U\-V\-W\-X\-Y\-Z\char`\"{}\}
+\item 
+char \hyperlink{ztext_8cpp_a41a326c6fca16771bf56d9d6fa046def}{z\-Alpha\-Table2} \mbox{[}$\,$\mbox{]} =\{\char`\"{} \textbackslash{}n0123456789.,!?\-\_\-\#'\textbackslash{}\char`\"{}/\textbackslash{}s\textbackslash{}-\/\-:()\char`\"{}\}
+\item 
+int \hyperlink{ztext_8cpp_a41df104fcf203bd399b170c36a3eca7d}{z\-Version}
+\item 
+int \hyperlink{ztext_8cpp_a9fa363a35d298d38fa82f43100833128}{default\-Alpha} =\hyperlink{ztext_8cpp_af22148e65407494603b105d040e1da7c}{A\-L\-P\-H\-A\-B\-E\-T\-\_\-0}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{ztext_8cpp_af22148e65407494603b105d040e1da7c}{\index{ztext.\-cpp@{ztext.\-cpp}!A\-L\-P\-H\-A\-B\-E\-T\-\_\-0@{A\-L\-P\-H\-A\-B\-E\-T\-\_\-0}}
+\index{A\-L\-P\-H\-A\-B\-E\-T\-\_\-0@{A\-L\-P\-H\-A\-B\-E\-T\-\_\-0}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{A\-L\-P\-H\-A\-B\-E\-T\-\_\-0}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\-L\-P\-H\-A\-B\-E\-T\-\_\-0~0}}\label{ztext_8cpp_af22148e65407494603b105d040e1da7c}
+\hypertarget{ztext_8cpp_a6ce196e7cdf5a09434c27e3304171754}{\index{ztext.\-cpp@{ztext.\-cpp}!A\-L\-P\-H\-A\-B\-E\-T\-\_\-1@{A\-L\-P\-H\-A\-B\-E\-T\-\_\-1}}
+\index{A\-L\-P\-H\-A\-B\-E\-T\-\_\-1@{A\-L\-P\-H\-A\-B\-E\-T\-\_\-1}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{A\-L\-P\-H\-A\-B\-E\-T\-\_\-1}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\-L\-P\-H\-A\-B\-E\-T\-\_\-1~1}}\label{ztext_8cpp_a6ce196e7cdf5a09434c27e3304171754}
+\hypertarget{ztext_8cpp_a9b2b2f2c7b68f470b7f9c2158c19b142}{\index{ztext.\-cpp@{ztext.\-cpp}!A\-L\-P\-H\-A\-B\-E\-T\-\_\-2@{A\-L\-P\-H\-A\-B\-E\-T\-\_\-2}}
+\index{A\-L\-P\-H\-A\-B\-E\-T\-\_\-2@{A\-L\-P\-H\-A\-B\-E\-T\-\_\-2}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{A\-L\-P\-H\-A\-B\-E\-T\-\_\-2}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\-L\-P\-H\-A\-B\-E\-T\-\_\-2~2}}\label{ztext_8cpp_a9b2b2f2c7b68f470b7f9c2158c19b142}
+
+
+\subsection{Function Documentation}
+\hypertarget{ztext_8cpp_ad4b791626c4794822cee124168f0b61c}{\index{ztext.\-cpp@{ztext.\-cpp}!expand\-Z\-Chars@{expand\-Z\-Chars}}
+\index{expand\-Z\-Chars@{expand\-Z\-Chars}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{expand\-Z\-Chars}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<${\bf zchar}$>$ expand\-Z\-Chars (
+\begin{DoxyParamCaption}
+\item[{{\bf zword} $\ast$}]{z\-Char\-String}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_ad4b791626c4794822cee124168f0b61c}
+\hypertarget{ztext_8cpp_a8afdfd2826a1a8664f53bdb36d9a0a03}{\index{ztext.\-cpp@{ztext.\-cpp}!get\-Alphabet\-Index@{get\-Alphabet\-Index}}
+\index{get\-Alphabet\-Index@{get\-Alphabet\-Index}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{get\-Alphabet\-Index}]{\setlength{\rightskip}{0pt plus 5cm}int get\-Alphabet\-Index (
+\begin{DoxyParamCaption}
+\item[{{\bf zchar}}]{zscii, }
+\item[{int}]{alphabet}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_a8afdfd2826a1a8664f53bdb36d9a0a03}
+\hypertarget{ztext_8cpp_afe34f1fec246155628c0d2674e1d9ba7}{\index{ztext.\-cpp@{ztext.\-cpp}!get\-Char\-Index@{get\-Char\-Index}}
+\index{get\-Char\-Index@{get\-Char\-Index}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{get\-Char\-Index}]{\setlength{\rightskip}{0pt plus 5cm}int get\-Char\-Index (
+\begin{DoxyParamCaption}
+\item[{{\bf zchar} $\ast$}]{str, }
+\item[{{\bf zchar}}]{find}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_afe34f1fec246155628c0d2674e1d9ba7}
+\hypertarget{ztext_8cpp_afd2271e6c8397c30c0bf8fd32302d38f}{\index{ztext.\-cpp@{ztext.\-cpp}!get\-Z\-Char\-Alpha\-Shift\-Character@{get\-Z\-Char\-Alpha\-Shift\-Character}}
+\index{get\-Z\-Char\-Alpha\-Shift\-Character@{get\-Z\-Char\-Alpha\-Shift\-Character}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{get\-Z\-Char\-Alpha\-Shift\-Character}]{\setlength{\rightskip}{0pt plus 5cm}{\bf zchar} get\-Z\-Char\-Alpha\-Shift\-Character (
+\begin{DoxyParamCaption}
+\item[{int}]{current\-Alpha, }
+\item[{int}]{desired\-Alpha, }
+\item[{bool}]{shift\-Lock = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_afd2271e6c8397c30c0bf8fd32302d38f}
+returns the correct z-\/char alphabet shift character for switching from one alphabet to another 
+\begin{DoxyParams}{Parameters}
+{\em current\-Alpha} & index (0, 1, 2) of the current alphabet \\
+\hline
+{\em desired\-Alpha} & index (0, 1, 2) of the desired alphabed \\
+\hline
+{\em shift\-Lock} & true if you want a shift-\/lock character returned (only z-\/machine versions 1 \& 2) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+shift character 
+\end{DoxyReturn}
+\hypertarget{ztext_8cpp_a2ad87f3dae373d95104357af8f2a6f6b}{\index{ztext.\-cpp@{ztext.\-cpp}!lookup\-Abbreviation\-Addr@{lookup\-Abbreviation\-Addr}}
+\index{lookup\-Abbreviation\-Addr@{lookup\-Abbreviation\-Addr}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{lookup\-Abbreviation\-Addr}]{\setlength{\rightskip}{0pt plus 5cm}{\bf zword} lookup\-Abbreviation\-Addr (
+\begin{DoxyParamCaption}
+\item[{{\bf Z\-Memory} \&}]{z\-Mem, }
+\item[{{\bf zbyte}}]{z\-Control\-Char, }
+\item[{{\bf zbyte}}]{next\-Char}
+\end{DoxyParamCaption}
+) throw  {\bf Z\-Memory\-Read\-Out\-Of\-Bounds}) }}\label{ztext_8cpp_a2ad87f3dae373d95104357af8f2a6f6b}
+\hypertarget{ztext_8cpp_af3059bedecd6d955539ab16db263af24}{\index{ztext.\-cpp@{ztext.\-cpp}!pack\-Z\-Chars@{pack\-Z\-Chars}}
+\index{pack\-Z\-Chars@{pack\-Z\-Chars}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{pack\-Z\-Chars}]{\setlength{\rightskip}{0pt plus 5cm}{\bf zword} pack\-Z\-Chars (
+\begin{DoxyParamCaption}
+\item[{{\bf zchar} $\ast$}]{zchars}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_af3059bedecd6d955539ab16db263af24}
+\hypertarget{ztext_8cpp_a36cfc751cc2be464c30650ca2e56300d}{\index{ztext.\-cpp@{ztext.\-cpp}!z\-Char\-Stringto\-Z\-S\-C\-I\-I@{z\-Char\-Stringto\-Z\-S\-C\-I\-I}}
+\index{z\-Char\-Stringto\-Z\-S\-C\-I\-I@{z\-Char\-Stringto\-Z\-S\-C\-I\-I}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{z\-Char\-Stringto\-Z\-S\-C\-I\-I}]{\setlength{\rightskip}{0pt plus 5cm}{\bf zchar}$\ast$ z\-Char\-Stringto\-Z\-S\-C\-I\-I (
+\begin{DoxyParamCaption}
+\item[{{\bf zword} $\ast$}]{z\-Char\-String, }
+\item[{{\bf Z\-Memory} \&}]{z\-Mem}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_a36cfc751cc2be464c30650ca2e56300d}
+converts a string of z-\/characters to Z\-S\-C\-I\-I return value M\-U\-S\-T be freed by the C\-A\-L\-L\-E\-R 
+\begin{DoxyParams}{Parameters}
+{\em z\-Char\-String} & pointer to string of zwords \\
+\hline
+{\em z\-Mem} & reference to \hyperlink{class_z_memory}{Z\-Memory} object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a string of Z\-S\-C\-I\-I zchars 
+\end{DoxyReturn}
+\hypertarget{ztext_8cpp_a8e1cd5708fd8fd1197378949a5d6861d}{\index{ztext.\-cpp@{ztext.\-cpp}!z\-Char\-Stringto\-Z\-S\-C\-I\-I\-Helper@{z\-Char\-Stringto\-Z\-S\-C\-I\-I\-Helper}}
+\index{z\-Char\-Stringto\-Z\-S\-C\-I\-I\-Helper@{z\-Char\-Stringto\-Z\-S\-C\-I\-I\-Helper}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{z\-Char\-Stringto\-Z\-S\-C\-I\-I\-Helper}]{\setlength{\rightskip}{0pt plus 5cm}{\bf zchar}$\ast$ z\-Char\-Stringto\-Z\-S\-C\-I\-I\-Helper (
+\begin{DoxyParamCaption}
+\item[{{\bf zchar} $\ast$}]{z\-Char\-String, }
+\item[{{\bf ulong}}]{z\-String\-Length, }
+\item[{{\bf Z\-Memory} \&}]{z\-Mem, }
+\item[{bool}]{reset\-Shifts = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_a8e1cd5708fd8fd1197378949a5d6861d}
+helper function for z\-Char\-Stringto\-Z\-S\-C\-I\-I converts a string of z-\/characters to Z\-S\-C\-I\-I return value M\-U\-S\-T be freed by the C\-A\-L\-L\-E\-R 
+\begin{DoxyParams}{Parameters}
+{\em z\-Char\-String} & pointer to string of expanded zwords (zchars) \\
+\hline
+{\em z\-String\-Length} & length in zchars of zchar\-String \\
+\hline
+{\em z\-Mem} & reference to \hyperlink{class_z_memory}{Z\-Memory} object \\
+\hline
+{\em reset\-Shifts} & if this is true, function resets all alphabet shifts and returns without doing anything \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a string of Z\-S\-C\-I\-I zchars 
+\end{DoxyReturn}
+\hypertarget{ztext_8cpp_a47f99f33641c11c40bcaff032ab2bb07}{\index{ztext.\-cpp@{ztext.\-cpp}!z\-Char\-Str\-Len@{z\-Char\-Str\-Len}}
+\index{z\-Char\-Str\-Len@{z\-Char\-Str\-Len}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{z\-Char\-Str\-Len}]{\setlength{\rightskip}{0pt plus 5cm}int z\-Char\-Str\-Len (
+\begin{DoxyParamCaption}
+\item[{{\bf zword} $\ast$}]{str}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_a47f99f33641c11c40bcaff032ab2bb07}
+returns the length of a z-\/character string in zwords 
+\begin{DoxyParams}{Parameters}
+{\em str} & pointer to string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of zwords 
+\end{DoxyReturn}
+\hypertarget{ztext_8cpp_a4757d14f8d543a6a2ead5123f1e697db}{\index{ztext.\-cpp@{ztext.\-cpp}!z\-Charto\-Dictionary\-Z\-Char\-String@{z\-Charto\-Dictionary\-Z\-Char\-String}}
+\index{z\-Charto\-Dictionary\-Z\-Char\-String@{z\-Charto\-Dictionary\-Z\-Char\-String}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{z\-Charto\-Dictionary\-Z\-Char\-String}]{\setlength{\rightskip}{0pt plus 5cm}{\bf zword}$\ast$ z\-Charto\-Dictionary\-Z\-Char\-String (
+\begin{DoxyParamCaption}
+\item[{{\bf zword} $\ast$}]{zstring}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_a4757d14f8d543a6a2ead5123f1e697db}
+converts an ordinary z-\/character string to a dictionary encoded z-\/character string return value M\-U\-S\-T be freed by the C\-A\-L\-L\-E\-R 
+\begin{DoxyParams}{Parameters}
+{\em zstring} & pointer to string of zwords \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pointer to string of zwords of encoded string 
+\end{DoxyReturn}
+\hypertarget{ztext_8cpp_a794dfc92150aea346ae011e65b1e3110}{\index{ztext.\-cpp@{ztext.\-cpp}!Z\-S\-C\-I\-I\-Get\-Resident\-Alphabet@{Z\-S\-C\-I\-I\-Get\-Resident\-Alphabet}}
+\index{Z\-S\-C\-I\-I\-Get\-Resident\-Alphabet@{Z\-S\-C\-I\-I\-Get\-Resident\-Alphabet}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{Z\-S\-C\-I\-I\-Get\-Resident\-Alphabet}]{\setlength{\rightskip}{0pt plus 5cm}int Z\-S\-C\-I\-I\-Get\-Resident\-Alphabet (
+\begin{DoxyParamCaption}
+\item[{{\bf zchar}}]{zch}
+\end{DoxyParamCaption}
+) throw  {\bf Illegal\-Z\-Char\-Exception}) }}\label{ztext_8cpp_a794dfc92150aea346ae011e65b1e3110}
+returns the resident alphabet (0, 1, 2) of a certain Z\-S\-C\-I\-I character 
+\begin{DoxyParams}{Parameters}
+{\em zch} & Z\-S\-C\-I\-I character in question \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_illegal_z_char_exception}{Illegal\-Z\-Char\-Exception}} & if input character is invalid \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+the resident alphabet, an integer of value 0, 1, or 2 
+\end{DoxyReturn}
+\hypertarget{ztext_8cpp_a1099a7a939f2758529062bceff394794}{\index{ztext.\-cpp@{ztext.\-cpp}!Z\-S\-C\-I\-I\-Str\-Cat@{Z\-S\-C\-I\-I\-Str\-Cat}}
+\index{Z\-S\-C\-I\-I\-Str\-Cat@{Z\-S\-C\-I\-I\-Str\-Cat}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{Z\-S\-C\-I\-I\-Str\-Cat}]{\setlength{\rightskip}{0pt plus 5cm}void Z\-S\-C\-I\-I\-Str\-Cat (
+\begin{DoxyParamCaption}
+\item[{{\bf zchar} $\ast$}]{src, }
+\item[{{\bf zchar} $\ast$}]{cat}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_a1099a7a939f2758529062bceff394794}
+concatacenates two Z\-S\-C\-I\-I strings. synonymous to cstdlib's strcat() 
+\begin{DoxyParams}{Parameters}
+{\em src} & source string (string which will be appended to) \\
+\hline
+{\em cat} & second string to append to first string \\
+\hline
+\end{DoxyParams}
+\hypertarget{ztext_8cpp_adbae7420748e6fc16b889ca69fe37d3e}{\index{ztext.\-cpp@{ztext.\-cpp}!Z\-S\-C\-I\-I\-Str\-Len@{Z\-S\-C\-I\-I\-Str\-Len}}
+\index{Z\-S\-C\-I\-I\-Str\-Len@{Z\-S\-C\-I\-I\-Str\-Len}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{Z\-S\-C\-I\-I\-Str\-Len}]{\setlength{\rightskip}{0pt plus 5cm}int Z\-S\-C\-I\-I\-Str\-Len (
+\begin{DoxyParamCaption}
+\item[{{\bf zchar} $\ast$}]{str}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_adbae7420748e6fc16b889ca69fe37d3e}
+returns the length of a Z\-S\-C\-I\-I character string in zbytes 
+\begin{DoxyParams}{Parameters}
+{\em str} & pointer to string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of zbytes 
+\end{DoxyReturn}
+\hypertarget{ztext_8cpp_a3b3a7ea20e5a2af5deedb50744630613}{\index{ztext.\-cpp@{ztext.\-cpp}!Z\-S\-C\-I\-Ito\-Z\-Char@{Z\-S\-C\-I\-Ito\-Z\-Char}}
+\index{Z\-S\-C\-I\-Ito\-Z\-Char@{Z\-S\-C\-I\-Ito\-Z\-Char}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{Z\-S\-C\-I\-Ito\-Z\-Char}]{\setlength{\rightskip}{0pt plus 5cm}{\bf zword} Z\-S\-C\-I\-Ito\-Z\-Char (
+\begin{DoxyParamCaption}
+\item[{{\bf zchar} $\ast$}]{zscii, }
+\item[{int \&}]{bytes\-Converted, }
+\item[{bool}]{reset\-Shifts = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_a3b3a7ea20e5a2af5deedb50744630613}
+converts a 3 or less Z\-S\-C\-I\-I characters to a single z-\/character return value M\-U\-S\-T be freed by the C\-A\-L\-L\-E\-R 
+\begin{DoxyParams}{Parameters}
+{\em zscii} & pointer to string of Z\-S\-C\-I\-I chars \\
+\hline
+{\em bytes\-Converted} & reference to int to hold number of bytes converted \\
+\hline
+{\em reset\-Shifts} & if this is true, function resets all alphabet shifts and returns without doing anything \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a single zword, the encoded result of 3 or less Z\-S\-C\-I\-I chars 
+\end{DoxyReturn}
+\hypertarget{ztext_8cpp_aadd51e863ad85545e4b3b5d723bc272c}{\index{ztext.\-cpp@{ztext.\-cpp}!Z\-S\-C\-I\-Ito\-Z\-Char\-String@{Z\-S\-C\-I\-Ito\-Z\-Char\-String}}
+\index{Z\-S\-C\-I\-Ito\-Z\-Char\-String@{Z\-S\-C\-I\-Ito\-Z\-Char\-String}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{Z\-S\-C\-I\-Ito\-Z\-Char\-String}]{\setlength{\rightskip}{0pt plus 5cm}{\bf zword}$\ast$ Z\-S\-C\-I\-Ito\-Z\-Char\-String (
+\begin{DoxyParamCaption}
+\item[{{\bf zchar} $\ast$}]{zscii}
+\end{DoxyParamCaption}
+)}}\label{ztext_8cpp_aadd51e863ad85545e4b3b5d723bc272c}
+converts a Z\-S\-C\-I\-I string to a string of z-\/characters (zwords) return value M\-U\-S\-T be freed by the C\-A\-L\-L\-E\-R 
+\begin{DoxyParams}{Parameters}
+{\em zscii} & pointer to string of Z\-S\-C\-I\-I chars \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string of z-\/characters (zwords) 
+\end{DoxyReturn}
+
+
+\subsection{Variable Documentation}
+\hypertarget{ztext_8cpp_a9fa363a35d298d38fa82f43100833128}{\index{ztext.\-cpp@{ztext.\-cpp}!default\-Alpha@{default\-Alpha}}
+\index{default\-Alpha@{default\-Alpha}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{default\-Alpha}]{\setlength{\rightskip}{0pt plus 5cm}int default\-Alpha ={\bf A\-L\-P\-H\-A\-B\-E\-T\-\_\-0}}}\label{ztext_8cpp_a9fa363a35d298d38fa82f43100833128}
+\hypertarget{ztext_8cpp_aced9e1648b875c70bca76c898eedf8c1}{\index{ztext.\-cpp@{ztext.\-cpp}!z\-Alpha\-Table0@{z\-Alpha\-Table0}}
+\index{z\-Alpha\-Table0@{z\-Alpha\-Table0}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{z\-Alpha\-Table0}]{\setlength{\rightskip}{0pt plus 5cm}char z\-Alpha\-Table0\mbox{[}$\,$\mbox{]} =\{\char`\"{}abcdefghijklmnopqrstuvwxyz\char`\"{}\}}}\label{ztext_8cpp_aced9e1648b875c70bca76c898eedf8c1}
+\hypertarget{ztext_8cpp_aea0af5cd150ae7175c20d2bf1ba9fdb0}{\index{ztext.\-cpp@{ztext.\-cpp}!z\-Alpha\-Table1@{z\-Alpha\-Table1}}
+\index{z\-Alpha\-Table1@{z\-Alpha\-Table1}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{z\-Alpha\-Table1}]{\setlength{\rightskip}{0pt plus 5cm}char z\-Alpha\-Table1\mbox{[}$\,$\mbox{]} =\{\char`\"{}A\-B\-C\-D\-E\-F\-G\-H\-I\-J\-K\-L\-M\-N\-O\-P\-Q\-R\-S\-T\-U\-V\-W\-X\-Y\-Z\char`\"{}\}}}\label{ztext_8cpp_aea0af5cd150ae7175c20d2bf1ba9fdb0}
+\hypertarget{ztext_8cpp_a41a326c6fca16771bf56d9d6fa046def}{\index{ztext.\-cpp@{ztext.\-cpp}!z\-Alpha\-Table2@{z\-Alpha\-Table2}}
+\index{z\-Alpha\-Table2@{z\-Alpha\-Table2}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{z\-Alpha\-Table2}]{\setlength{\rightskip}{0pt plus 5cm}char z\-Alpha\-Table2\mbox{[}$\,$\mbox{]} =\{\char`\"{} \textbackslash{}n0123456789.,!?\-\_\-\#'\textbackslash{}\char`\"{}/\textbackslash{}s\textbackslash{}-\/\-:()\char`\"{}\}}}\label{ztext_8cpp_a41a326c6fca16771bf56d9d6fa046def}
+\hypertarget{ztext_8cpp_a41df104fcf203bd399b170c36a3eca7d}{\index{ztext.\-cpp@{ztext.\-cpp}!z\-Version@{z\-Version}}
+\index{z\-Version@{z\-Version}!ztext.cpp@{ztext.\-cpp}}
+\subsubsection[{z\-Version}]{\setlength{\rightskip}{0pt plus 5cm}int z\-Version}}\label{ztext_8cpp_a41df104fcf203bd399b170c36a3eca7d}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="1">
+    <paths>
+        <dir name="H:/code/c++/zebra-zmachine-interpreter/zdictionary"/>
+        <dir name="H:/code/c++/zebra-zmachine-interpreter/zerror"/>
+        <dir name="H:/code/c++/zebra-zmachine-interpreter/zglobal"/>
+        <dir name="H:/code/c++/zebra-zmachine-interpreter/zmemory"/>
+        <dir name="H:/code/c++/zebra-zmachine-interpreter/zstack"/>
+        <dir name="H:/code/c++/zebra-zmachine-interpreter/ztext"/>
+    </paths>
+</project>

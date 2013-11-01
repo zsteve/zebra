@@ -34,11 +34,5 @@
 
 ./bot
 
-# CPPCheck
-
-./cppcheck
-
-
-
 # Z Story files
 *.z3
