@@ -188,6 +188,6 @@ ZDictionaryParseTable ZDictionary::performLexicalAnalysis(zchar* zstring)
                 }
             }
         }
-        return parseTable;
     }
+    return parseTable;
 }

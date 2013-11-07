@@ -55,7 +55,7 @@ int main()
     zObj.setObjectChild(221, 220);
     cout << (int)zObj.getObjectChild(221) << " & " << (int)zObj.getObjectParent(220) << endl;
     cout << (int)zObj.getObjectPropertyHeaderAddr(1) << endl;
-    cout << zCharStringtoZSCII(zObj.getObjectName(250)) << endl;
+    cout << zCharStringtoZSCII(zObj.getObjectName(250), zMem) << endl;
     cout << (int)(zObj.getPropertyListElem(zObj.getObjectPropertyListAddr(250), 0)).propertyDataSize << endl;
     for(int i=0; i<(int)zObj.getPropertyListElem(zObj.getObjectPropertyListAddr(250), 0).propertyDataSize; i++)
         printf("%X, ", (int)zMem.readZByte((zObj.getPropertyListElem(zObj.getObjectPropertyListAddr(250), 0)).propertyDataAddr+i));

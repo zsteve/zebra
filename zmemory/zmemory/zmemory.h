@@ -54,14 +54,14 @@ class ZMemory{
 
     // memory read functions
 
-    zword readZWord(zword addr) throw (ZMemoryReadOutOfBounds);
+    zword readZWord(ulong addr) throw (ZMemoryReadOutOfBounds);
     zword readZWordPackedAddr(zword addr) throw (ZMemoryReadOutOfBounds);
-    zbyte readZByte(zword addr) throw (ZMemoryReadOutOfBounds);
+    zbyte readZByte(ulong addr) throw (ZMemoryReadOutOfBounds);
     zbyte readZBytePackedAddr(zword addr) throw (ZMemoryReadOutOfBounds);
 
-    void storeZWord(zword addr, zword data) throw (ZMemoryWriteOutOfBounds);
+    void storeZWord(ulong addr, zword data) throw (ZMemoryWriteOutOfBounds);
     void storeZWordPackedAddr(zword addr, zword data) throw (ZMemoryWriteOutOfBounds);
-    void storeZByte(zword addr, zbyte data) throw (ZMemoryWriteOutOfBounds);
+    void storeZByte(ulong addr, zbyte data) throw (ZMemoryWriteOutOfBounds);
     void storeZBytePackedAddr(zword addr, zbyte data) throw (ZMemoryWriteOutOfBounds);
 
 

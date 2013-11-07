@@ -76,10 +76,12 @@ bool ZMemory::addrIsWithinBounds(ulong addr, int whichMemory)
     }
 }
 
-zword ZMemory::readZWord(zword addr) throw (ZMemoryReadOutOfBounds)
+zword ZMemory::readZWord(ulong addr) throw (ZMemoryReadOutOfBounds)
 {
     // Reads an endianized zword from addr
-    if((addrIsWithinBounds(addr, ZMEMORY_DYNAMIC)) || addrIsWithinBounds(addr, ZMEMORY_STATIC))
+    if((addrIsWithinBounds(addr, ZMEMORY_DYNAMIC))
+        || addrIsWithinBounds(addr, ZMEMORY_STATIC)
+        || addrIsWithinBounds(addr, ZMEMORY_HIGH))
     {
         return (zword)(endianize(*((zword*)(zMemPtr+addr))));
     }else{
@@ -97,16 +99,20 @@ zword ZMemory::readZWordPackedAddr(zword addr) throw (ZMemoryReadOutOfBounds)
     }else{
         throw ZMemoryReadOutOfBounds(); // unsupported version!
     }
-    if(addrIsWithinBounds(zLongAddr, ZMEMORY_DYNAMIC) || addrIsWithinBounds(zLongAddr, ZMEMORY_STATIC)){
+    if((addrIsWithinBounds(addr, ZMEMORY_DYNAMIC))
+        || addrIsWithinBounds(addr, ZMEMORY_STATIC)
+        || addrIsWithinBounds(addr, ZMEMORY_HIGH)){
         return (zword)(endianize(*((zword*)(zMemPtr+zLongAddr))));
     }else{
         throw ZMemoryReadOutOfBounds();
     }
 }
 
-zbyte ZMemory::readZByte(zword addr) throw (ZMemoryReadOutOfBounds)
+zbyte ZMemory::readZByte(ulong addr) throw (ZMemoryReadOutOfBounds)
 {
-    if((addrIsWithinBounds(addr, ZMEMORY_DYNAMIC)) || addrIsWithinBounds(addr, ZMEMORY_STATIC))
+    if((addrIsWithinBounds(addr, ZMEMORY_DYNAMIC))
+        || addrIsWithinBounds(addr, ZMEMORY_STATIC)
+        || addrIsWithinBounds(addr, ZMEMORY_HIGH))
     {
         return (zbyte)*(zMemPtr+addr);
     }else{
@@ -124,14 +130,16 @@ zbyte ZMemory::readZBytePackedAddr(zword addr) throw (ZMemoryReadOutOfBounds)
     }else{
         throw ZMemoryReadOutOfBounds(); // unsupported version!
     }
-    if(addrIsWithinBounds(zLongAddr, ZMEMORY_DYNAMIC) || addrIsWithinBounds(zLongAddr, ZMEMORY_STATIC)){
+    if((addrIsWithinBounds(addr, ZMEMORY_DYNAMIC))
+        || addrIsWithinBounds(addr, ZMEMORY_STATIC)
+        || addrIsWithinBounds(addr, ZMEMORY_HIGH)){
         return (zbyte)*(zMemPtr+addr);
     }else{
         throw ZMemoryReadOutOfBounds();
     }
 }
 
-void ZMemory::storeZWord(zword addr, zword data) throw (ZMemoryWriteOutOfBounds)
+void ZMemory::storeZWord(ulong addr, zword data) throw (ZMemoryWriteOutOfBounds)
 {
     if(addrIsWithinBounds(addr, ZMEMORY_DYNAMIC)){
         *((zword*)(zMemPtr+addr))=endianize(data);
@@ -159,7 +167,7 @@ void ZMemory::storeZWordPackedAddr(zword addr, zword data) throw (ZMemoryWriteOu
     }
 }
 
-void ZMemory::storeZByte(zword addr, zbyte data) throw (ZMemoryWriteOutOfBounds)
+void ZMemory::storeZByte(ulong addr, zbyte data) throw (ZMemoryWriteOutOfBounds)
 {
     if(addrIsWithinBounds(addr, ZMEMORY_DYNAMIC)){
         *(zMemPtr+addr)=data;
