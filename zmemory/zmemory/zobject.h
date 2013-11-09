@@ -5,22 +5,35 @@
 #include "../../zerror/zerror/zerror.h"
 #include "zmemory.h"
 
+#define THROW_ILLEGALOBJECTINDEX(line, function, file)\
+    throw IllegalObjectIndex((const int)line, (const char*)function, (const char*)file);
+
+#define THROW_ILLEGALPROPERTYINDEX(line, function, file)\
+    throw IllegalPropertyIndex((const int)line, (const char*)function, (const char*)file);
+
 extern int zVersion;
 extern ZError zErrorLogger;
 
-class IllegalObjectIndex : std::exception{
+class IllegalObjectIndex : ZException{
     public:
     IllegalObjectIndex()
     {
         zErrorLogger.addError("Error : IllegalObjectIndex thrown");
     }
+    IllegalObjectIndex(const int line, const char* function, const char* file){
+        zErrorLogger.addError(("Error : IllegalObjectIndex thrown at : "+compileErrorMsg(line, function, file)).c_str());
+    }
 };
 
-class IllegalPropertyIndex : std::exception{
+class IllegalPropertyIndex : ZException{
     public:
     IllegalPropertyIndex()
     {
         zErrorLogger.addError("Error : IllegalPropertyIndex thrown");
+
+    };
+    IllegalPropertyIndex(const int line, const char* function, const char* file){
+        zErrorLogger.addError(("Error : IllegalPropertyIndex thrown at : "+compileErrorMsg(line, function, file)).c_str());
     }
 };
 

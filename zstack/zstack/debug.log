@@ -1,0 +1,2 @@
+Error : StackEmptyException thrownline : 50 In function : pull In file : /home/zsteve/Code/zebra-zmachine-interpreter/zstack/zstack/zstack.cpp
+Error : StackEmptyException thrown : line : 50 In function : pull In file : /home/zsteve/Code/zebra-zmachine-interpreter/zstack/zstack/zstack.cpp

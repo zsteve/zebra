@@ -50,11 +50,14 @@ int main()
         string inString;
         getline(cin, inString);
         if(inString=="quit") break;
-        ZSCIIDictionaryToken** tkns=zDict.tokenizeZSCIIString((zchar*)inString.c_str());
+        vector<ZSCIIDictionaryToken> tkns=zDict.tokenizeZSCIIString((zchar*)inString.c_str());
         cout << endl << "Tokens:" << endl << endl;
-        for(int i=0; tkns[i]!=NULL; i++)
-            cout << "[" << tkns[i]->wordData << "]" << tkns[i]->textBufferPos << endl;
+        for(int i=0; i<tkns.size(); i++)
+            cout << "[" << tkns[i].wordData << "]" << tkns[i].textBufferPos << endl;
         ZDictionaryParseTable tbl=zDict.performLexicalAnalysis((zchar*)inString.c_str());
+        zMem.storeZByte(0, 59);
+        tbl.writeParseBuffer(0, zMem);
+        cout << "Value : " <<  (int)zMem.readZByte(1) << endl;
         for(int i=0; i<tbl.entryVector.size(); i++)
         {
             cout << (int)tbl.entryVector[i].dictWordAddr << " "\

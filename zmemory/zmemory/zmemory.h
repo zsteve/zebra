@@ -9,20 +9,32 @@
 #define ZMEMORY_STATIC 1
 #define ZMEMORY_HIGH 2
 
+#define THROW_ZMEMORYWRITEOUTOFBOUNDS(line, function, file)\
+    throw ZMemoryWriteOutOfBounds((const int)line, (const char*)function, (const char*)file);
+
+#define THROW_ZMEMORYREADOUTOFBOUNDS(line, function, file)\
+    throw ZMemoryReadOutOfBounds((const int)line, (const char*)function, (const char*)file);
+
 extern int zVersion;
 extern ZError zErrorLogger;
 
-class ZMemoryWriteOutOfBounds : std::exception{
+class ZMemoryWriteOutOfBounds : ZException{
     public:
     ZMemoryWriteOutOfBounds(){
         zErrorLogger.addError("Error : ZMemoryWriteOutOfBounds thrown");
     }
+    ZMemoryWriteOutOfBounds(const int line, const char* function, const char* file){
+        zErrorLogger.addError(("Error : ZMemoryWriteOutOfBounds thrown at : "+compileErrorMsg(line, function, file)).c_str());
+    }
 };
 
-class ZMemoryReadOutOfBounds : std::exception{
+class ZMemoryReadOutOfBounds : ZException{
     public:
     ZMemoryReadOutOfBounds(){
         zErrorLogger.addError("Error : ZMemoryReadOutOfBounds thrown");
+    }
+    ZMemoryReadOutOfBounds(const int line, const char* function, const char* file){
+        zErrorLogger.addError(("Error : ZMemoryReadOutOfBounds thrown at : "+compileErrorMsg(line, function, file)).c_str());
     }
 };
 

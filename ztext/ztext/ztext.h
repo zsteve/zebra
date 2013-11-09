@@ -10,19 +10,32 @@
 #include "../../zmemory/zmemory/zmemory.h"
 #include "../../zerror/zerror/zerror.h"
 
+#define THROW_ILLEGALZCHARSTRING(line, function, file)\
+    throw IllegalZCharString((const int)line, (const char*)function, (const char*)file);
+
+#define THROW_ILLEGALZCHAREXCEPTION(line, function, file)\
+    throw IllegalZCharException((const int)line, (const char*)function, (const char*)file);
+
+
 extern ZError zErrorLogger;
 
-class IllegalZCharString : std::exception{
+class IllegalZCharString : ZException{
     public:
     IllegalZCharString(){
         zErrorLogger.addError("Error : IllegalZCharString thrown");
     }
+    IllegalZCharString(const int line, const char* function, const char* file){
+        zErrorLogger.addError(("Error : IllegalZCharString thrown"+compileErrorMsg(line, function, file)).c_str());
+    }
 };
 
-class IllegalZCharException : std::exception{
+class IllegalZCharException : ZException{
     public:
     IllegalZCharException(){
         zErrorLogger.addError("Error : IllegalZCharException thrown");
+    }
+    IllegalZCharException(const int line, const char* function, const char* file){
+        zErrorLogger.addError(("Error : IllegalZCharException thrown"+compileErrorMsg(line, function, file)).c_str());
     }
 };
 
@@ -75,9 +88,12 @@ zchar getZCharAlphaShiftCharacter(int currentAlpha, int desiredAlpha, bool shift
  * return value MUST be freed by the CALLER
  * @param zCharString pointer to string of zwords
  * @param zMem reference to ZMemory object
+ * @param endianizef true/false for endianized string. if true, input string is big-endian.
+ * (big endian meaning, read directly from the story file). if it were read using ZMemory::readZWord(),
+ * the resulting zword would be little endian (x86), therefore endianizef should be false
  * @return a string of ZSCII zchars
  */
-zchar* zCharStringtoZSCII(zword* zCharString, ZMemory& zMem);
+zchar* zCharStringtoZSCII(zword* zCharString, ZMemory& zMem, bool endianizef=true);
 
 /**
  * helper function for zCharStringtoZSCII
@@ -113,10 +129,12 @@ zword* ZSCIItoZCharString(zchar* zscii);
  * dictionary encoded z-character string
  * return value MUST be freed by the CALLER
  * @param zstring pointer to string of zwords
+ * @param endianizef if true, then the input zword string is big-endian
  * @return pointer to string of zwords of encoded string
  */
-zword* zChartoDictionaryZCharString(zword* zstring);
+zword* zChartoDictionaryZCharString(zword* zstring, bool endianizef=true);
 
-zword* dictionaryZCharStringtoZCharString(zword* zstring);
+zword* dictionaryZCharStringtoZCharString(zword* zstring, bool endianizef=true);
+
 
 #endif

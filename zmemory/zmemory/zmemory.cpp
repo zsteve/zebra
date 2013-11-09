@@ -85,7 +85,7 @@ zword ZMemory::readZWord(ulong addr) throw (ZMemoryReadOutOfBounds)
     {
         return (zword)(endianize(*((zword*)(zMemPtr+addr))));
     }else{
-        throw ZMemoryReadOutOfBounds();
+        THROW_ZMEMORYREADOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__);
     }
 }
 
@@ -97,14 +97,14 @@ zword ZMemory::readZWordPackedAddr(zword addr) throw (ZMemoryReadOutOfBounds)
     }else if(zVersion==4 || zVersion==5){
         zLongAddr=(addr<<2);
     }else{
-        throw ZMemoryReadOutOfBounds(); // unsupported version!
+        THROW_ZMEMORYREADOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__); // unsupported version!
     }
     if((addrIsWithinBounds(addr, ZMEMORY_DYNAMIC))
         || addrIsWithinBounds(addr, ZMEMORY_STATIC)
         || addrIsWithinBounds(addr, ZMEMORY_HIGH)){
         return (zword)(endianize(*((zword*)(zMemPtr+zLongAddr))));
     }else{
-        throw ZMemoryReadOutOfBounds();
+        THROW_ZMEMORYREADOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__);
     }
 }
 
@@ -116,7 +116,7 @@ zbyte ZMemory::readZByte(ulong addr) throw (ZMemoryReadOutOfBounds)
     {
         return (zbyte)*(zMemPtr+addr);
     }else{
-        throw ZMemoryReadOutOfBounds();
+        THROW_ZMEMORYREADOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__);
     }
 }
 
@@ -128,14 +128,14 @@ zbyte ZMemory::readZBytePackedAddr(zword addr) throw (ZMemoryReadOutOfBounds)
     }else if(zVersion==4 || zVersion==5){
         zLongAddr=(addr<<2);
     }else{
-        throw ZMemoryReadOutOfBounds(); // unsupported version!
+        THROW_ZMEMORYREADOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__); // unsupported version!
     }
     if((addrIsWithinBounds(addr, ZMEMORY_DYNAMIC))
         || addrIsWithinBounds(addr, ZMEMORY_STATIC)
         || addrIsWithinBounds(addr, ZMEMORY_HIGH)){
         return (zbyte)*(zMemPtr+addr);
     }else{
-        throw ZMemoryReadOutOfBounds();
+        THROW_ZMEMORYREADOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__);
     }
 }
 
@@ -145,7 +145,7 @@ void ZMemory::storeZWord(ulong addr, zword data) throw (ZMemoryWriteOutOfBounds)
         *((zword*)(zMemPtr+addr))=endianize(data);
         return;
     }else{
-        throw ZMemoryWriteOutOfBounds();
+        THROW_ZMEMORYWRITEOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__);
     }
 }
 
@@ -157,13 +157,13 @@ void ZMemory::storeZWordPackedAddr(zword addr, zword data) throw (ZMemoryWriteOu
     }else if(zVersion==4 || zVersion==5){
         zLongAddr=(addr<<2);
     }else{
-        throw ZMemoryReadOutOfBounds(); // unsupported version!
+        THROW_ZMEMORYREADOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__); // unsupported version!
     }
     if(addrIsWithinBounds(zLongAddr, ZMEMORY_DYNAMIC)){
         *((zword*)(zMemPtr+zLongAddr))=endianize(data);
         return;
     }else{
-        throw ZMemoryReadOutOfBounds();
+        THROW_ZMEMORYREADOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__);
     }
 }
 
@@ -173,7 +173,7 @@ void ZMemory::storeZByte(ulong addr, zbyte data) throw (ZMemoryWriteOutOfBounds)
         *(zMemPtr+addr)=data;
         return;
     }else{
-        throw ZMemoryWriteOutOfBounds();
+        THROW_ZMEMORYWRITEOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__);
     }
 }
 
@@ -185,12 +185,12 @@ void ZMemory::storeZBytePackedAddr(zword addr, zbyte data) throw (ZMemoryWriteOu
     }else if(zVersion==4 || zVersion==5){
         zLongAddr=(addr<<2);
     }else{
-        throw ZMemoryReadOutOfBounds(); // unsupported version!
+        THROW_ZMEMORYREADOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__); // unsupported version!
     }
     if(addrIsWithinBounds(zLongAddr, ZMEMORY_DYNAMIC)){
         *(zMemPtr+zLongAddr)=data;
         return;
     }else{
-        throw ZMemoryReadOutOfBounds();
+        THROW_ZMEMORYREADOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__);
     }
 }

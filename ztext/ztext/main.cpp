@@ -4,7 +4,6 @@
 #include "../../zmemory/zmemory/zobject.h"
 #include "../../zerror/zerror/zerror.h"
 #include "ztext.h"
-#include <conio.h>
 #include <vector>
 #include <exception>
 
@@ -46,6 +45,5 @@ int main()
     cout << (out=ZSCIItoZChar((zchar*)"Grue gets you ", a)) << endl;
 
     cout << zCharStringtoZSCII((zword*)(zMem.getRawDataPtr()+0x15140), zMem);
-    getch();
     return 0;
 }

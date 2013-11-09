@@ -1,9 +1,10 @@
 #include <iostream>
 #include "zstack.h"
-#include "conio.h"
-#include "..\..\zglobal\zglobal.h"
+#include "../../zglobal/zglobal.h"
 
 using namespace std;
+
+ZError zErrorLogger;
 
 int main()
 {
@@ -18,6 +19,6 @@ int main()
         z.push(i);
     for(int i=0; i<1024; i++)
         cout << z.pull() << endl;
-    _getch();
+    z.pull();
     return 0;
 }

@@ -3,6 +3,8 @@
 #include <string>
 #include <cctype>
 
+using namespace std;
+
 ZDictionary::ZDictionary()
 {
 	zMemObjPtr=NULL;
@@ -37,7 +39,7 @@ zword ZDictionary::getDictionaryEntryAddr(ulong index) throw (IllegalDictionaryI
 {
 	if(index>numOfEntries)
 	{
-		throw IllegalDictionaryIndex();
+		THROW_ILLEGALDICTIONARYINDEX(__LINE__, __FUNCTION__, __FILE__)
 	}
 	return (zDictionaryEntriesBase+(index*entryLength));
 }
@@ -85,13 +87,13 @@ bool ZDictionary::compareWord(zword word1[3], zword word2[3], bool trash)
     return true;
 }
 
-ZSCIIDictionaryToken** ZDictionary::tokenizeZSCIIString(zchar* zstring)
+vector<ZSCIIDictionaryToken> ZDictionary::tokenizeZSCIIString(zchar* zstring)
 {
 	// tokenizes a ZSCII string into an array of ZSCIIDictionaryTokens
 	// first we must process the string
 	int len=ZSCIIStrLen(zstring);
 	makeLowerCase(zstring);
-	std::vector<ZSCIIDictionaryToken*> tokenVector(0);	// vector for our tokens
+	std::vector<ZSCIIDictionaryToken> tokenVector(0);	// vector for our tokens
 	string tempToken("");
 	int wordBeginPos=0;
 	for(int i=0; ; i++)
@@ -99,7 +101,7 @@ ZSCIIDictionaryToken** ZDictionary::tokenizeZSCIIString(zchar* zstring)
 		if(zstring[i]==' '){	// space is always regarded as word separator
 													// and is always ignored (not taken as a word in itself)
 			if(!tempToken.empty()){	// if not empty
-				tokenVector.push_back(new ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
+				tokenVector.push_back(ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
 				tempToken="";
 				wordBeginPos=i+1;
 			}else{
@@ -110,13 +112,13 @@ ZSCIIDictionaryToken** ZDictionary::tokenizeZSCIIString(zchar* zstring)
 			// if it's a word separator, it is treated as a word by itself
 			if(!tempToken.empty())
 			{
-				tokenVector.push_back(new ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
+				tokenVector.push_back(ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
 				tempToken="";
 				wordBeginPos=i;
 			}
 			tempToken+=zstring[i];
 			tempToken+="";
-			tokenVector.push_back(new ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
+			tokenVector.push_back(ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
 			tempToken="";
 			wordBeginPos=i+1;
 		}else if(zstring[i]!=NULL){
@@ -125,19 +127,13 @@ ZSCIIDictionaryToken** ZDictionary::tokenizeZSCIIString(zchar* zstring)
 			// null terminator char.
 			if(!tempToken.empty())
 			{
-				tokenVector.push_back(new ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
+				tokenVector.push_back(ZSCIIDictionaryToken((zchar*)tempToken.c_str(), wordBeginPos));
 				tempToken="";
 			}
-			tokenVector.push_back(NULL); // NULL pointer terminates pointer array
 			break;
 		}
 	}
-	ZSCIIDictionaryToken** outArray=new ZSCIIDictionaryToken*[tokenVector.size()];
-	for(int i=0; i<tokenVector.size(); i++)
-	{
-		outArray[i]=tokenVector[i];
-	}
-	return outArray;
+	return tokenVector;
 }
 
 /** performs lexical analysis on a ZSCII string
@@ -146,14 +142,14 @@ ZSCIIDictionaryToken** ZDictionary::tokenizeZSCIIString(zchar* zstring)
 ZDictionaryParseTable ZDictionary::performLexicalAnalysis(zchar* zstring)
 {
     ZDictionaryParseTable parseTable;
-    ZSCIIDictionaryToken** tokens=tokenizeZSCIIString(zstring);
+    vector<ZSCIIDictionaryToken> tokens=tokenizeZSCIIString(zstring);
     std::vector<ZCharDictionaryToken> zCharTokenVector(0); /** vector for converted zchar tokens */
-    for(int i=0; tokens[i]!=NULL; i++)
+    for(int i=0; i<tokens.size(); i++)
     {
-        zword* zcharString=ZSCIItoZCharString((*tokens[i]).wordData); /** converted zchars */
+        zword* zcharString=ZSCIItoZCharString(tokens[i].wordData); /** converted zchars */
 
         zword* zcharDictionaryToken=zChartoDictionaryZCharString(zcharString);
-        zCharTokenVector.push_back(ZCharDictionaryToken(zcharDictionaryToken, (*tokens[i]).textBufferPos));
+        zCharTokenVector.push_back(ZCharDictionaryToken(zcharDictionaryToken, tokens[i].textBufferPos));
         delete[] zcharString;
         delete[] zcharDictionaryToken;
     }
@@ -172,21 +168,29 @@ ZDictionaryParseTable ZDictionary::performLexicalAnalysis(zchar* zstring)
             wordData[1]=zCharTokenVector[i].wordData[1];
             wordData[2]=zCharTokenVector[i].wordData[2];
         }
+        bool matchFound=false;
         for(int j=0; j<numOfEntries; j++)
         {
             if(zVersion<=3)
             {
                 if(compareWord(&wordData[0], ((zword*)(zMemObjPtr->getRawDataPtr()+getDictionaryEntryAddr(j))))==true){
                 	// if we found the right one, add entry to parse table
-               		parseTable.addEntry(getDictionaryEntryAddr(j), ZSCIIStrLen((*tokens[i]).wordData), ((*tokens[i]).textBufferPos));
+               		parseTable.addEntry(getDictionaryEntryAddr(j), ZSCIIStrLen(tokens[i].wordData), (tokens[i].textBufferPos));
+               		matchFound=true;
+               		break;
                 }
             }else if(zVersion>3){
                 if(compareWord(&wordData[0], ((zword*)(zMemObjPtr->getRawDataPtr()+getDictionaryEntryAddr(j))), false)){ /** false given just so we can differentiate
                                                                                                                                                                                                                                     between two types of compareWord() */
                     // if we found the right one, add entry to parse table
-                    parseTable.addEntry(getDictionaryEntryAddr(j), ZSCIIStrLen((*tokens[i]).wordData), ((*tokens[i]).textBufferPos));
+                    parseTable.addEntry(getDictionaryEntryAddr(j), ZSCIIStrLen(tokens[i].wordData), (tokens[i].textBufferPos));
+                    matchFound=true;
+                    break;
                 }
             }
+        }
+        if(!matchFound){
+            parseTable.addEntry(NULL, ZSCIIStrLen(tokens[i].wordData), tokens[i].textBufferPos);
         }
     }
     return parseTable;

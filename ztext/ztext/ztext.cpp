@@ -59,27 +59,30 @@ void ZSCIIStrCpy(zchar* src, zchar* dest)
 	}
 }
 
-std::vector<zchar> expandZChars(zword* zCharString)
+std::vector<zchar> expandZChars(zword* zCharString, bool endianizef)
 {
     std::vector<zchar> charVector(0);
     for(int i=0; ; i++)
     {
         zchar zUpper, zLower;
-        zUpper=(zchar)(endianize(zCharString[i])>>8);
-        zLower=(zchar)(endianize(zCharString[i])&255);
+        // if endianize == true, then we must endianize each zword.
+        // else, just treat zword as-is.
+        zUpper=(endianizef ? ((zchar)(endianize(zCharString[i])>>8)) : (zCharString[i]>>8));
+        zLower=(endianizef ? ((zchar)(endianize(zCharString[i])&255)) : (zCharString[i]&255));
         charVector.push_back((zUpper>>2) & 31);
         charVector.push_back(((zUpper&3)<<3)|((zLower>>5)));
         charVector.push_back((zLower&31));
-        if(endianize((zCharString[i]))>>15) break;
+        if(endianizef && endianize((zCharString[i]))>>15) break;
+        else if(!endianizef && zCharString[i]>>15) break;
     }
     return charVector;
 }
 
-zchar* zCharStringtoZSCII(zword* zCharString, ZMemory &zMem)
+zchar* zCharStringtoZSCII(zword* zCharString, ZMemory &zMem, bool endianizef)
 {
     // converts an entire z-char string
     // to a ZSCII string
-    std::vector<zchar> charVector=expandZChars(zCharString);
+    std::vector<zchar> charVector=expandZChars(zCharString, endianizef);
     zCharStringtoZSCIIHelper(NULL, NULL, zMem, true);       // call zCharStringtoZSCIIHelper() once with resetShifts
                                                             // true so we can reset everything
     zchar* charArray=new zchar[charVector.size()];
@@ -334,7 +337,7 @@ int ZSCIIGetResidentAlphabet(zchar zch) throw (IllegalZCharException)
             return ALPHABET_2;
         }
     }
-    throw IllegalZCharException();
+    THROW_ILLEGALZCHAREXCEPTION(__LINE__, __FUNCTION__, __FILE__);
     return 0;
 }
 
@@ -520,11 +523,11 @@ zword packZChars(zchar* zchars)
 	return (outWord);
 }
 
-zword* zChartoDictionaryZCharString(zword* zstring)
+zword* zChartoDictionaryZCharString(zword* zstring, bool endianizef)
 {
     // converts a normal zchar string to a dictionary zchar string
     // returns a zword* to either a 2 or 3 zword array.
-    std::vector<zchar> vector1=expandZChars(zstring);
+    std::vector<zchar> vector1=expandZChars(zstring, endianizef);
     std::vector<zchar> vector2(0);
     if(zVersion<=3){
         // for versions 1 to 3, dictionary word length is 4 bytes (6 zchars)
@@ -577,9 +580,9 @@ zword* zChartoDictionaryZCharString(zword* zstring)
     return NULL;
 }
 
-zword* dictionaryZCharStringtoZCharString(zword* zstring)
+zword* dictionaryZCharStringtoZCharString(zword* zstring, bool endianizef)
 {
-    std::vector<zchar> vector1=expandZChars(zstring);
+    std::vector<zchar> vector1=expandZChars(zstring, endianizef);
     if(zVersion<=3){
         zword* outData=new zword[2];
         outData[0]=endianize(packZChars(vector1.data()));

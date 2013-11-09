@@ -1,16 +1,41 @@
 #ifndef ZDICTIONARY_H
 #define ZDICTIONARY_H
 
+#include <cstdio>
+#include <string>
 #include <exception>
 #include "../../zglobal/zglobal.h"
 #include "../../zmemory/zmemory/zmemory.h"
 #include "../../ztext/ztext/ztext.h"
 
-class IllegalDictionaryIndex : std::exception{
+using namespace std;
+
+// Exception throwing macros
+#define THROW_ILLEGALDICTIONARYINDEX(line, function, file)\
+    throw IllegalDictionaryIndex((int)line, (char*)function, (char*)file);
+
+#define THROW_DICTIONARYERROR(line, function, file)\
+    throw DictionaryError((int)line, (char*)function, (char*)file);
+
+class IllegalDictionaryIndex : ZException{
 	public:
 	IllegalDictionaryIndex(){
 		zErrorLogger.addError("Error : IllegalDictionaryIndex thrown");
 	}
+    IllegalDictionaryIndex(const int line, const char* function, const char* file){
+        zErrorLogger.addError(("Error : IllegalDictionaryIndex thrown : "+compileErrorMsg(line, function, file)).c_str());
+        return;
+	}
+};
+
+class DictionaryError : ZException{
+    public:
+    DictionaryError(){
+        zErrorLogger.addError("Error : DictionaryError thrown");
+    }
+    DictionaryError(const int line, const char* function, const char* file){
+        zErrorLogger.addError(("Error : DictionaryError thrown : "+compileErrorMsg(line, function, file)).c_str());
+    }
 };
 
 struct ZSCIIDictionaryToken{
@@ -114,7 +139,6 @@ struct ZDictionaryParseTable{
     /* byte 0 of the parse-buffer should hold the maximum number of textual words which
     can be parsed. (If this is n, the buffer must be at least 2 + 4*n bytes long to
     hold the results of the analysis.) */
-    zbyte numWords;
     std::vector<ZDictionaryParseTableEntry> entryVector; /** vector for entries */
     ZDictionaryParseTable() : entryVector(0){
     }
@@ -161,10 +185,41 @@ struct ZDictionaryParseTable{
         }
         return;
     }
+    void writeParseBuffer(ulong addr, ZMemory& zMem) throw (DictionaryError,\
+                                                            ZMemoryReadOutOfBounds,
+                                                            ZMemoryWriteOutOfBounds) {
+        // byte 0 of parse buffer contains max num of words buffer can hold
+        zbyte maxWords=zMem.readZByte(addr+0);
+        // Interpreter is asked to halt if the parse buffer has length of less than 6 bytes
+        if( ((maxWords*4) - 2) <6){
+            THROW_DICTIONARYERROR(__LINE__, __FUNCTION__, __FILE__);
+        }
+        if(entryVector.size()>255){
+            trimTable(255); // if vector contains more than 255 words, trim it to 255 words
+        }
+        zbyte numWords=(zbyte)entryVector.size();
+        if(numWords>maxWords){
+            trimTable(maxWords);
+            numWords=maxWords;
+        }
+        // byte 1 of parse buffer contains the written number of words
+        zMem.storeZByte(addr+1, numWords);
+        // from byte 2 onwards, each 4 byte block is one entry
+        // (of 4 byte block)
+        // byte 0, 1    : byte addr of word in dictionary, 0 if not present
+        // byte 2       : number of letters in word
+        // byte 3       : index of first letter of word in text buffer
+        for(int i=0; i<entryVector.size(); i++)
+        {
+            zbyte* zData=entryVector[i].getPackedEntry();
+            for(int j=0; j<4; j++){
+                zMem.storeZByte(addr+(4*i)+2+j, zData[j]);
+            }
+        }
+    }
     const ZDictionaryParseTable& operator=(const ZDictionaryParseTable& a)
     {
         this->entryVector=a.entryVector;
-        this->numWords=a.numWords;
         return *this;
     }
 };
@@ -190,7 +245,7 @@ class ZDictionary{
     ZDictionary(ZMemory *zMemObj) throw (ZMemoryReadOutOfBounds);
     ~ZDictionary();
     zword getDictionaryEntryAddr(ulong index) throw (IllegalDictionaryIndex);
-    ZSCIIDictionaryToken** tokenizeZSCIIString(zchar* zstring);
+    vector<ZSCIIDictionaryToken> tokenizeZSCIIString(zchar* zstring);
     ZDictionaryParseTable performLexicalAnalysis(zchar* zstring);
     zchar* getWordSeparators() {return wordSeparators;};
     bool compareWord(zword word1[2], zword word2[2]);
