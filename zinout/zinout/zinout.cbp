@@ -32,7 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="../../zglobal/zglobal.cpp" />
+		<Unit filename="../../zglobal/zglobal.h" />
+		<Unit filename="../../zglobal/zglobaldefines.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="zinout.cpp" />
+		<Unit filename="zinout.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

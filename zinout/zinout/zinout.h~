@@ -20,7 +20,6 @@ class ZInOutBase{
 
     void setTextStyle(int style);
     void clearScreen();
-    void clearLine();
     void setCursorPos(int line, int col);
     private:
     protected:
@@ -49,6 +48,11 @@ class ZInOut : public ZInOutBase{
         snprintf(styleCmd, 20, "\033[%dm", style);
         print(styleCmd);
     }
+
+	void setScreenMode(consoleScreenMode mode){
+		char modeCmd[20];
+		snprintf(modeCmd, 20, "\033[=$d;7h", mode);
+	}
 
     void clearScreen(){
         print("\033[2J");

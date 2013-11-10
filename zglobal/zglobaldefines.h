@@ -2,10 +2,20 @@
 #define ZGLOBALDEFINES_H
 
 // target platform defines
-// define           platform
-// LINUX_X86        x86 linux
-// WIN32_X86        x86 win32
+// define                   platform
+// PLATFORM_LINUX           linux
+// PLATFORM_WIN32           win32
+// PLATFORM_MSDOS           ms-dos
 
-#define LINUX_X86
+// target system types
+// define                   platform
+// SYSTEM_CONSOLE           console mode
+// SYSTEM_GUI               gui mode
+#define PLATFORM_LINUX
+#define SYSTEM_CONSOLE
+
+#ifdef PLATFORM_LINUX && SYSTEM_CONSOLE
+#define PLATFORM_LINUX_CONSOLE
+#endif
 
 #endif
