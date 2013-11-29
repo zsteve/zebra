@@ -1,18 +1,18 @@
 # depslib dependency file v1.0
-1383991371 source:/home/zsteve/Code/zebra-zmachine-interpreter/zinout/zinout/zinout.cpp
+1385623719 source:/home/zsteve/Code/zebra-zmachine-interpreter/zinout/zinout/zinout.cpp
 	"zinout.h"
 
-1384072798 /home/zsteve/Code/zebra-zmachine-interpreter/zinout/zinout/zinout.h
+1385623431 /home/zsteve/Code/zebra-zmachine-interpreter/zinout/zinout/zinout.h
 	"../../zglobal/zglobaldefines.h"
 	<iostream>
 	<cstdlib>
 	<cstdio>
 
-1383875034 source:/home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobal.cpp
+1384123998 source:/home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobal.cpp
 	"zglobal.h"
 	<vector>
 
-1383904738 /home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobal.h
+1384123998 /home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobal.h
 	"../zerror/zerror/zerror.h"
 	<vector>
 	<exception>
@@ -21,12 +21,12 @@
 	<cstring>
 	<cstdlib>
 
-1383875034 /home/zsteve/Code/zebra-zmachine-interpreter/zerror/zerror/zerror.h
+1384123998 /home/zsteve/Code/zebra-zmachine-interpreter/zerror/zerror/zerror.h
 	<string>
 
-1384072610 source:/home/zsteve/Code/zebra-zmachine-interpreter/zinout/zinout/main.cpp
+1385623431 source:/home/zsteve/Code/zebra-zmachine-interpreter/zinout/zinout/main.cpp
 	<iostream>
 	"zinout.h"
 
-1384053804 /home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobaldefines.h
+1384123998 /home/zsteve/Code/zebra-zmachine-interpreter/zglobal/zglobaldefines.h
 

@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1385623983 source:/home/zsteve/Code/zebra-zmachine-interpreter/zcpu/zcpu/zcpu.cpp
+	"zcpu.h"
+
+1385623983 /home/zsteve/Code/zebra-zmachine-interpreter/zcpu/zcpu/zcpu.h
+
+1385623994 source:/home/zsteve/Code/zebra-zmachine-interpreter/zcpu/zcpu/main.cpp
+	<iostream>
+	"zcpu.h"
+

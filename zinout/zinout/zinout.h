@@ -64,7 +64,7 @@ class ZInOut : public ZInOutBase{
         snprintf(posCmd, 32, "\033[%d;%dH", line, col);
         print(posCmd);
     }
-	
+
 	/** moves cursor position
 	 * parameters may be negative
 	 * @param lines number of lines to move
@@ -98,7 +98,6 @@ class ZInOut : public ZInOutBase{
     void restoreCursorPos(){
         print("\033[u");
     }
-
 
     private:
     char* readLineLastRead;
