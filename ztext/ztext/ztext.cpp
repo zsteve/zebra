@@ -30,7 +30,7 @@ int zCharStrLen(zword* str)
     j=3;
     for(;;i++, j+=3)
     {
-        if(endianize(str[i])>>15)
+        if((str[i])>>15)
         {
             break;
         }
@@ -59,36 +59,53 @@ void ZSCIIStrCpy(zchar* src, zchar* dest)
 	}
 }
 
-std::vector<zchar> expandZChars(zword* zCharString, bool endianizef)
+std::vector<zchar> expandZChars(zword* zCharString)
 {
+    // expects little endian (x86) zwords
     std::vector<zchar> charVector(0);
     for(int i=0; ; i++)
     {
         zchar zUpper, zLower;
-        // if endianize == true, then we must endianize each zword.
-        // else, just treat zword as-is.
-        zUpper=(endianizef ? ((zchar)(endianize(zCharString[i])>>8)) : (zCharString[i]>>8));
-        zLower=(endianizef ? ((zchar)(endianize(zCharString[i])&255)) : (zCharString[i]&255));
+        zUpper=(zCharString[i]>>8);
+        zLower=(zCharString[i]&255);
         charVector.push_back((zUpper>>2) & 31);
         charVector.push_back(((zUpper&3)<<3)|((zLower>>5)));
         charVector.push_back((zLower&31));
-        if(endianizef && endianize((zCharString[i]))>>15) break;
-        else if(!endianizef && zCharString[i]>>15) break;
+        if(zCharString[i]>>15) break;
     }
     return charVector;
 }
 
-zchar* zCharStringtoZSCII(zword* zCharString, ZMemory &zMem, bool endianizef)
+zchar* zCharStringtoZSCII(zword* zCharString, ZMemory &zMem)
 {
     // converts an entire z-char string
     // to a ZSCII string
-    std::vector<zchar> charVector=expandZChars(zCharString, endianizef);
+    std::vector<zchar> charVector=expandZChars(zCharString);
     zCharStringtoZSCIIHelper(NULL, NULL, zMem, true);       // call zCharStringtoZSCIIHelper() once with resetShifts
                                                             // true so we can reset everything
     zchar* charArray=new zchar[charVector.size()];
     for(int i=0; i<charVector.size(); i++) charArray[i]=charVector[i];
     zchar* outData=zCharStringtoZSCIIHelper(charArray, charVector.size(), zMem);
     delete[] charArray;
+    return outData;
+}
+
+zchar* zCharStringtoZSCII(ulong addr, ZMemory& zMem)
+{
+    vector<zword> zCharVect(0);
+    for(int i=0; ; i+=2)
+    {
+        zCharVect.push_back(zMem.readZWord(addr+i));
+        if(zCharVect[i>>1]>>15)
+            break;
+    }
+    zword* zCharArr=new zword[zCharVect.size()];
+    for(int i=0; i<zCharVect.size(); i++)
+    {
+        zCharArr[i]=zCharVect[i];
+    }
+    zchar* outData=zCharStringtoZSCII(zCharArr, zMem);
+    delete[] zCharArr;
     return outData;
 }
 
@@ -223,7 +240,7 @@ zchar* zCharStringtoZSCIIHelper(zchar* zCharString, ulong zStringLength, ZMemory
                 if((i+1)<zStringLength)	// this is to make sure we don't overstep array bounds when there is an incomplete mulit-zchar construct
                 {
               	  zchar* abbrevStr=\
-	                zCharStringtoZSCII(((zword*)(zMem.getRawDataPtr()+lookupAbbreviationAddr(zMem, xlatChar, zCharString[i+1]))), zMem);
+	                zCharStringtoZSCII(((ulong)(lookupAbbreviationAddr(zMem, xlatChar, zCharString[i+1]))), zMem);
 	                for(int i=0; abbrevStr[i]!=0; i++)
 	                    zsciiString.push_back(abbrevStr[i]);
 	                delete[] abbrevStr;
@@ -238,7 +255,7 @@ zchar* zCharStringtoZSCIIHelper(zchar* zCharString, ulong zStringLength, ZMemory
                 if((i+1)<zStringLength)	// this is to make sure we don't overstep array bounds when there is an incomplete mulit-zchar construct
                 {
               	  zchar* abbrevStr=\
-	                zCharStringtoZSCII(((zword*)(zMem.getRawDataPtr()+lookupAbbreviationAddr(zMem, xlatChar, zCharString[i+1]))), zMem);
+	                zCharStringtoZSCII(((ulong)(lookupAbbreviationAddr(zMem, xlatChar, zCharString[i+1]))), zMem);
 	                for(int i=0; abbrevStr[i]!=0; i++)
 	                    zsciiString.push_back(abbrevStr[i]);
 	                delete[] abbrevStr;
@@ -253,7 +270,7 @@ zchar* zCharStringtoZSCIIHelper(zchar* zCharString, ulong zStringLength, ZMemory
                 if((i+1)<zStringLength)	// this is to make sure we don't overstep array bounds when there is an incomplete mulit-zchar construct
                 {
               	  zchar* abbrevStr=\
-	                zCharStringtoZSCII(((zword*)(zMem.getRawDataPtr()+lookupAbbreviationAddr(zMem, xlatChar, zCharString[i+1]))), zMem);
+	                zCharStringtoZSCII(((ulong)(lookupAbbreviationAddr(zMem, xlatChar, zCharString[i+1]))), zMem);
 	                for(int i=0; abbrevStr[i]!=0; i++)
 	                    zsciiString.push_back(abbrevStr[i]);
 	                delete[] abbrevStr;
@@ -493,7 +510,7 @@ zword ZSCIItoZChar(zchar* zscii, int& bytesConverted, bool resetShifts)
     {
         outWord|=32768;
     }
-    return endianize(outWord);
+    return (outWord);
 }
 zword* ZSCIItoZCharString(zchar* zscii)
 {
@@ -523,11 +540,11 @@ zword packZChars(zchar* zchars)
 	return (outWord);
 }
 
-zword* zChartoDictionaryZCharString(zword* zstring, bool endianizef)
+zword* zChartoDictionaryZCharString(zword* zstring)
 {
     // converts a normal zchar string to a dictionary zchar string
     // returns a zword* to either a 2 or 3 zword array.
-    std::vector<zchar> vector1=expandZChars(zstring, endianizef);
+    std::vector<zchar> vector1=expandZChars(zstring);
     std::vector<zchar> vector2(0);
     if(zVersion<=3){
         // for versions 1 to 3, dictionary word length is 4 bytes (6 zchars)
@@ -547,8 +564,8 @@ zword* zChartoDictionaryZCharString(zword* zstring, bool endianizef)
         zword* outData=new zword[2];
         zchar* zcharArray=new zchar[vector2.size()];
         for(int i=0; i<vector2.size(); i++) zcharArray[i]=vector2[i];
-        outData[0]=endianize(packZChars(zcharArray));
-        outData[1]=endianize(packZChars(zcharArray+3)|32768);
+        outData[0]=(packZChars(zcharArray));
+        outData[1]=(packZChars(zcharArray+3)|32768);
         delete[] zcharArray;
         return outData;
     }else if(zVersion>3){
@@ -573,20 +590,20 @@ zword* zChartoDictionaryZCharString(zword* zstring, bool endianizef)
         outData[1]=packZChars(zcharArray+3);
         outData[2]=packZChars(zcharArray+6);
         outData[2]|=32768;
-        for(int i=0; i<3; i++) outData[i]=endianize(outData[i]);
+        for(int i=0; i<3; i++) outData[i]=(outData[i]);
         delete[] zcharArray;
         return outData;
     }
     return NULL;
 }
 
-zword* dictionaryZCharStringtoZCharString(zword* zstring, bool endianizef)
+zword* dictionaryZCharStringtoZCharString(zword* zstring)
 {
-    std::vector<zchar> vector1=expandZChars(zstring, endianizef);
+    std::vector<zchar> vector1=expandZChars(zstring);
     if(zVersion<=3){
         zword* outData=new zword[2];
-        outData[0]=endianize(packZChars(vector1.data()));
-        outData[1]=endianize(packZChars(vector1.data()+3)|32768);
+        outData[0]=(packZChars(vector1.data()));
+        outData[1]=(packZChars(vector1.data()+3)|32768);
         return outData;
     }else if(zVersion>3){
         zword* outData=new zword[9];
@@ -595,4 +612,22 @@ zword* dictionaryZCharStringtoZCharString(zword* zstring, bool endianizef)
         return outData;
     }
     return NULL;
+}
+
+zword* dictionaryZCharStringtoZCharString(ulong addr, ZMemory& zMem)
+{
+    vector<zword> zCharVect(0);
+    for(int i=0; ; i+=2)
+    {
+        zCharVect.push_back(zMem.readZWord(addr+i));
+        if(zCharVect[i>>1]>>15) break;
+    }
+    zword* zCharArr=new zword[zCharVect.size()];
+    for(int i=0; i<zCharVect.size(); i++)
+    {
+        zCharArr[i]=zCharVect[i];
+    }
+    zword* outData=dictionaryZCharStringtoZCharString(zCharArr);
+    delete[] zCharArr;
+    return outData;
 }

@@ -50,6 +50,7 @@ class ZMemory{
     ulong zStaticMemoryLower, zStaticMemoryUpper;
     ulong zHighMemoryLower, zHighMemoryUpper;
     bool addrIsWithinBounds(ulong addr, int whichMemory);
+    ulong zGlobalVarsAddr;
 
     public:
 

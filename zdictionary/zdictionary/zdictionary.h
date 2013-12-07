@@ -70,7 +70,7 @@ struct ZCharDictionaryToken{
         for(int i=0; ; i++)
         {
             this->wordData[i]=wordData[i];
-            if(endianize(wordData[i])>>15==1){
+            if((wordData[i])>>15==1){
                 break;
             }
         }
@@ -81,7 +81,7 @@ struct ZCharDictionaryToken{
     {
         delete[] wordData;
         this->wordData=new zword[zCharStrLen(a.wordData)];
-        for(int i=0; endianize(a.wordData[i])>>15!=1; i++)
+        for(int i=0; (a.wordData[i])>>15!=1; i++)
         {
             this->wordData[i]=a.wordData[i];
         }
@@ -125,8 +125,8 @@ struct ZDictionaryParseTableEntry{
      */
     zbyte* getPackedEntry(){
         zbyte outData[4];
-        outData[0]=(zbyte)endianize(dictWordAddr)>>8;
-        outData[1]=(zbyte)endianize(dictWordAddr)&255;
+        outData[0]=(zbyte)(dictWordAddr)>>8;
+        outData[1]=(zbyte)(dictWordAddr)&255;
         outData[2]=letterCount;
         outData[3]=textBufferPos;
         return outData;
@@ -248,6 +248,7 @@ class ZDictionary{
     vector<ZSCIIDictionaryToken> tokenizeZSCIIString(zchar* zstring);
     ZDictionaryParseTable performLexicalAnalysis(zchar* zstring);
     zchar* getWordSeparators() {return wordSeparators;};
+    int getNumOfEntries(){return numOfEntries;}
     bool compareWord(zword word1[2], zword word2[2]);
     bool compareWord(zword word1[3], zword word2[3], bool trash);
     protected:

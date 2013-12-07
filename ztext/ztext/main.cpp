@@ -9,8 +9,8 @@
 
 using namespace std;
 
-zchar zstring[11] = {
-	0x1F, 0x51, 0x31, 0xD3, 0x30, 0x08, 0x35, 0x58, 0xE4, 0xA5, 0x79
+zchar zstring[10] = {
+	0x51, 0x1f, 0xd3, 0x31, 0x08, 0x30, 0x58, 0x35, 0xa5, 0xe4
 };
 
 int zVersion;
@@ -43,7 +43,6 @@ int main()
     int a=0;
     zword out;
     cout << (out=ZSCIItoZChar((zchar*)"Grue gets you ", a)) << endl;
-
-    cout << zCharStringtoZSCII((zword*)(zMem.getRawDataPtr()+0x15140), zMem);
+    cout << zCharStringtoZSCII(0x15140, zMem) << endl;
     return 0;
 }

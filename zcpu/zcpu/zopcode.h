@@ -1,11 +1,14 @@
-#ifndef ZCPU_H
-#define ZCPU_H
+#ifndef ZOPCODE_H
+#define ZOPCODE_H
 
-#include "../../zmemory/zmemory/zmemory.h"
-#include "../../zmemory/zmemory/zobject.h"
-#include "../../zstack/zstack/zstack.h"
+#include "zcpu.h"
 #include "../../zglobal/zglobal.h"
-#include "../../ztext/ztext/ztext.h"
+#include "../../zglobal/zglobaldefines.h"
+#include "../../zmemory/zmemory/zmemory.h"
+
+#include <vector>
+
+using namespace std;
 
 /**
  * namespace for z-cpu enums
@@ -24,7 +27,7 @@ namespace ZCpuOps
         ZOPERANDTYPE_LARGE_CONST, ZOPERANDTYPE_SMALL_CONST, ZOPERANDTYPE_VAR, ZOPERAND_OMITTED
     };
 
-    enum ZOperandName{
+    enum ZOpcodeName{
         // 2 OPS
         JE,
         JL,
@@ -169,14 +172,129 @@ namespace ZCpuOps
         PUT_WIND_PROP,
         PRINT_FORM,
         MAKE_MENU,
-        PICTURE_TABLE
+        PICTURE_TABLE,
+
+        // SPECIAL
+
+        UNDEFINED   // if an opcode is UNDEFINED, we should halt with an error
+    };
+
+    unsigned char ZOpcodeNums[]={
+        0x1,
+        0x2,
+        0x3,
+        0x4,
+        0x5,
+        0x6,
+        0x7,
+        0x8,
+        0x9,
+        0xa,
+        0xb,
+        0xc,
+        0xd,
+        0xe,
+        0xf,
+        0x10,
+        0x11,
+        0x12,
+        0x13,
+        0x14,
+        0x15,
+        0x16,
+        0x17,
+        0x18,
+        0x19,
+        0x1a,
+        0x1b,
+        0x1c,
+        0x1d,
+        0x1e,
+        0x1f,
+
+        0x80,
+        0x81,
+        0x82,
+        0x83,
+        0x84,
+        0x85,
+        0x86,
+        0x87,
+        0x88,
+        0x89,
+        0x8a,
+        0x8b,
+        0x8c,
+        0x8d,
+        0x8e,
+        0x8f,
+
+        0xb0,
+        0xb1,
+        0xb2,
+        0xb3,
+        0xb4,
+        0xb5,
+        0xb6,
+        0xb7,
+        0xb8,
+        0xb9,
+        0xba,
+        0xbb,
+        0xbc,
+        0xbd,
+        0xbe,
+        0xbf,
+
+        0xe0,
+        0xe1,
+        0xe2,
+        0xe3,
+        0xe4,
+        0xe5,
+        0xe6,
+        0xe7,
+        0xe8,
+        0xe9,
+        0xea,
+        0xeb,
+        0xec,
+        0xed,
+        0xee,
+        0xef,
+        0xf0,
+        0xf1,
+        0xf2,
+        0xf3,
+        0xf4,
+        0xf5,
+        0xf6,
+        0xf7,
+        0xf8,
+        0xf9,
+        0xfa,
+        0xfb,
+        0xfc,
+        0xfd,
+        0xfe,
+        0xff
     };
 
 };
 
-class ZCpu
-{
+class ZOpcode{
+    private:
+    ulong addr;
+    ZOpcodeType opcodeType;
+    ZOperandCount operandCount;
+    vector<ZOperandType> operandTypes;
+    ZOpcodeName opcodeName;
 
+    decodeOp(ulong addr, ZMemory& zMem);
+    public:
+    ZOpcode();
+    ZOpcode(ulong addr, ZMemory& zMem);
+    protected:
 };
 
 #endif

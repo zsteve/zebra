@@ -41,7 +41,8 @@ int main()
     cout << zCharStringtoZSCII(ZSCIItoZCharString((zchar*)"floating-point"), zMem) << endl;
     cout << zCharStringtoZSCII(zChartoDictionaryZCharString(ZSCIItoZCharString((zchar*)"floating-point")), zMem) << endl;
 
-    cout << zCharStringtoZSCII(dictionaryZCharStringtoZCharString((zword*)(zMem.getRawDataPtr()+zDict.getDictionaryEntryAddr(1))), zMem) << endl;
+    for(int i=0; i<zDict.getNumOfEntries(); i++)
+        cout << zCharStringtoZSCII(dictionaryZCharStringtoZCharString(zDict.getDictionaryEntryAddr(i), zMem), zMem) << endl;
 
     cout << zCharStringtoZSCII(dictionaryZCharStringtoZCharString(zChartoDictionaryZCharString(ZSCIItoZCharString((zchar*)"dictionaryword"))), zMem) << endl;
     cout << "Tokenizer test : type \"quit\" to exit" << endl;

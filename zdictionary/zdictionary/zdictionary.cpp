@@ -173,14 +173,14 @@ ZDictionaryParseTable ZDictionary::performLexicalAnalysis(zchar* zstring)
         {
             if(zVersion<=3)
             {
-                if(compareWord(&wordData[0], ((zword*)(zMemObjPtr->getRawDataPtr()+getDictionaryEntryAddr(j))))==true){
+                if(compareWord(&wordData[0], endianizeString((zword*)(zMemObjPtr->getRawDataPtr()+getDictionaryEntryAddr(j))))==true){
                 	// if we found the right one, add entry to parse table
                		parseTable.addEntry(getDictionaryEntryAddr(j), ZSCIIStrLen(tokens[i].wordData), (tokens[i].textBufferPos));
                		matchFound=true;
                		break;
                 }
             }else if(zVersion>3){
-                if(compareWord(&wordData[0], ((zword*)(zMemObjPtr->getRawDataPtr()+getDictionaryEntryAddr(j))), false)){ /** false given just so we can differentiate
+                if(compareWord(&wordData[0], endianizeString((zword*)(zMemObjPtr->getRawDataPtr()+getDictionaryEntryAddr(j)))), false){ /** false given just so we can differentiate
                                                                                                                                                                                                                                     between two types of compareWord() */
                     // if we found the right one, add entry to parse table
                     parseTable.addEntry(getDictionaryEntryAddr(j), ZSCIIStrLen(tokens[i].wordData), (tokens[i].textBufferPos));

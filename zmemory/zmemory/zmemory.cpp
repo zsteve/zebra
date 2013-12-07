@@ -33,6 +33,7 @@ ZMemory::ZMemory(zbyte* zData, ulong zDataLength)
     {
         zMemPtr[i]=zData[i];
     }
+    zGlobalVarsAddr=(ulong)(endianize(*((zword*)(zData+0xc))));
 }
 
 ZMemory::~ZMemory()

@@ -93,7 +93,13 @@ zchar getZCharAlphaShiftCharacter(int currentAlpha, int desiredAlpha, bool shift
  * the resulting zword would be little endian (x86), therefore endianizef should be false
  * @return a string of ZSCII zchars
  */
-zchar* zCharStringtoZSCII(zword* zCharString, ZMemory& zMem, bool endianizef=true);
+zchar* zCharStringtoZSCII(zword* zCharString, ZMemory& zMem);
+
+/**
+ * overload of zCharStringtoZSCII that reads from ZMemory address
+ * @see zCharStringtoZSCII
+ */
+zchar* zCharStringtoZSCII(ulong addr, ZMemory& zMem);
 
 /**
  * helper function for zCharStringtoZSCII
@@ -132,9 +138,10 @@ zword* ZSCIItoZCharString(zchar* zscii);
  * @param endianizef if true, then the input zword string is big-endian
  * @return pointer to string of zwords of encoded string
  */
-zword* zChartoDictionaryZCharString(zword* zstring, bool endianizef=true);
+zword* zChartoDictionaryZCharString(zword* zstring);
 
-zword* dictionaryZCharStringtoZCharString(zword* zstring, bool endianizef=true);
+zword* dictionaryZCharStringtoZCharString(zword* zstring);
+zword* dictionaryZCharStringtoZCharString(ulong addr, ZMemory& zMem);
 
 
 #endif

@@ -18,6 +18,22 @@ zword endianize(zword in)
     return out;
 }
 
+zword* endianizeString(zword* in)
+{
+    // endianizes a whole string and returns a result
+    // does not affect in.
+    // also frees last allocation by call
+    static zword* lastResult=NULL;
+    if(lastResult) delete[] lastResult;
+    vector<zword> vect(0);
+    for(int i=0; ; i++)
+    {
+        vect.push_back(endianize(in[i]));
+        if(vect[i]>>15) break;
+    }
+    return (lastResult=vectorToArray<zword>(vect));
+}
+
 zword reverseBitSequence(zbyte in)
 {
     // reverses the bit sequence in a byte
