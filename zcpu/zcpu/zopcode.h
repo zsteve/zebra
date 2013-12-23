@@ -1,14 +1,24 @@
 #ifndef ZOPCODE_H
 #define ZOPCODE_H
 
-#include "zcpu.h"
 #include "../../zglobal/zglobal.h"
 #include "../../zglobal/zglobaldefines.h"
 #include "../../zmemory/zmemory/zmemory.h"
+#include "../../zstack/zstack/zstack.h"
 
 #include <vector>
 
 using namespace std;
+
+class IllegalZOpcode : ZException{
+    public:
+    IllegalZOpcode(){
+        zErrorLogger.addError("Error : IllegalZOpcode thrown");
+    }
+    IllegalZOpcode(const int line, const char* function, const char* file){
+        zErrorLogger.addError(("Error : IllegalZOpcode thrown at : "+compileErrorMsg(line, function, file)).c_str());
+    }
+};
 
 /**
  * namespace for z-cpu enums
@@ -24,12 +34,12 @@ namespace ZCpuOps
     };
 
     enum ZOperandType{
-        ZOPERANDTYPE_LARGE_CONST, ZOPERANDTYPE_SMALL_CONST, ZOPERANDTYPE_VAR, ZOPERAND_OMITTED
+        ZOPERANDTYPE_LARGE_CONST, ZOPERANDTYPE_SMALL_CONST, ZOPERANDTYPE_VAR, ZOPERANDTYPE_OMITTED
     };
 
-    enum ZOpcodeName{
+    enum ZOpcodeName_2{
         // 2 OPS
-        JE,
+        JE=1,
         JL,
         JG,
         DEC_CHK,
@@ -57,8 +67,10 @@ namespace ZCpuOps
         CALL_2N,
         SET_COLOUR_FB,
         SET_COLOUR_FBW,
-        THROW,
+        THROW
+	};
 
+	 enum ZOpcodeName_1{
         // 1 OP
 
         JZ,
@@ -77,7 +89,10 @@ namespace ZCpuOps
         PRINT_PADDR,
         LOAD,
         NOT,
-        CALL_1N,
+        CALL_1N
+	 };
+
+	  enum ZOpcodeName_0{
 
         // O OP
 
@@ -99,7 +114,10 @@ namespace ZCpuOps
         SHOW_STATUS,
         VERIFY,
         EXTENDED,
-        PIRACY,
+        PIRACY
+	  };
+
+	   enum ZOpcodeName_VAR{
 
         // VAR OP
 
@@ -143,10 +161,11 @@ namespace ZCpuOps
         ENCODE_TEXT,
         COPY_TABLE,
         PRINT_TABLE,
-        CHECK_ARG_COUNT,
+        CHECK_ARG_COUNT
+	};
 
+	enum ZOpcodeName_EXT{
         // EXT OP
-
         SAVE,
         RESTORE,
         LOG_SHIFT,
@@ -160,7 +179,8 @@ namespace ZCpuOps
         RESTORE_UNDO,
         PRINT_UNICODE,
         CHECK_UNICODE,
-        MOVE_WINDOW,
+		// skip opcode numbers 13, 14, 15
+        MOVE_WINDOW=16,
         WINDOW_SIZE,
         WINDOW_STYLE,
         GET_WIND_PROP,
@@ -172,129 +192,72 @@ namespace ZCpuOps
         PUT_WIND_PROP,
         PRINT_FORM,
         MAKE_MENU,
-        PICTURE_TABLE,
-
-        // SPECIAL
-
-        UNDEFINED   // if an opcode is UNDEFINED, we should halt with an error
-    };
-
-    unsigned char ZOpcodeNums[]={
-        0x1,
-        0x2,
-        0x3,
-        0x4,
-        0x5,
-        0x6,
-        0x7,
-        0x8,
-        0x9,
-        0xa,
-        0xb,
-        0xc,
-        0xd,
-        0xe,
-        0xf,
-        0x10,
-        0x11,
-        0x12,
-        0x13,
-        0x14,
-        0x15,
-        0x16,
-        0x17,
-        0x18,
-        0x19,
-        0x1a,
-        0x1b,
-        0x1c,
-        0x1d,
-        0x1e,
-        0x1f,
-
-        0x80,
-        0x81,
-        0x82,
-        0x83,
-        0x84,
-        0x85,
-        0x86,
-        0x87,
-        0x88,
-        0x89,
-        0x8a,
-        0x8b,
-        0x8c,
-        0x8d,
-        0x8e,
-        0x8f,
-
-        0xb0,
-        0xb1,
-        0xb2,
-        0xb3,
-        0xb4,
-        0xb5,
-        0xb6,
-        0xb7,
-        0xb8,
-        0xb9,
-        0xba,
-        0xbb,
-        0xbc,
-        0xbd,
-        0xbe,
-        0xbf,
-
-        0xe0,
-        0xe1,
-        0xe2,
-        0xe3,
-        0xe4,
-        0xe5,
-        0xe6,
-        0xe7,
-        0xe8,
-        0xe9,
-        0xea,
-        0xeb,
-        0xec,
-        0xed,
-        0xee,
-        0xef,
-        0xf0,
-        0xf1,
-        0xf2,
-        0xf3,
-        0xf4,
-        0xf5,
-        0xf6,
-        0xf7,
-        0xf8,
-        0xf9,
-        0xfa,
-        0xfb,
-        0xfc,
-        0xfd,
-        0xfe,
-        0xff
-    };
+        PICTURE_TABLE
+	};
 
 };
 
+using namespace ZCpuOps;
+
 class ZOpcode{
-    private:
+private:
     ulong addr;
     ZOpcodeType opcodeType;
     ZOperandCount operandCount;
     vector<ZOperandType> operandTypes;
-    ZOpcodeName opcodeName;
-
-    decodeOp(ulong addr, ZMemory& zMem);
-    public:
+	vector<ulong> operands;
+    int opcodeName;
+	zbyte opcodeNum;
+	zbyte opcodeByte;
+	int opcodeSize;		/// opcode size in bytes
+	
+	int getZOpcodeName(zbyte zOp) throw (ZException);
+	ulong getOperand(ulong addr, ZOperandType type, ZMemory& zMem, int& counter);
+	ZOperandType getOperandType(int types);
+	bool opcodeHasBranch();
+	bool opcodeHasStore();
+public:
     ZOpcode();
     ZOpcode(ulong addr, ZMemory& zMem);
-    protected:
+    void decodeOp(ulong addr, ZMemory& zMem);
+	// accessor functions
+	int getOpcodeSize(){return opcodeSize;}
+	ZOpcodeType getOpcodeType(){return opcodeType;}
+	ZOperandCount getOperandCount(){return operandCount;}
+	vector<ZOperandType> getOperandTypes(){return operandTypes;}
+	vector<ulong> getOperands(){return operands;}
+	int getOpcodeName(){return opcodeName;}
+	zbyte getOpcodeNum(){return opcodeNum;}
+	zbyte getOpcodeByte(){return opcodeByte;}
+
+	struct branchInfo{
+		branchInfo(){
+			// constructor
+			hasBranch=false;
+			branchSize=0;
+			branchCond=false;
+			branchOffset=0;
+		}
+		// branch physical info
+		bool hasBranch;		/// opcode has branch / has no branch
+		int branchSize;		/// branch size can be 1 or 2 bytes
+		zbyte byte1, byte2;	/// bytes 1 and 2
+
+		// branch logical info
+		bool branchCond;	/// condition for branch to be taken
+		int branchOffset;	/// offset for branch to take
+	}branchInfo;
+
+	struct storeInfo{
+		storeInfo(){
+			// constructor
+			storeVar=0;
+			hasStore=false;
+		}
+		bool hasStore;
+		zbyte storeVar;		/// variable number to store into
+	}storeInfo;
+protected:
 };
 
 #endif

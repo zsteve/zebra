@@ -24,6 +24,13 @@
 
 *.idb
 *.ncb
+*.opensdf
+*.sdf
+*.tlog
+*.pdb
+*.log
+*.lastbuildstate
+*.ilk
 
 # Archives
 *.zip

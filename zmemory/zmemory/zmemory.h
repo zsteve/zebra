@@ -64,6 +64,7 @@ class ZMemory{
     ulong getZStaticMemoryUpper(){return zStaticMemoryUpper;}
     ulong getZHighMemoryLower(){return zHighMemoryLower;}
     ulong getZHighMemoryUpper(){return zHighMemoryUpper;}
+	ulong getGlobalVarsAddr(){return zGlobalVarsAddr;}
 
     // memory read functions
 
@@ -77,6 +78,10 @@ class ZMemory{
     void storeZByte(ulong addr, zbyte data) throw (ZMemoryWriteOutOfBounds);
     void storeZBytePackedAddr(zword addr, zbyte data) throw (ZMemoryWriteOutOfBounds);
 
+	ulong unpackAddr(zword addr);
+
+	zword readGlobalVar(zbyte varNum);
+	void storeGlobalVar(zbyte varNum, zword newVal);
 
     ZMemory();
 
