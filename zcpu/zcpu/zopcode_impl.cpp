@@ -193,4 +193,13 @@ namespace ZOpcodeImpl{
 			throw IllegalZOpcode();
 		}
 	}
+
+	int CALL(ZOpcode& zOp){
+		//call routine ...up to 3 args... -> (result)
+		try{
+			
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
 };

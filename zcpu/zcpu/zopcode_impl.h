@@ -12,6 +12,8 @@ namespace ZOpcodeImpl{
 	int JL(ZOpcode& zOp);
 	int JG(ZOpcode& zOp);
 	int DEC_CHK(ZOpcode& zOp);
+
+	int CALL(ZOpcode& zOp);
 }
 
 #endif
