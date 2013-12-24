@@ -26,10 +26,7 @@ namespace ZCpuInternal{
 		ZCpuRoutine() : localInitialVals(0){
 			beginAddr=codeStartAddr=0;
 			setLocalCount(0);
-<<<<<<< HEAD
 			parentRoutine=NULL;
-=======
->>>>>>> c001e58d158fe8822fcfa48da4de4e6624f47bac
 		}
 
 		void loadAddr(ulong addr, ZMemory& zMem) throw (ZException){
@@ -52,17 +49,10 @@ namespace ZCpuInternal{
 		}
 
 		/**
-<<<<<<< HEAD
 		 * creates local variables 
 		 * @param zStack reference of stack object
 		 * @throw ZException on any exception
 		 */
-=======
-			* creates local variables 
-			* @param zStack reference of stack object
-			* @throw ZException on any exception
-			*/
->>>>>>> c001e58d158fe8822fcfa48da4de4e6624f47bac
 		void createLocalVars(ZStack& zStack) throw (ZException){
 			try{
 				for(int i=0; i<localCount; i++){
@@ -131,12 +121,9 @@ namespace ZCpuInternal{
 		ulong beginAddr;		/// address of the header of the routine
 		ulong codeStartAddr;	/// address of where the actual assembly code starts
 
-<<<<<<< HEAD
 		ZCpuRoutine* parentRoutine;	/** pointer to ZCpuRoutine object of parent routine
 									 * if NULL, then this routine has no parent. (must be main()!)
 									 */
-=======
->>>>>>> c001e58d158fe8822fcfa48da4de4e6624f47bac
 	};
 
 	class ZCpuStackFrame{
@@ -169,13 +156,10 @@ private:
 	int start();				/// start execution
 	int mainLoop(ZOpcode& zOp);				/// main loop for executing instructions
 public:
-<<<<<<< HEAD
+
 	ZCpuRoutine *currentRoutine;	/// ZCpuRoutine for current routine
 	ZCpuRoutine *mainRoutine;		/// ZCpuRoutine for main routine
-=======
-	ZCpuRoutine currentRoutine;	/// ZCpuRoutine for current routine
-	ZCpuRoutine mainRoutine;	/// ZCpuRoutine for main routine
->>>>>>> c001e58d158fe8822fcfa48da4de4e6624f47bac
+
 protected:
 };
 

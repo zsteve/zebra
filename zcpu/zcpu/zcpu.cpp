@@ -8,16 +8,13 @@ ZCpu::ZCpu(ZMemory& zMem, ZStack& zStack) : zMem(zMem), zStack(zStack){
 	pCounter=zMem.readZWord(0x6);
 	// now we need to initialize the mainRoutine and currentRoutine objects
 	zStack.initStack(4096);	// 4kb stack size
-<<<<<<< HEAD
 	mainRoutine=new ZCpuRoutine();
 	mainRoutine->loadAddr(pCounter-1, zMem);
 	mainRoutine->createLocalVars(zStack);
 	currentRoutine=new ZCpuRoutine(*mainRoutine);
-=======
-	mainRoutine.loadAddr(pCounter-1, zMem);
-	mainRoutine.createLocalVars(zStack);
-	currentRoutine=mainRoutine;
->>>>>>> c001e58d158fe8822fcfa48da4de4e6624f47bac
+	mainRoutine->loadAddr(pCounter-1, zMem);
+	mainRoutine->createLocalVars(zStack);
+	*currentRoutine=*mainRoutine;
 	ZOpcode(pCounter, zMem);
 	haltFlag=false;
 }
