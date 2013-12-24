@@ -106,6 +106,7 @@ ulong ZObjectTable::getObjectAttributeFlags32(ulong index) throw (IllegalObjectI
 ulong ZObjectTable::getObjectAttributeFlags48(ulong index) throw (IllegalObjectIndex)
 {
     // TODO : ADD SUPPORT FOR 48 BIT ATTRIBUTE FLAGS (VERSIONS 4 AND UP)
+	return NULL;
 }
 
 zword ZObjectTable::getObjectParent(ulong index) throw (IllegalObjectIndex)

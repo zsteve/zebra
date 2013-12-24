@@ -3,7 +3,8 @@
 
 using namespace std;
 
-ZError zErrorLogger;
+ZError zErrorLogger;
+
 zword endianize(zword in)
 {
     // converts a zword from big-endian to little-endian

@@ -1,10 +1,5 @@
 Zebra Z-Machine Interpreter
+===========================
 
 an interpreter for the Z-machine
-(c) zsteve 2013
-
-Current status :
-	- Implemented Z-text routines (ztext)
-	- Implemented Z machine memory (zmemory)
-	- Implemented Z machine object table (zobject)
-	- Completed z-stack (zstack)
+licensed under the GNU GPL v3 (http://www.gnu.org/licenses/gpl.txt)

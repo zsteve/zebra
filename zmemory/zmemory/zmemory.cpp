@@ -195,3 +195,29 @@ void ZMemory::storeZBytePackedAddr(zword addr, zbyte data) throw (ZMemoryWriteOu
         THROW_ZMEMORYREADOUTOFBOUNDS(__LINE__, __FUNCTION__, __FILE__);
     }
 }
+
+ulong ZMemory::unpackAddr(zword addr){
+    ulong zLongAddr=0;
+    if(zVersion<=3){
+        zLongAddr=(addr<<1);
+    }else if(zVersion==4 || zVersion==5){
+        zLongAddr=(addr<<2);
+    }
+	return zLongAddr;
+}
+
+zword ZMemory::readGlobalVar(zbyte varNum){
+	// global vars are 0x10 - 0xff
+	if((varNum<0x10) || (varNum>0xff)){
+		throw ZMemoryReadOutOfBounds(__LINE__, __FUNCTION__, __FILE__);
+	}
+	return readZWord(getGlobalVarsAddr()+((varNum-0x10)*2));
+}
+
+void ZMemory::storeGlobalVar(zbyte varNum, zword newVal){
+	if((varNum<0x10) || (varNum>0xff)){
+		throw ZMemoryWriteOutOfBounds(__LINE__, __FUNCTION__, __FILE__);
+	}
+	storeZWord(getGlobalVarsAddr()+((varNum-0x10)*2), newVal);
+	return;
+}

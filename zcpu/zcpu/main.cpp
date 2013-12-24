@@ -25,5 +25,8 @@ int main()
     fread(storyData, filesize(storyFile), 1, storyFile);
     ZMemory zMem(storyData, filesize(storyFile));
     ZObjectTable zObj(&zMem);
+	ZStack zStack;
+	ZCpu c(zMem, zStack);
+	c.startExecution();
     return 0;
 }

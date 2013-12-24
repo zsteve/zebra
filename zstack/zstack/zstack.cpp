@@ -31,7 +31,7 @@ bool ZStack::initStack(int size)
     stackSize=size;
     stackPtr=size;
     return true;
-}\
+}
 
 void ZStack::push(zword val) throw (StackFullException)
 {

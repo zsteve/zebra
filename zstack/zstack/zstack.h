@@ -50,6 +50,10 @@ class ZStack{
     bool initStack(int size);
     void push(zword val) throw (StackFullException);
     zword pull() throw (StackEmptyException);
+	// accessor functions
+	ulong getStackPtr(){return stackPtr;}
+	void setStackPtr(ulong newPtr){stackPtr=newPtr;}
+	zword* getStackData(){return stackData;}
     protected:
-};
+	};
 #endif

@@ -7,8 +7,8 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/zcpu" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option output="bin\Debug\zcpu" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -16,8 +16,8 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/zcpu" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output="bin\Release\zcpu" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -35,6 +35,21 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="zcpu.cpp" />
 		<Unit filename="zcpu.h" />
+		<Unit filename="zopcode.cpp" />
+		<Unit filename="zopcode.h" />
+		<Unit filename="zopcode_impl.cpp" />
+		<Unit filename="zopcode_impl.h" />
+		<Unit filename="..\..\zerror\zerror\zerror.cpp" />
+		<Unit filename="..\..\zerror\zerror\zerror.h" />
+		<Unit filename="..\..\zglobal\zglobal.cpp" />
+		<Unit filename="..\..\zglobal\zglobal.h" />
+		<Unit filename="..\..\zglobal\zglobaldefines.h" />
+		<Unit filename="..\..\zmemory\zmemory\zmemory.cpp" />
+		<Unit filename="..\..\zmemory\zmemory\zmemory.h" />
+		<Unit filename="..\..\zmemory\zmemory\zobject.cpp" />
+		<Unit filename="..\..\zmemory\zmemory\zobject.h" />
+		<Unit filename="..\..\zstack\zstack\zstack.cpp" />
+		<Unit filename="..\..\zstack\zstack\zstack.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
