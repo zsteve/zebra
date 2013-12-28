@@ -11,11 +11,15 @@
 // define                   platform
 // SYSTEM_CONSOLE           console mode
 // SYSTEM_GUI               gui mode
-#define PLATFORM_LINUX
+#define PLATFORM_WIN32
 #define SYSTEM_CONSOLE
 
 #ifdef PLATFORM_LINUX && SYSTEM_CONSOLE
 #define PLATFORM_LINUX_CONSOLE
+#endif
+
+#ifdef PLATFORM_WIN32 && SYSTEM_CONSOLE
+#define PLATFORM_WIN32_CONSOLE
 #endif
 
 // Bit masks, 16 bits

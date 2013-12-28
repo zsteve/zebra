@@ -5,6 +5,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
+#ifdef PLATFORM_WIN32_CONSOLE
+#include <conio.h>
+#endif
 
 using namespace std;
 
@@ -26,7 +29,7 @@ class ZInOutBase{
     protected:
 };
 
-#ifdef PLATFORM_LINUX_CONSOLE
+#if defined(PLATFORM_LINUX_CONSOLE)
 class ZInOut : public ZInOutBase{
     public:
     enum consoleStyle{NORMAL=0, BOLD, UNDERLINE=4, BLINK_ON, REVERSE_VIDEO_ON=7, NONDISPLAYED,\
@@ -103,6 +106,21 @@ class ZInOut : public ZInOutBase{
     char* readLineLastRead;
     protected:
 };
-#endif
+#elif defined(PLATFORM_WIN32_CONSOLE)
 
+class ZInOut : public ZInOutBase{
+public:
+    ZInOut(){
+        readLineLastRead=NULL;
+    }
+    void printLine(char* str);
+    void print(char* str);
+    void readLine(char* buffer);
+    char* readLine();
+private:
+	char* readLineLastRead;
+protected:
+};
+
+#endif
 #endif

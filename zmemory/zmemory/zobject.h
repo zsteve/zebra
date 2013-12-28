@@ -53,9 +53,6 @@ class ZObjectTable{
         zword setObjectChildHelper(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex);
         zword setObjectSiblingHelper(ulong indexObject, ulong indexSibling) throw (IllegalObjectIndex);
         zword setObjectParentHelper(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex);
-        zbyte getPropertySize(zword addr) throw (ZMemoryReadOutOfBounds);
-        zword getPropertySize(zword addr, bool &isWordSizeFlag) throw (ZMemoryReadOutOfBounds);
-
     public:
         ZObjectTable();
         ZObjectTable(ZMemory* zMemObj);
@@ -74,9 +71,13 @@ class ZObjectTable{
         zword setObjectParent(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex);
         zword setObjectSibling(ulong indexObject, ulong indexSibling) throw (IllegalObjectIndex);
         zword setObjectChild(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex);
+		void setObjectAttributeFlags32(ulong index, ulong flags) throw (IllegalObjectIndex);
         zword getPropertyListLength(zword addr) throw (ZMemoryReadOutOfBounds);
         ObjectProperty getPropertyListElem(zword addr, ulong index) throw (IllegalPropertyIndex);
-    protected:
+        zbyte getPropertySize(zword addr) throw (ZMemoryReadOutOfBounds);
+        zword getPropertySize(zword addr, bool &isWordSizeFlag) throw (ZMemoryReadOutOfBounds);
+		zbyte getPropertyNumber(zword addr) throw (ZMemoryReadOutOfBounds);
+protected:
 };
 
 #endif

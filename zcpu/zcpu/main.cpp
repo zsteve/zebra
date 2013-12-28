@@ -24,9 +24,10 @@ int main()
     zbyte* storyData=new zbyte[filesize(storyFile)];
     fread(storyData, filesize(storyFile), 1, storyFile);
     ZMemory zMem(storyData, filesize(storyFile));
-    ZObjectTable zObj(&zMem);
+	ZObjectTable zObj(&zMem);
 	ZStack zStack;
-	ZCpu c(zMem, zStack);
+	ZInOut zInOut;
+	ZCpu c(zMem, zStack, zObj, zInOut);
 	c.startExecution();
     return 0;
 }

@@ -95,20 +95,22 @@ namespace ZCpuOps
 	  enum ZOpcodeName_0{
 
         // O OP
-
+		/** edit made, commenting out some of the
+			enum entries as they have the same hex value
+			see Z-Machine standards document 14/0OP **/
         RTRUE,
         RFALSE,
         PRINT,
         PRINT_RET,
         NOP,
         SAVE_LABEL,
-        SAVE_RESULT,
+        //SAVE_RESULT,
         RESTORE_LABEL,
-        RESTORE_RESULT,
+        //RESTORE_RESULT,
         RESTART,
         RET_POPPED,
         POP,
-        CATCH,
+        //CATCH,
         QUIT,
         NEW_LINE,
         SHOW_STATUS,
@@ -122,34 +124,33 @@ namespace ZCpuOps
         // VAR OP
 
         CALL,
-        CALL_VS,
+       // CALL_VS,
         STOREW,
         STOREB,
         PUT_PROP,
-        SREAD_P,
-        SREAD_PTR,
-        SREAD_PTRR,
-        AREAD,
+        READ,
+       // SREAD_PTR,
+       // AREAD,
         PRINT_CHAR,
         PRINT_NUM,
         RANDOM,
         PUSH,
-        PULL_VAL,
+       // PULL_VAL,
         PULL_VAR,
         SPLIT_WINDOW,
         SET_WINDOW,
         CALL_VS2,
         ERASE_WINDOW,
         ERASE_LINE,
-        ERASE_LINE_PIX,
+      //  ERASE_LINE_PIX,
         SET_CURSOR_LC,
-        SET_CURSOR_LCW,
+       // SET_CURSOR_LCW,
         GET_CURSOR,
         SET_TEXT_STYLE,
         BUFFER_MODE,
         OUTPUT_STREAM_N,
-        OUTPUT_STREAM_NT,
-        OUTPUT_STREAM_NTW,
+       // OUTPUT_STREAM_NT,
+       // OUTPUT_STREAM_NTW,
         INPUT_STREAM,
         SOUND_EFFECT,
         READ_CHAR,
@@ -209,26 +210,30 @@ private:
     int opcodeName;
 	zbyte opcodeNum;
 	zbyte opcodeByte;
-	int opcodeSize;		/// opcode size in bytes
+	int opcodeSize;			/// opcode size in bytes
+	zword* opcodeString;	/// trailing string (if any)
 	
 	int getZOpcodeName(zbyte zOp) throw (ZException);
 	ulong getOperand(ulong addr, ZOperandType type, ZMemory& zMem, int& counter);
 	ZOperandType getOperandType(int types);
 	bool opcodeHasBranch();
 	bool opcodeHasStore();
+	bool opcodeHasTrailingString();
 public:
     ZOpcode();
     ZOpcode(ulong addr, ZMemory& zMem);
+	~ZOpcode();
     void decodeOp(ulong addr, ZMemory& zMem);
 	// accessor functions
 	int getOpcodeSize(){return opcodeSize;}
 	ZOpcodeType getOpcodeType(){return opcodeType;}
 	ZOperandCount getOperandCount(){return operandCount;}
-	vector<ZOperandType> getOperandTypes(){return operandTypes;}
-	vector<ulong> getOperands(){return operands;}
+	vector<ZOperandType>& getOperandTypes(){return operandTypes;}
+	vector<ulong>& getOperands(){return operands;}
 	int getOpcodeName(){return opcodeName;}
 	zbyte getOpcodeNum(){return opcodeNum;}
 	zbyte getOpcodeByte(){return opcodeByte;}
+	zword* getOpcodeString(){return opcodeString;}
 
 	struct branchInfo{
 		branchInfo(){

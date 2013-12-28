@@ -149,11 +149,22 @@ ZOpcode::ZOpcode() : operandTypes(0){
     this->operandCount=ZOPCOUNT_0;
     this->opcodeName=NULL;
     this->opcodeType=ZOPTYPE_LONG;
+	this->opcodeString=NULL;
 };
 
 ZOpcode::ZOpcode(ulong addr, ZMemory& zMem) : operandTypes(0){
+    this->operandCount=ZOPCOUNT_0;
+    this->opcodeName=NULL;
+    this->opcodeType=ZOPTYPE_LONG;
+	this->opcodeString=NULL;
     decodeOp(addr, zMem);
 };
+
+ZOpcode::~ZOpcode(){
+	if(opcodeString){
+		delete[] opcodeString;
+	}
+}
 
 /**
  * returns an integer (index into the ZOpcode_<op_type_here> array)
@@ -340,8 +351,8 @@ bool ZOpcode::opcodeHasStore(){
 		switch(operandCount){
 		case ZOPCOUNT_0:
 			switch(opcodeName){
-			case CATCH:
-				return true;
+			/*case CATCH:
+				return true;*/
 				break;
 			default:
 				break;
@@ -386,9 +397,9 @@ bool ZOpcode::opcodeHasStore(){
 		case ZOPCOUNT_VAR:
 			switch(opcodeName){
 			case CALL:
-			case AREAD:
+//			case AREAD:
 			case RANDOM:
-			case PULL_VAL:
+//			case PULL_VAL:
 			case CALL_VS2:
 			case READ_CHAR:
 			case SCAN_TABLE:
@@ -399,6 +410,32 @@ bool ZOpcode::opcodeHasStore(){
 			default:
 				break;
 			}
+			break;
+		default:
+			break;
+		}
+	}
+	return false;
+}
+
+bool ZOpcode::opcodeHasTrailingString(){
+	if(opcodeType==ZOPTYPE_EXT){
+
+	}else{
+		switch(operandCount){
+		case ZOPCOUNT_0:
+			switch(opcodeName){
+			case PRINT:
+			case PRINT_RET:
+				return true;
+				break;
+			default:
+				break;
+			}
+			break;
+		case ZOPCOUNT_1:
+			break;
+		case ZOPCOUNT_2:
 			break;
 		default:
 			break;
@@ -518,7 +555,7 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 		// operands are given next
 		if(opcodeType==ZOPTYPE_SHORT){
 			// short ops can be 0OP or 1OP
-			if(opcodeNum==ZOPCOUNT_0){
+			if(operandCount==ZOPCOUNT_0){
 			}else{
 				int read_offset=0;
 				for(int i=0; i<operandTypes.size() && operandTypes[i]!=ZOPERANDTYPE_OMITTED && i<1; i++){
@@ -579,6 +616,24 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 				branchInfo.branchOffset=offset;
 			}
 			opcodeSize+=branchInfo.branchSize;
+		}
+		/*	and we still need to check if this opcode has a trailing
+			Z-character text string 
+		*/
+		if(opcodeHasTrailingString()){
+			// if text exists, it begins at addr+opcodeSize
+			// read it in...
+			vector<zword> zcharStr(0);
+			for(int i=0, j=addr+opcodeSize; ; i++){
+				zword zw=zMem.readZWord(j+(i*2));
+				zcharStr.push_back(zw);
+				if(zw>>15){
+					// top bit is set, this is the end of the string
+					opcodeSize+=(i+1)*2;
+					break;
+				}
+			}
+			opcodeString=vectorToArray<zword>(zcharStr);
 		}
 		/* "Store" instructions return a value: e.g., mul multiplies its two operands together.
 		Such instructions must be followed by a single byte giving the variable number of

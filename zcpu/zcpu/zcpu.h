@@ -6,6 +6,7 @@
 #include "../../zstack/zstack/zstack.h"
 #include "../../zglobal/zglobal.h"
 #include "../../ztext/ztext/ztext.h"
+#include "../../zinout/zinout/zinout.h"
 #include "zopcode.h"
 
 extern int zVersion;
@@ -16,8 +17,9 @@ namespace ZCpuInternal{
 	class ZCpuRoutine{
 	private:
 		bool varNumisInRange(int v){
-			// checks if var num is in range
-			if(v>0 && v<=localCount && v<15){
+			// checks if var num is in range\
+			// v==0 == top of stack
+			if(v>=0 && v<=localCount && v<15){
 				return true;
 			}
 			return false;
@@ -27,6 +29,8 @@ namespace ZCpuInternal{
 			beginAddr=codeStartAddr=0;
 			setLocalCount(0);
 			parentRoutine=NULL;
+			resumeAddr=NULL;
+			keepRetValue=true;
 		}
 
 		void loadAddr(ulong addr, ZMemory& zMem) throw (ZException){
@@ -40,8 +44,8 @@ namespace ZCpuInternal{
 					}
 				} // otherwise, for versions 5 and up, all vars are initialized as 0
 				// executable code begins at the byte after this information
-				// that is : addr+1+(2*(localCount-1))+1 --> first byte of executable code
-				codeStartAddr=addr+1+(2*(localCount-1))+1;
+				// that is : addr+1+(2*(localCount)) --> first byte of executable code
+				codeStartAddr=addr+1+(2*(localCount));
 				return;
 			}catch(...){
 				throw ZException();
@@ -65,10 +69,11 @@ namespace ZCpuInternal{
 		}
 
 		/** 
-			* destroys local variables
-			* @param zStack reference of stack object
-			* @throw ZException on any exception
-			*/
+		 * destroys local variables
+		 * @param zStack reference of stack object
+		 * @throw ZException on any exception
+		 * note : possibly a redundant function
+		 */
 		void destoryLocalVars(ZStack& zStack) throw (ZException){
 			try{
 				zStack.setStackPtr(zStack.getStackPtr()-localCount);
@@ -85,7 +90,7 @@ namespace ZCpuInternal{
 		zword readLocalVar(ZStack& zStack, int varNum) throw (ZException){
 			try{
 				if(varNumisInRange(varNum)){
-					return (zword)*(zStack.getStackData()+(zStack.getStackPtr()-localCount+(varNum-1)));
+					return endianize(*(zStack.getStackData()+(zStack.getStackPtr()-localCount+(varNum-1))));
 				}else{
 					throw ZException();
 				}
@@ -102,7 +107,7 @@ namespace ZCpuInternal{
 		void storeLocalVar(ZStack& zStack, int varNum, zword value) throw (ZException){
 			try{
 				if(varNumisInRange(varNum)){
-					*(zStack.getStackData()+(zStack.getStackPtr()-localCount+(varNum-1)))=value;
+					*(zStack.getStackData()+(zStack.getStackPtr()-localCount+(varNum-1)))=endianize(value);
 				}else{
 					throw ZException();
 				}
@@ -124,15 +129,51 @@ namespace ZCpuInternal{
 		ZCpuRoutine* parentRoutine;	/** pointer to ZCpuRoutine object of parent routine
 									 * if NULL, then this routine has no parent. (must be main()!)
 									 */
+
+		bool keepRetValue;		/// flag for keep/don't keep return value
+		zbyte retValueDest;		/// variable in which to put the return value
+
+		ulong resumeAddr;		/** address at which to resume execution upon a RETURN
+								 * should be set by the CALL instruction 
+								 */
 	};
 
 	class ZCpuStackFrame{
 	public:
-		struct entry{
-			ulong pCounter;
+		ZCpuStackFrame() : stackFrame(0){
 			
-		}entry;
+		}
+
+		int getSize(){return stackFrame.size();}
+
+		ulong readEntry(int n){
+			if(n<stackFrame.size()) return stackFrame[n];
+			return 0;
+		}
+
+		void storeEntry(int n, ulong val){
+			if(n<stackFrame.size()){
+				stackFrame[n]=val;
+				return;
+			}
+			return;
+		}
+
+		void pushEntry(ulong stackPtr){
+			stackFrame.push_back(stackPtr);
+		}
+
+		ulong pullEntry(){
+			if(stackFrame.size()!=0){
+				ulong pulledEntry=stackFrame[stackFrame.size()-1];
+				stackFrame.pop_back();
+				return pulledEntry;
+			}
+			return 0;
+		}
+
 	private:
+		vector<ulong> stackFrame;
 	protected:
 	};
 
@@ -143,22 +184,31 @@ using namespace ZCpuInternal;
 class ZCpu
 {
 public:
-	ZCpu() : zMem(zMem), zStack(zStack){}
-	ZCpu(ZMemory& zMem, ZStack& zStack);
+	ZCpu() : zMem(zMem), zStack(zStack), zObject(zObject), zInOut(zInOut){}
+	ZCpu(ZMemory& zMem, ZStack& zStack, ZObjectTable& zObject, ZInOut& zInOut);
 	int startExecution();
+	ulong getPCounter(){return pCounter;}
+	void incrementPCounter(ZOpcode& zOp);
+	void branchPCounter(int offset);
+	void setPCounter(ulong pCounter);
+
+	// peripherals
 	ZMemory& zMem;
 	ZStack& zStack;
+	ZObjectTable& zObject;
+	ZInOut& zInOut;
+	//
+
+	bool haltFlag;
 private:
 	ulong pCounter;				/// instruction pointer
-	bool haltFlag;
-	void incrementPCounter(ZOpcode& zOp);
-	void changePCounter(int offset);
 	int start();				/// start execution
 	int mainLoop(ZOpcode& zOp);				/// main loop for executing instructions
 public:
 
 	ZCpuRoutine *currentRoutine;	/// ZCpuRoutine for current routine
 	ZCpuRoutine *mainRoutine;		/// ZCpuRoutine for main routine
+	ZCpuStackFrame stackFrame;		/// stack frame for cpu
 
 protected:
 };

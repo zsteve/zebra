@@ -270,7 +270,9 @@ zword ZObjectTable::setObjectChildHelper(ulong indexParent, ulong indexChild) th
 
 zword ZObjectTable::setObjectParent(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex)
 {
-    setObjectChildHelper(indexParent, indexChild);
+	if(indexParent){
+		setObjectChildHelper(indexParent, indexChild);
+	}
     return setObjectParentHelper(indexChild, indexParent);
 }
 
@@ -281,8 +283,32 @@ zword ZObjectTable::setObjectSibling(ulong indexObject, ulong indexSibling) thro
 
 zword ZObjectTable::setObjectChild(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex)
 {
-    setObjectParentHelper(indexChild, indexParent);
+	if(indexChild){
+		setObjectParentHelper(indexChild, indexParent);
+	}
     return setObjectChildHelper(indexParent, indexChild);
+}
+
+void ZObjectTable::setObjectAttributeFlags32(ulong index, ulong flags) throw (IllegalObjectIndex)
+{
+    if(((index>255 || index==0) && zVersion<=3))
+    {
+        THROW_ILLEGALOBJECTINDEX(__LINE__, __FUNCTION__, __FILE__);
+    }
+    if(zVersion>3)
+    {
+        THROW_ILLEGALOBJECTINDEX(__LINE__, __FUNCTION__, __FILE__);
+    }
+	zbyte attrib[4];
+	attrib[0]=(flags&0xFF);
+	attrib[1]=(flags&0xFF00)>>8;
+	attrib[2]=(flags&0xFF0000)>>16;
+	attrib[3]=(flags&0xFF000000)>>24;
+	zMemObjPtr->storeZByte(getObjectAddr(index)+0, reverseBitSequence(attrib[0]));
+	zMemObjPtr->storeZByte(getObjectAddr(index)+1, reverseBitSequence(attrib[1]));
+	zMemObjPtr->storeZByte(getObjectAddr(index)+2, reverseBitSequence(attrib[2]));
+	zMemObjPtr->storeZByte(getObjectAddr(index)+3, reverseBitSequence(attrib[3]));
+	return;
 }
 
 zword ZObjectTable::getObjectPropertyHeaderAddr(ulong index) throw (IllegalObjectIndex)
@@ -415,4 +441,15 @@ ObjectProperty ZObjectTable::getPropertyListElem(zword addr, ulong index) throw 
     }catch(...){
         THROW_ILLEGALPROPERTYINDEX(__LINE__, __FUNCTION__, __FILE__);
     }
+}
+
+zbyte ZObjectTable::getPropertyNumber(zword addr) throw (ZMemoryReadOutOfBounds){
+	// returns the number of the property
+	// universal for all zmachine versions
+	zbyte sizeByte=zMemObjPtr->readZByte(addr);
+	if(zVersion<=3){
+		return (sizeByte & 31);
+	}else{
+		return (sizeByte & 63);
+	}
 }

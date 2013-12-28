@@ -15,6 +15,8 @@ typedef unsigned short zword;
 typedef unsigned char zchar;
 typedef unsigned char zbyte;
 typedef unsigned long ulong;
+typedef signed short szword;
+typedef signed long slong;
 
 // functions
 
