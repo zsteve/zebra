@@ -38,6 +38,57 @@ class ZMemoryReadOutOfBounds : ZException{
     }
 };
 
+struct ZHeaderData{
+	ZHeaderData(){
+
+	}
+
+	enum InterpreterNumber{
+		DECSYSTEM_20,
+		APPLE_IIe,
+		MACINTOSH,
+		AMIGA,
+		ATARI_ST,
+		IBM_PC,
+		COMMODORE_128,
+		COMMODORE_64,
+		APPLE_IIc,
+		APPLE_IIgs,
+		TANDY_COLOR
+	};
+
+	bool status_line_not_available;
+	bool screen_splitting_available;
+	bool variable_pitch_font_default;
+	bool colours_available;
+	bool picture_disp_available;
+	bool boldface_available;
+	bool italic_available;
+	bool fixed_space_font_available;
+	bool sound_effects_available;
+	bool timed_kb_input_available;
+	bool transcripting_on;
+	bool force_printing_fixed_pitch_font;
+	bool game_wants_pictures;
+	bool game_wants_undo;
+	bool game_wants_mouse;
+	bool game_wants_colours;
+	bool game_wants_sound_effects;
+	bool game_wants_menus;
+	InterpreterNumber interpreter_number;
+	zbyte interpreter_version;
+
+	zbyte screen_height;
+	zbyte screen_width;
+	zbyte screen_width_units;
+	zbyte screen_height_units;
+	zbyte font_width_units;
+	zbyte font_height_units;
+	zbyte default_background_color;
+	zbyte default_foreground_color;
+	zbyte standard_revision_number;
+};
+
 class ZMemory{
     private:
     // raw memory data members
@@ -82,6 +133,8 @@ class ZMemory{
 
 	zword readGlobalVar(zbyte varNum);
 	void storeGlobalVar(zbyte varNum, zword newVal);
+
+	void writeHeaderData(ZHeaderData& headerData);
 
     ZMemory();
 

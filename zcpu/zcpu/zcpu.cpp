@@ -2,9 +2,10 @@
 #include "zopcode_impl.h"
 #include "../../zstack/zstack/zstack.h"
 #include "../../zmemory/zmemory/zobject.h"
+#include "../../zdictionary/zdictionary/zdictionary.h"
 
-ZCpu::ZCpu(ZMemory& zMem, ZStack& zStack, ZObjectTable& zObject, ZInOut& zInOut)\
-	: zMem(zMem), zStack(zStack), zObject(zObject), zInOut(zInOut){
+ZCpu::ZCpu(ZMemory& zMem, ZStack& zStack, ZObjectTable& zObject, ZInOut& zInOut, ZDictionary& zDict)\
+	: zMem(zMem), zStack(zStack), zObject(zObject), zInOut(zInOut), zDict(zDict){
 	// initial value of program counter is found at 0x6
 	// (packed address)
 	pCounter=zMem.readZWord(0x6);
@@ -267,6 +268,78 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 				break;
 			case READ:
 				ZOpcodeImpl::READ(zOp);
+				break;
+			case PRINT_CHAR:
+				ZOpcodeImpl::PRINT_CHAR(zOp);
+				break;
+			case PRINT_NUM:
+				ZOpcodeImpl::PRINT_NUM(zOp);
+				break;
+			case RANDOM:
+				ZOpcodeImpl::RANDOM(zOp);
+				break;
+			case PUSH:
+				ZOpcodeImpl::PUSH(zOp);
+				break;
+			case PULL_VAR:
+				ZOpcodeImpl::PULL(zOp);
+				break;
+			case SPLIT_WINDOW:
+				ZOpcodeImpl::SPLIT_WINDOW(zOp);
+				break;
+			case SET_WINDOW:
+				ZOpcodeImpl::SET_WINDOW(zOp);
+				break;
+			case CALL_VS2:
+				ZOpcodeImpl::CALL_VS2(zOp);
+				break;
+			case ERASE_WINDOW:
+				ZOpcodeImpl::ERASE_WINDOW(zOp);
+				break;
+			case ERASE_LINE:
+				ZOpcodeImpl::ERASE_LINE(zOp);
+				break;
+			case SET_CURSOR_LC:
+				ZOpcodeImpl::SET_CURSOR(zOp);
+				break;
+			case GET_CURSOR:
+				ZOpcodeImpl::GET_CURSOR(zOp);
+				break;
+			case SET_TEXT_STYLE:
+				ZOpcodeImpl::SET_TEXT_STYLE(zOp);
+				break;
+			case BUFFER_MODE:
+				ZOpcodeImpl::BUFFER_MODE(zOp);
+				break;
+			case OUTPUT_STREAM_N:
+				ZOpcodeImpl::OUTPUT_STREAM_N(zOp);
+				break;
+			case INPUT_STREAM:
+				ZOpcodeImpl::INPUT_STREAM(zOp);
+				break;
+			case SOUND_EFFECT:
+				ZOpcodeImpl::SOUND_EFFECT(zOp);
+				break;
+			case READ_CHAR:
+				ZOpcodeImpl::READ_CHAR(zOp);
+				break;
+			case SCAN_TABLE:
+				ZOpcodeImpl::SCAN_TABLE(zOp);
+				break;
+			case NOT_V:
+				ZOpcodeImpl::NOT_V(zOp);
+				break;
+			case CALL_VN:
+				ZOpcodeImpl::CALL_VN(zOp);
+				break;
+			case CALL_VN2:
+				ZOpcodeImpl::CALL_VN2(zOp);
+				break;
+			case TOKENISE:
+				ZOpcodeImpl::TOKENISE(zOp);
+				break;
+			case ENCODE_TEXT:
+				ZOpcodeImpl::ENCODE_TEXT(zOp);
 				break;
 			default:
 

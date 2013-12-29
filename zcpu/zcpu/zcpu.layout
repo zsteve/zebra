@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
+	<File name="..\..\num2ascii\num2ascii\num2ascii.c" open="1" top="0" tabpos="13">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\num2ascii\num2ascii\num2ascii.h" open="1" top="1" tabpos="14">
+		<Cursor position="453" topLine="0" />
+	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="123" topLine="0" />
 	</File>
-	<File name="zcpu.cpp" open="1" top="1" tabpos="2">
+	<File name="zcpu.cpp" open="1" top="0" tabpos="2">
 		<Cursor position="1344" topLine="38" />
 	</File>
 	<File name="zcpu.h" open="1" top="0" tabpos="3">
@@ -14,9 +20,27 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="zopcode_impl.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="281" topLine="0" />
+		<Cursor position="41694" topLine="1494" />
 	</File>
 	<File name="zopcode_impl.h" open="1" top="0" tabpos="6">
 		<Cursor position="173" topLine="0" />
+	</File>
+	<File name="..\..\zdictionary\zdictionary\zdictionary.cpp" open="1" top="0" tabpos="8">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\zdictionary\zdictionary\zdictionary.h" open="1" top="0" tabpos="7">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\zinout\zinout\zinout.cpp" open="1" top="0" tabpos="10">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\zinout\zinout\zinout.h" open="1" top="0" tabpos="9">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\ztext\ztext\ztext.cpp" open="1" top="0" tabpos="11">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\ztext\ztext\ztext.h" open="1" top="0" tabpos="12">
+		<Cursor position="0" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

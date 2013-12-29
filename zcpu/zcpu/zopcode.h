@@ -219,6 +219,7 @@ private:
 	bool opcodeHasBranch();
 	bool opcodeHasStore();
 	bool opcodeHasTrailingString();
+	
 public:
     ZOpcode();
     ZOpcode(ulong addr, ZMemory& zMem);
@@ -262,6 +263,8 @@ public:
 		bool hasStore;
 		zbyte storeVar;		/// variable number to store into
 	}storeInfo;
+
+	bool extraTypeByte;		/// opcode has extra type byte (either call_vn2 or call_vs2)
 protected:
 };
 

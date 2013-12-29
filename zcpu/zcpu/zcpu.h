@@ -4,6 +4,7 @@
 #include "../../zmemory/zmemory/zmemory.h"
 #include "../../zmemory/zmemory/zobject.h"
 #include "../../zstack/zstack/zstack.h"
+#include "../../zdictionary/zdictionary/zdictionary.h"
 #include "../../zglobal/zglobal.h"
 #include "../../ztext/ztext/ztext.h"
 #include "../../zinout/zinout/zinout.h"
@@ -35,6 +36,8 @@ namespace ZCpuInternal{
 
 		void loadAddr(ulong addr, ZMemory& zMem) throw (ZException){
 			try{
+				// set begin addr
+				beginAddr=addr;
 				// A routine begins with one byte indicating the number of local variables it has
 				setLocalCount(zMem.readZByte(addr));
 				if(zVersion<=4){
@@ -59,6 +62,8 @@ namespace ZCpuInternal{
 		 */
 		void createLocalVars(ZStack& zStack) throw (ZException){
 			try{
+				// first, set the address of where the local vars may be found
+				localStartAddr=zStack.getStackPtr()-1;	// -1 because the stack is decremented before pushing a value
 				for(int i=0; i<localCount; i++){
 					zStack.push(localInitialVals[i]);
 				}
@@ -76,6 +81,7 @@ namespace ZCpuInternal{
 		 */
 		void destoryLocalVars(ZStack& zStack) throw (ZException){
 			try{
+				return;	// it is indeed redundant!
 				zStack.setStackPtr(zStack.getStackPtr()-localCount);
 			}catch(...){
 				throw ZException();
@@ -90,7 +96,10 @@ namespace ZCpuInternal{
 		zword readLocalVar(ZStack& zStack, int varNum) throw (ZException){
 			try{
 				if(varNumisInRange(varNum)){
-					return endianize(*(zStack.getStackData()+(zStack.getStackPtr()-localCount+(varNum-1))));
+					// buggy : does NOT take care of variables manually added to stack by
+					// read (0) or write(0)
+					// return endianize(*(zStack.getStackData()+(zStack.getStackPtr()-localCount+(varNum-1))));
+					return endianize(*(zStack.getStackData()+(localStartAddr-(varNum-1))));
 				}else{
 					throw ZException();
 				}
@@ -107,7 +116,9 @@ namespace ZCpuInternal{
 		void storeLocalVar(ZStack& zStack, int varNum, zword value) throw (ZException){
 			try{
 				if(varNumisInRange(varNum)){
-					*(zStack.getStackData()+(zStack.getStackPtr()-localCount+(varNum-1)))=endianize(value);
+					// *(zStack.getStackData()+(zStack.getStackPtr()-localCount+(varNum-1)))=endianize(value); 
+					// above statement buggy
+					*(zStack.getStackData()+(localStartAddr-(varNum-1)))=endianize(value);
 				}else{
 					throw ZException();
 				}
@@ -125,6 +136,7 @@ namespace ZCpuInternal{
 
 		ulong beginAddr;		/// address of the header of the routine
 		ulong codeStartAddr;	/// address of where the actual assembly code starts
+		ulong localStartAddr;	/// address _ON_THE_STACK_ of where the _STACK_ vars are
 
 		ZCpuRoutine* parentRoutine;	/** pointer to ZCpuRoutine object of parent routine
 									 * if NULL, then this routine has no parent. (must be main()!)
@@ -184,8 +196,8 @@ using namespace ZCpuInternal;
 class ZCpu
 {
 public:
-	ZCpu() : zMem(zMem), zStack(zStack), zObject(zObject), zInOut(zInOut){}
-	ZCpu(ZMemory& zMem, ZStack& zStack, ZObjectTable& zObject, ZInOut& zInOut);
+	ZCpu() : zMem(zMem), zStack(zStack), zObject(zObject), zInOut(zInOut), zDict(zDict){}
+	ZCpu(ZMemory& zMem, ZStack& zStack, ZObjectTable& zObject, ZInOut& zInOut, ZDictionary& zDict);
 	int startExecution();
 	ulong getPCounter(){return pCounter;}
 	void incrementPCounter(ZOpcode& zOp);
@@ -197,6 +209,7 @@ public:
 	ZStack& zStack;
 	ZObjectTable& zObject;
 	ZInOut& zInOut;
+	ZDictionary& zDict;
 	//
 
 	bool haltFlag;

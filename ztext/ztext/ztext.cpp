@@ -10,6 +10,10 @@ char zAlphaTable0[]={"abcdefghijklmnopqrstuvwxyz"};
 char zAlphaTable1[]={"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 char zAlphaTable2[]={" \n0123456789.,!?_#'\"/\s\-:()"};
 
+char ZSCIIAlphaTable[]={" !\"#$%&'()*+,-./0123456789:;<=>?"\
+						"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_"\
+						"'abcdefghijklmnopqrstuvwxyz{!}~ "};
+						
 extern int zVersion;
 
 int defaultAlpha=ALPHABET_0;
@@ -160,6 +164,18 @@ zchar* zCharStringtoZSCIIHelper(zchar* zCharString, ulong zStringLength, ZMemory
             alphaShift=ALPHABET_0;
             continue;
         }
+		// special check for a ten bit ZSCII char
+		if(alphaShift==ALPHABET_2 && xlatChar==6){
+			//the two subsequent Z-characters specify a ten-bit ZSCII character code
+			//the next Z-character gives the top 5 bits and the one after the bottom 5.
+			char c1, c2;
+			c1=zCharString[i+1];
+			c2=zCharString[i+2];
+			zword zscii=(c1<<5)|c2;
+			zsciiString.push_back(ZSCIIAlphaTable[zscii-0x20]);
+			i+=2;
+		}
+		
         // now we have to check for special chars
         // according to ZSpec, Z-chars 1, 2, 3, 4, 5
         // are special
@@ -364,7 +380,7 @@ zchar getZCharAlphaShiftCharacter(int currentAlpha, int desiredAlpha, bool shift
     // for shifting from currentAlpha to desiredAlpha
     // default parameter shiftLock is ignored for all versions
     // 3 and above
-    zchar outChar;
+    zchar outChar=NULL;
     int diff=currentAlpha-desiredAlpha;
     if(diff==-1 || diff==2)
     {

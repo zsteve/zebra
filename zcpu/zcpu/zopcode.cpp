@@ -550,7 +550,22 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 			operandTypes.push_back(getOperandType(types));
 			types=(typeByte & (BIT_1 | BIT_0));
 			operandTypes.push_back(getOperandType(types));
-			/// TODO : add support for "double variable" VAR opcodes call_vs2 and call_vn2 (opcode numbers 12 and 26)
+			/// support for opcodes call_vs2 and call_vn2
+			if(opcodeName==CALL_VS2 || opcodeName==CALL_VN2){
+				// these two opcodes support up to 8 arguments
+				// there is a second byte of argument types
+				opcodeSize++;
+				zbyte typeByte2=zMem.readZByte(addr+2);
+				int types2=(typeByte & (BIT_7 | BIT_6))>>6;
+				operandTypes.push_back(getOperandType(types2));
+				types2=(typeByte & (BIT_5 | BIT_4))>>4;
+				operandTypes.push_back(getOperandType(types2));
+				types2=(typeByte & (BIT_3 | BIT_2))>>2;
+				operandTypes.push_back(getOperandType(types2));
+				types2=(typeByte & (BIT_1 | BIT_0));
+				operandTypes.push_back(getOperandType(types2));
+				extraTypeByte=true;
+			}
 		}
 		// operands are given next
 		if(opcodeType==ZOPTYPE_SHORT){
@@ -573,8 +588,9 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 		}else if(opcodeType==ZOPTYPE_EXT || opcodeType==ZOPTYPE_VAR){
 			// extended ops are VAR OP
 			int read_offset=0;
+			int extra_offset=extraTypeByte ? 2 : 1;
 			for(int i=0; i<operandTypes.size() && operandTypes[i]!=ZOPERANDTYPE_OMITTED; i++){
-				operands.push_back(getOperand((addr+2+read_offset), operandTypes[i], zMem, read_offset));
+				operands.push_back(getOperand((addr+extra_offset+read_offset), operandTypes[i], zMem, read_offset));
 			}
 			opcodeSize+=read_offset;
 		}

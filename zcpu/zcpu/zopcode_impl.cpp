@@ -5,6 +5,9 @@
 #include "../../zmemory/zmemory/zobject.h"
 #include "../../ztext/ztext/ztext.h"
 #include "../../zinout/zinout/zinout.h"
+#include "../../zdictionary/zdictionary/zdictionary.h"
+
+#include "../../num2ascii/num2ascii/num2ascii.h"
 
 #include <cmath>
 
@@ -35,6 +38,7 @@ namespace ZOpcodeImpl{
 	ZObjectTable* zObject;
 	ZStack* zStack;
 	ZInOut* zInOut;
+	ZDictionary* zDictionary;
 
 	void registerJumpFlag(int* f){
 		jumpFlag=f;
@@ -50,6 +54,7 @@ namespace ZOpcodeImpl{
 		zObject=&cpuObj->zObject;
 		zStack=&cpuObj->zStack;
 		zInOut=&cpuObj->zInOut;
+		zDictionary=&cpuObj->zDict;
 	}
 
 	// implementations for z-machine opcodes
@@ -505,7 +510,7 @@ namespace ZOpcodeImpl{
 				// since property list is stored in descending numerical order\
 				// if propNumber < prop, prop doesn't exist
 				if(propNumber < prop){
-					propVal=zObject->getDefaultProperty(object);
+					propVal=zObject->getDefaultProperty(prop);
 					break;
 				}
 				if(propNumber==prop){
@@ -517,7 +522,7 @@ namespace ZOpcodeImpl{
 						}else if(propSize==2){
 							propVal=zMemory->readZWord(i+1);
 						}else{
-							propVal=zObject->getDefaultProperty(object);
+							propVal=zObject->getDefaultProperty(prop);
 						}
 					}else{
 						bool isWord=false;
@@ -528,7 +533,7 @@ namespace ZOpcodeImpl{
 						}else if(propSize==2){
 							propVal=zMemory->readZWord(i+add+1);
 						}else{
-							propVal=zObject->getDefaultProperty(object);
+							propVal=zObject->getDefaultProperty(prop);
 						}
 					}
 				}
@@ -1373,9 +1378,9 @@ namespace ZOpcodeImpl{
 					if(zVersion<=3){
 						zword propSize=zObject->getPropertySize(i);
 						if(propSize==1){
-							zMemory->storeZByte(i, (zbyte)value&255);
+							zMemory->storeZByte(i+1, (zbyte)value&255);
 						}else if(propSize==2){
-							zMemory->storeZWord(i, value);
+							zMemory->storeZWord(i+1, value);
 						}else{
 							throw IllegalZOpcode();
 						}
@@ -1443,7 +1448,7 @@ namespace ZOpcodeImpl{
 				// read chars until CRLF
 				// or in v5, any terminating char
 				zword textBuffer=retrieveOperandValue(zOp, 0);
-				zword parse=retrieveOperandValue(zOp, 1);
+				zword parseBuffer=retrieveOperandValue(zOp, 1);
 				zbyte maxChars=NULL;
 				maxChars = zMemory->readZByte(textBuffer+0);
 				int beginPos=(zVersion<=4) ? 1 : 2;
@@ -1455,7 +1460,9 @@ namespace ZOpcodeImpl{
 				}
 				if(zVersion>=5){
 					// 5 and onwards, write sizeof text to byte 1
-					zMemory->storeZByte(textBuffer+1, strlen(text));
+					int len=strlen(text);
+					len=(len<maxChars) ? len : maxChars;
+					zMemory->storeZByte(textBuffer+1, len);
 				}
 				// begin copy
 				{
@@ -1464,14 +1471,479 @@ namespace ZOpcodeImpl{
 						if(zVersion>=5 && text[i]==NULL) break;	// don't copy NULL char if v5+
 						zMemory->storeZByte(textBuffer+beginPos+i, text[i]);
 						i++;
-					}while(text[i]!=NULL);
+					}while(text[i]!=NULL && i<maxChars);
 				}
 				// done
+				// now perform lexical analysis
+				if(!(zVersion>=5 && parseBuffer==NULL)){
+					// if v5+ and parseBuffer=NULL, this is skipped
+					// but if not, continue
+					int maxWords=zMemory->readZByte(parseBuffer+0);	// byte 0 of parse-buffer has max capacity
+					// therefore the buffer must be at least 2+4n bytes long to hold n words
+					ZDictionaryParseTable parseTable=zDictionary->performLexicalAnalysis((zchar*)text);
+					parseTable.trimTable(maxWords);	// trim to size
+					// write parse table
+					parseTable.writeParseBuffer(parseBuffer, *zMemory);
+				}
 			}else if(opType==SREAD_TPTR){
 
 			}else if(opType==AREAD){
 
 			}
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of PRINT_CHAR opcode
+	int PRINT_CHAR(ZOpcode& zOp){
+		try{
+			// print_char output-character-code
+			zword charCode=retrieveOperandValue(zOp, 0);
+			char* str=new char[2];
+			str[0]=(char)charCode;
+			str[1]=NULL;
+			zInOut->print((char*)str);
+			delete[] str;
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of PRINT_NUM opcode
+	int PRINT_NUM(ZOpcode& zOp){
+		try{
+			zword num=retrieveOperandValue(zOp, 0);
+			zInOut->print(IntegerToDecASCII((int)num));
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of RANDOM opcode
+	int RANDOM(ZOpcode& zOp){
+		try{
+
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of PUSH opcode
+	int PUSH(ZOpcode& zOp){
+		try{
+			// push value
+			zword value=retrieveOperandValue(zOp, 0);
+			zStack->push(value);
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of PULL opcode
+	int PULL(ZOpcode& zOp){
+		try{
+			// pull (variable)
+			// pull stack -> (result) (v6)
+			if(zVersion<6){
+				zword var=zOp.getOperands()[0];
+				storeVariable(var, zStack->pull());
+			}
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of SPLIT_WINDOW opcode
+	int SPLIT_WINDOW(ZOpcode& zOp){
+		try{
+			// todo
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of SET_WINDOW opcode
+	int SET_WINDOW(ZOpcode& zOp){
+		try{
+
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of CALL_VS2 opcode
+	int CALL_VS2(ZOpcode& zOp){
+		try{
+			// special case : up to 8 arguments
+			//  call_vs2 routine ...up to 7 args... -> (result)
+			if(zOp.getOperandCount()<2){
+				// minimum 2 operands
+				throw IllegalZOpcode();
+			}
+			if(!zOp.getOperands()[0]){
+				// if addr==0, do nothing and set return value
+				// to false
+				int returnVar=zOp.storeInfo.storeVar;;	// retrieve last operand
+				storeVariable(returnVar, NULL);	// null == false
+				return 0;
+			}
+			// otherwise, enter into the routine
+			// setting the routine's local values to the
+			// given arguments, starting from local #0
+			vector<int> routineArgs(0);
+			for(int i=1; i<zOp.getOperands().size()-1; i++){
+				routineArgs.push_back(retrieveOperandValue(zOp, i));
+			}
+			// now that we have the operands, we may begin to
+			// enter into the routine
+			routineEnter(zOp, zMemory->unpackAddr(retrieveOperandValue(zOp, 0)));
+			// load arguments into local vars
+			for(int i=0; i<routineArgs.size() && i< cpuObj->currentRoutine->localCount; i++){
+				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i]);
+			}
+			// load return value destination
+			cpuObj->currentRoutine->retValueDest=zOp.storeInfo.storeVar;
+			cpuObj->currentRoutine->keepRetValue=true;
+			// jump to routine
+			*jumpFlag=JUMP_POSITION;
+			*jumpValue=cpuObj->currentRoutine->codeStartAddr;
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of ERASE_WINDOW opcode
+	int ERASE_WINDOW(ZOpcode& zOp){
+		try{
+			// todo
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of ERASE_LINE opcode
+	int ERASE_LINE(ZOpcode& zOp){
+		try{
+			// todo
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of SET_CURSOR opcode
+	int SET_CURSOR(ZOpcode& zOp){
+		try{
+			// todo
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of GET_CURSOR opcode
+	int GET_CURSOR(ZOpcode& zOp){
+		try{
+
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of SET_TEXT_STYLE opcode
+	int SET_TEXT_STYLE(ZOpcode& zOp){
+		try{
+
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of BUFFER_MODE opcode
+	int BUFFER_MODE(ZOpcode& zOp){
+		try{
+
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of OUTPUT_STREAM opcode
+	int OUTPUT_STREAM_N(ZOpcode& zOp){
+		try{
+
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of INPUT_STREAM opcode
+	int INPUT_STREAM(ZOpcode& zOp){
+		try{
+
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of SOUND_EFFECT opcode
+	int SOUND_EFFECT(ZOpcode& zOp){
+		try{
+
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of READ_CHAR opcode
+	int READ_CHAR(ZOpcode& zOp){
+		try{
+			// read_char 1 time routine -> (result)
+			// todo : process time and routine
+			// currently just returning char
+			zword var1=retrieveOperandValue(zOp, 0);
+			if(var1!=1){
+				throw IllegalZOpcode();
+			}
+			// otherwise
+			char result=zInOut->getChar();
+			storeVariable(zOp.storeInfo.storeVar, result);
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of SCAN_TABLE opcode
+	int SCAN_TABLE(ZOpcode& zOp){
+		try{
+			//scan_table x table len form -> (result)
+			zword x=retrieveOperandValue(zOp, 0);
+			zword table=retrieveOperandValue(zOp, 1);
+			zword len=retrieveOperandValue(zOp, 2);
+			bool hasForm=false;
+			zword form=0;
+			if(zOp.getOperands().size()==4){
+				// form operand is present
+				form=retrieveOperandValue(zOp, 3);
+				hasForm=true;
+			}
+			// we do not process form, as this interpreter
+			// is not designed to operationally support v5
+			// as yet
+			for(int i=0; i<len; i++){
+				zword v=zMemory->readZWord(table+(2*len));
+				if(v==x){
+					// found it!
+					storeVariable(zOp.storeInfo.storeVar, v);
+					// and branch
+					if(zOp.branchInfo.branchOffset==0){
+						// return false
+						routineReturn(zOp, 0);
+					}else if(zOp.branchInfo.branchOffset==1){
+						// return true
+						routineReturn(zOp, 1);
+					}else{
+						*jumpFlag=JUMP_OFFSET;
+						*jumpValue=zOp.branchInfo.branchOffset;
+					}
+				}
+			}
+			// return 0 and don't branch
+			storeVariable(zOp.storeInfo.storeVar, 0);
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of NOT opcode (var)
+	int NOT_V(ZOpcode& zOp){
+		try{
+			// same as NOT
+			NOT(zOp);
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of CALL_VN opcode
+	int CALL_VN(ZOpcode& zOp){
+		try{
+			if(zOp.getOperandCount()<2){
+				// minimum 2 operands
+				throw IllegalZOpcode();
+			}
+			if(!zOp.getOperands()[0]){
+				// if addr==0, do nothing and set return value
+				// to false
+				int returnVar=zOp.storeInfo.storeVar;;	// retrieve last operand
+				storeVariable(returnVar, NULL);	// null == false
+				return 0;
+			}
+			// otherwise, enter into the routine
+			// setting the routine's local values to the
+			// given arguments, starting from local #0
+			vector<int> routineArgs(0);
+			for(int i=1; i<zOp.getOperands().size()-1; i++){
+				routineArgs.push_back(retrieveOperandValue(zOp, i));
+			}
+			// now that we have the operands, we may begin to
+			// enter into the routine
+			routineEnter(zOp, zMemory->unpackAddr(retrieveOperandValue(zOp, 0)));
+			// load arguments into local vars
+			for(int i=0; i<routineArgs.size() && i< cpuObj->currentRoutine->localCount; i++){
+				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i]);
+			}
+			// load return value destination
+			cpuObj->currentRoutine->keepRetValue=false;
+			// jump to routine
+			*jumpFlag=JUMP_POSITION;
+			*jumpValue=cpuObj->currentRoutine->codeStartAddr;
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of CALL_VN2 opcode
+	int CALL_VN2(ZOpcode& zOp){
+		try{
+			// special case : up to 8 arguments
+			//  call_vs2 routine ...up to 7 args... -> (result)
+			if(zOp.getOperandCount()<2){
+				// minimum 2 operands
+				throw IllegalZOpcode();
+			}
+			if(!zOp.getOperands()[0]){
+				// if addr==0, do nothing and set return value
+				// to false
+				int returnVar=zOp.storeInfo.storeVar;;	// retrieve last operand
+				storeVariable(returnVar, NULL);	// null == false
+				return 0;
+			}
+			// otherwise, enter into the routine
+			// setting the routine's local values to the
+			// given arguments, starting from local #0
+			vector<int> routineArgs(0);
+			for(int i=1; i<zOp.getOperands().size()-1; i++){
+				routineArgs.push_back(retrieveOperandValue(zOp, i));
+			}
+			// now that we have the operands, we may begin to
+			// enter into the routine
+			routineEnter(zOp, zMemory->unpackAddr(retrieveOperandValue(zOp, 0)));
+			// load arguments into local vars
+			for(int i=0; i<routineArgs.size() && i< cpuObj->currentRoutine->localCount; i++){
+				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i]);
+			}
+			// load return value destination
+			cpuObj->currentRoutine->keepRetValue=false;
+			// jump to routine
+			*jumpFlag=JUMP_POSITION;
+			*jumpValue=cpuObj->currentRoutine->codeStartAddr;
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of TOKENISE opcode
+	int TOKENISE(ZOpcode& zOp){
+		try{
+			// tokenise text parse dictionary flag
+			// currently only supports using the game dictionary
+			zword text=retrieveOperandValue(zOp, 0);
+			zword parse=retrieveOperandValue(zOp, 1);
+			zword dict=retrieveOperandValue(zOp, 2);
+			zword flag=retrieveOperandValue(zOp, 3);
+			int maxWords=zMemory->readZByte(parse+0);	// byte 0 of parse-buffer has max capacity
+			// therefore the buffer must be at least 2+4n bytes long to hold n words
+			// if flag == 1, don't write unrecognized tokens
+			ZDictionaryParseTable parseTable=zDictionary->performLexicalAnalysis(zMemory->getRawDataPtr()+text);	// must use real address here
+			parseTable.trimTable(maxWords);
+			parseTable.writeParseBuffer(parse, *zMemory, (bool)flag);
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of ENCODE_TEXT opcode
+	int ENCODE_TEXT(ZOpcode& zOp){
+		try{
+			//encode_text zscii-text length from coded-text
+			zword zsciiText=retrieveOperandValue(zOp, 0);
+			zword length=retrieveOperandValue(zOp, 1);
+			zword from=retrieveOperandValue(zOp, 2);
+			zword codedText=retrieveOperandValue(zOp, 3);
+			// text begins at zsciiText+from and is length chars long
+			zchar* text=new zchar[length];
+			for(int i=0; i<length; i++){
+				text[i]=zMemory->readZByte(zsciiText+from+i);
+			}
+			// now we will encode it
+			zword* zcharString=ZSCIItoZCharString(text);
+			// and convert it to a dictionary string
+			zword* zcharDict=zChartoDictionaryZCharString(zcharString);
+			zword strSize=(length/3)+(3-(length%3));	// str size == next multiple of 3
+			if(zVersion<=3){
+				strSize=(strSize<4) ? strSize : 2;
+			}else{
+				strSize=(strSize<6) ? strSize : 3;
+			}
+			// copy it into coded-text
+			for(int i=0; i<strSize; i++){
+				zMemory->storeZWord(codedText+(2*i), zcharDict[i]);
+			}
+			// all done!
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of COPY_TABLE opcode
+	int COPY_TABLE(ZOpcode& zOp){
+		try{
+			// copy_table first second size
+			// if second==0, then all bytes of first are zeroed
+			// otherwise all bytes in first == all bytes in second
+			// size may be negative, so size = abs(size)
+			// if size == negative, copy forwards regardless
+			// else copy forwards/backwards to avoid corrupting first
+			zword first=retrieveOperandValue(zOp, 0);
+			zword second=retrieveOperandValue(zOp, 1);
+			szword size=retrieveOperandValue(zOp, 2);
+			enum{FORWARD, BACKWARD};
+			int direction=NULL;
+			if(size<0){
+				zword firstBegin, firstEnd;
+				zword secondBegin, secondEnd;
+				firstBegin=first;
+				firstEnd=first+size;
+				secondBegin=second;
+				secondEnd=second+size;
+				if(secondEnd>firstBegin){
+					// second overlaps first from behind
+					direction=FORWARD;
+				}else if(firstEnd>secondBegin){
+					// first overlaps second from behind
+					direction=BACKWARD;
+				}
+			}else{
+				direction=FORWARD;
+			}
+			if(direction==FORWARD){
+				for(int i=0; i<size; i++){
+					zMemory->storeZByte(second+i, zMemory->readZByte(first+i));
+				}
+			}else{
+				for(int i=(size-1); i<=0; i--){
+					zMemory->storeZByte(second+i, zMemory->readZByte(first+i));
+				}
+			}
+		}catch(...){
+			throw IllegalZOpcode();
+		}
+	}
+
+	// implementation of PRINT_TABLE instruction
+	int PRINT_TABLE(ZOpcode& zOp){
+		try{
+
 		}catch(...){
 			throw IllegalZOpcode();
 		}

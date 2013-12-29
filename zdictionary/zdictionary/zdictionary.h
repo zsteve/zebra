@@ -86,6 +86,7 @@ struct ZCharDictionaryToken{
             this->wordData[i]=a.wordData[i];
         }
         this->textBufferPos=a.textBufferPos;
+		return *this;
     }
 };
 
@@ -185,7 +186,7 @@ struct ZDictionaryParseTable{
         }
         return;
     }
-    void writeParseBuffer(ulong addr, ZMemory& zMem) throw (DictionaryError,\
+    void writeParseBuffer(ulong addr, ZMemory& zMem, bool writeUnrecognized=true) throw (DictionaryError,\
                                                             ZMemoryReadOutOfBounds,
                                                             ZMemoryWriteOutOfBounds) {
         // byte 0 of parse buffer contains max num of words buffer can hold
@@ -203,7 +204,17 @@ struct ZDictionaryParseTable{
             numWords=maxWords;
         }
         // byte 1 of parse buffer contains the written number of words
-        zMem.storeZByte(addr+1, numWords);
+		if(!writeUnrecognized){
+		   zMem.storeZByte(addr+1, numWords);
+		}else{
+			int num=0;
+			for(int i=0; i<entryVector.size(); i++){
+				if(entryVector[i].dictWordAddr){
+					num++;
+				}
+			}
+			 zMem.storeZByte(addr+1, num);		// manually determine word count
+		}
         // from byte 2 onwards, each 4 byte block is one entry
         // (of 4 byte block)
         // byte 0, 1    : byte addr of word in dictionary, 0 if not present
@@ -211,6 +222,7 @@ struct ZDictionaryParseTable{
         // byte 3       : index of first letter of word in text buffer
         for(int i=0; i<entryVector.size(); i++)
         {
+			if(!entryVector[i].dictWordAddr && writeUnrecognized) continue;	// don't write ones which aren't in dictionary IF flag set
             zbyte* zData=entryVector[i].getPackedEntry();
             for(int j=0; j<4; j++){
                 zMem.storeZByte(addr+(4*i)+2+j, zData[j]);

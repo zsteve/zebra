@@ -20,7 +20,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -77,23 +77,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\num2ascii\num2ascii\num2ascii.c" />
+    <ClCompile Include="..\..\..\zdictionary\zdictionary\zdictionary.cpp" />
     <ClCompile Include="..\..\..\zerror\zerror\zerror.cpp" />
     <ClCompile Include="..\..\..\zglobal\zglobal.cpp" />
+    <ClCompile Include="..\..\..\zinout\zinout\zinout.cpp" />
     <ClCompile Include="..\..\..\zmemory\zmemory\zmemory.cpp" />
     <ClCompile Include="..\..\..\zmemory\zmemory\zobject.cpp" />
     <ClCompile Include="..\..\..\zstack\zstack\zstack.cpp" />
+    <ClCompile Include="..\..\..\ztext\ztext\ztext.cpp" />
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\zcpu.cpp" />
     <ClCompile Include="..\zopcode.cpp" />
     <ClCompile Include="..\zopcode_impl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\num2ascii\num2ascii\num2ascii.h" />
+    <ClInclude Include="..\..\..\zdictionary\zdictionary\zdictionary.h" />
     <ClInclude Include="..\..\..\zerror\zerror\zerror.h" />
     <ClInclude Include="..\..\..\zglobal\zglobal.h" />
     <ClInclude Include="..\..\..\zglobal\zglobaldefines.h" />
+    <ClInclude Include="..\..\..\zinout\zinout\zinout.h" />
     <ClInclude Include="..\..\..\zmemory\zmemory\zmemory.h" />
     <ClInclude Include="..\..\..\zmemory\zmemory\zobject.h" />
     <ClInclude Include="..\..\..\zstack\zstack\zstack.h" />
+    <ClInclude Include="..\..\..\ztext\ztext\ztext.h" />
     <ClInclude Include="..\zcpu.h" />
     <ClInclude Include="..\zopcode.h" />
     <ClInclude Include="..\zopcode_impl.h" />

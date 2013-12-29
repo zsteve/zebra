@@ -84,7 +84,30 @@ namespace ZOpcodeImpl{
 	int STOREB(ZOpcode& zOp);
 	int PUT_PROP(ZOpcode& zOp);
 	int READ(ZOpcode& zOp);
-
+	int PRINT_CHAR(ZOpcode& zOp);
+	int PRINT_NUM(ZOpcode& zOp);
+	int RANDOM(ZOpcode& zOp);
+	int PUSH(ZOpcode& zOp);
+	int PULL(ZOpcode& zOp);
+	int SPLIT_WINDOW(ZOpcode& zOp);
+	int SET_WINDOW(ZOpcode& zOp);
+	int CALL_VS2(ZOpcode& zOp);
+	int ERASE_WINDOW(ZOpcode& zOp);
+	int ERASE_LINE(ZOpcode& zOp);
+	int SET_CURSOR(ZOpcode& zOp);
+	int GET_CURSOR(ZOpcode& zOp);
+	int SET_TEXT_STYLE(ZOpcode& zOp);
+	int BUFFER_MODE(ZOpcode& zOp);
+	int OUTPUT_STREAM_N(ZOpcode& zOp);
+	int INPUT_STREAM(ZOpcode& zOp);
+	int SOUND_EFFECT(ZOpcode& zOp);
+	int READ_CHAR(ZOpcode& zOp);
+	int SCAN_TABLE(ZOpcode& zOp);
+	int NOT_V(ZOpcode& zOp);
+	int CALL_VN(ZOpcode& zOp);
+	int CALL_VN2(ZOpcode& zOp);
+	int TOKENISE(ZOpcode& zOp);
+	int ENCODE_TEXT(ZOpcode& zOp);
 	// EXT
 	int LOG_SHIFT(ZOpcode& zOp);
 }

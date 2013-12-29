@@ -43,6 +43,30 @@
     <Filter Include="Source Files\zstack">
       <UniqueIdentifier>{f44dd82e-684a-44d2-bdc6-0acf721ec786}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ztext">
+      <UniqueIdentifier>{58df6a3c-9c74-4f05-8425-81ae2f102906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ztext">
+      <UniqueIdentifier>{a51ff374-b948-475a-b1ef-832f3d0df7ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\zinout">
+      <UniqueIdentifier>{2db5a902-b99a-4bed-bc57-a2ffc2613032}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\zinout">
+      <UniqueIdentifier>{46e65e77-9067-4ffb-bfe9-dd501171669b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\zdictionary">
+      <UniqueIdentifier>{e174b5b2-80ff-4029-a8cc-acb2f2983a0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\zdictionary">
+      <UniqueIdentifier>{973657d4-a674-4bbd-ba73-e59d567971ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\num2ascii">
+      <UniqueIdentifier>{78cd3466-edeb-4b25-86b8-eb483794902f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\num2ascii">
+      <UniqueIdentifier>{2b733086-24c0-49c4-9a7e-4df85b028c8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp">
@@ -72,6 +96,18 @@
     <ClCompile Include="..\..\..\zstack\zstack\zstack.cpp">
       <Filter>Source Files\zstack</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\ztext\ztext\ztext.cpp">
+      <Filter>Source Files\ztext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zinout\zinout\zinout.cpp">
+      <Filter>Source Files\zinout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zdictionary\zdictionary\zdictionary.cpp">
+      <Filter>Source Files\zdictionary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\num2ascii\num2ascii\num2ascii.c">
+      <Filter>Source Files\num2ascii</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\zcpu.h">
@@ -100,6 +136,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\zstack\zstack\zstack.h">
       <Filter>Header Files\zstack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ztext\ztext\ztext.h">
+      <Filter>Header Files\ztext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zinout\zinout\zinout.h">
+      <Filter>Header Files\zinout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zdictionary\zdictionary\zdictionary.h">
+      <Filter>Header Files\zdictionary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\num2ascii\num2ascii\num2ascii.h">
+      <Filter>Header Files\num2ascii</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

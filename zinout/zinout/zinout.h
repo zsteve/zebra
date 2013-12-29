@@ -5,9 +5,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
-#ifdef PLATFORM_WIN32_CONSOLE
 #include <conio.h>
-#endif
 
 using namespace std;
 
@@ -117,6 +115,7 @@ public:
     void print(char* str);
     void readLine(char* buffer);
     char* readLine();
+	char getChar();
 private:
 	char* readLineLastRead;
 protected:

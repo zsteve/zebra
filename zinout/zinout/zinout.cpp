@@ -1,4 +1,8 @@
 #include "zinout.h"
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <conio.h>
 
 void ZInOut::print(char* str){
    // #ifdef PLATFORM_LINUX_CONSOLE || PLATFORM_WIN32_CONSOLE
@@ -22,4 +26,8 @@ char* ZInOut::readLine(){
     scanf("%s", buffer);
     return buffer;
     //#endif
+}
+
+char ZInOut::getChar(){
+	return _getch();
 }
