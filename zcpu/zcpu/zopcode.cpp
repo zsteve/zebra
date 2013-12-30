@@ -610,7 +610,7 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 			}else{
 				branchInfo.branchSize=1;
 			}
-			branchInfo.branchCond=(bool)(branchInfo.byte1|BIT_7);
+			branchInfo.branchCond=(bool)(branchInfo.byte1&BIT_7);
 			if(branchInfo.branchSize==1){
 				branchInfo.branchOffset=(branchInfo.byte1 &
 										(BIT_5|

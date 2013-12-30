@@ -243,6 +243,36 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 			case GET_PROP_ADDR:
 				ZOpcodeImpl::GET_PROP_ADDR(zOp);
 				break;
+			case GET_NEXT_PROP:
+				ZOpcodeImpl::GET_NEXT_PROP(zOp);
+				break;
+			case ADD:
+				ZOpcodeImpl::ADD(zOp);
+				break;
+			case SUB:
+				ZOpcodeImpl::SUB(zOp);
+				break;
+			case MUL:
+				ZOpcodeImpl::MUL(zOp);
+				break;
+			case DIV:
+				ZOpcodeImpl::DIV(zOp);
+				break;
+			case MOD:
+				ZOpcodeImpl::MOD(zOp);
+				break;
+			case CALL_2S:
+				ZOpcodeImpl::CALL_2S(zOp);
+				break;
+			case CALL_2N:
+				ZOpcodeImpl::CALL_2N(zOp);
+				break;
+			case SET_COLOUR_FB:
+				ZOpcodeImpl::SET_COLOUR_FB(zOp);
+				break;
+			case THROW:
+				ZOpcodeImpl::THROW(zOp);
+				break;
 			default:
 				break;
 			}

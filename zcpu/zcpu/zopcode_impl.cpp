@@ -390,7 +390,7 @@ namespace ZOpcodeImpl{
 			}catch(...){
 				objectAttrib=NULL;
 			}
-			bool cond=(objectAttrib & attrib);
+			bool cond=(objectAttrib & (1<<(31-attrib)));
 			if(zOp.branchInfo.branchCond==cond){
 				// jump
 				if(zOp.branchInfo.branchOffset==0){
@@ -429,7 +429,7 @@ namespace ZOpcodeImpl{
 			zword object=retrieveOperandValue(zOp, 0);
 			zword attrib=retrieveOperandValue(zOp, 1);
 			zword objectAttrib=zObject->getObjectAttributeFlags32(object);
-			zObject->setObjectAttributeFlags32(object, objectAttrib & (0xFFFFFFFF^(1<<(32-attrib))));
+			zObject->setObjectAttributeFlags32(object, objectAttrib & (0xFFFFFFFF^(1<<(31-attrib))));
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -536,6 +536,7 @@ namespace ZOpcodeImpl{
 							propVal=zObject->getDefaultProperty(prop);
 						}
 					}
+					break;
 				}
 				if(zVersion<=3){
 					i+=zObject->getPropertySize(i)+1;
@@ -1293,7 +1294,7 @@ namespace ZOpcodeImpl{
 			// setting the routine's local values to the
 			// given arguments, starting from local #0
 			vector<int> routineArgs(0);
-			for(int i=1; i<zOp.getOperands().size()-1; i++){
+			for(int i=1; i<zOp.getOperands().size(); i++){
 				routineArgs.push_back(retrieveOperandValue(zOp, i));
 			}
 			// now that we have the operands, we may begin to

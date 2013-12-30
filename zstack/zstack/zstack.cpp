@@ -39,7 +39,7 @@ void ZStack::push(zword val) throw (StackFullException)
         THROW_STACKFULLEXCEPTION(__LINE__, __FUNCTION__, __FILE__); // if it's full, we throw an exception
     // otherwise, we continue and add it to the stack
     stackPtr--;
-    stackData[stackPtr]=val;
+    stackData[stackPtr]=endianize(val);
     return;
 }
 
@@ -50,5 +50,5 @@ zword ZStack::pull() throw (StackEmptyException)
         THROW_STACKEMPTYEXCEPTION(__LINE__, __FUNCTION__, __FILE__);  // if it's empty, we throw an exception
     }
     // or else we continue
-    return stackData[stackPtr++];
+    return endianize(stackData[stackPtr++]);
 }
