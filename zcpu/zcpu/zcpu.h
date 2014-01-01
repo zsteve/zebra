@@ -63,7 +63,7 @@ namespace ZCpuInternal{
 		void createLocalVars(ZStack& zStack) throw (ZException){
 			try{
 				// first, set the address of where the local vars may be found
-				localStartAddr=zStack.getStackPtr();	// -1 because the stack is decremented before pushing a value
+				localStartAddr=zStack.getStackPtr()-1;	// -1 because the stack ptr is decremented before pushing a value
 				for(int i=0; i<localCount; i++){
 					zStack.push(localInitialVals[i]);
 				}

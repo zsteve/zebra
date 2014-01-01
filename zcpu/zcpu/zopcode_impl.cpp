@@ -112,7 +112,7 @@ namespace ZOpcodeImpl{
 		ZCpuInternal::ZCpuRoutine* parentRoutine=cpuObj->currentRoutine->parentRoutine;
 		// begin destroying current routine and restoring parent
 		/** perhaps there is no point in using destroyLocalVars() **/
-		cpuObj->currentRoutine->destoryLocalVars(*zStack);
+		//cpuObj->currentRoutine->destoryLocalVars(*zStack);
 		delete cpuObj->currentRoutine;
 		cpuObj->currentRoutine=parentRoutine;
 		// restore old stack pointer
@@ -1293,7 +1293,7 @@ namespace ZOpcodeImpl{
 			// otherwise, enter into the routine
 			// setting the routine's local values to the
 			// given arguments, starting from local #0
-			vector<int> routineArgs(0);
+ 			vector<int> routineArgs(0);
 			for(int i=1; i<zOp.getOperands().size(); i++){
 				routineArgs.push_back(retrieveOperandValue(zOp, i));
 			}
@@ -1301,8 +1301,8 @@ namespace ZOpcodeImpl{
 			// enter into the routine
 			routineEnter(zOp, zMemory->unpackAddr(retrieveOperandValue(zOp, 0)));
 			// load arguments into local vars
-			for(int i=0; i<routineArgs.size() && i< cpuObj->currentRoutine->localCount; i++){
-				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i]);
+			for(int i=1; i<routineArgs.size()+1 && i<cpuObj->currentRoutine->localCount+1; i++){
+				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i-1]);
 			}
 			// load return value destination
 			cpuObj->currentRoutine->retValueDest=zOp.storeInfo.storeVar;
