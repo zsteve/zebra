@@ -444,6 +444,21 @@ bool ZOpcode::opcodeHasTrailingString(){
 	return false;
 }
 
+bool ZOpcode::longOpcodeHasLargeOperands(){
+	switch(opcodeName){
+	case ADD:
+	case DIV:
+	case JG:
+	case JL:
+	case MOD:
+	case MUL:
+	case SUB:
+		return true;
+		break;
+	}
+	return false;
+}
+
 /**
  * decodes opcode
  * @param addr address of opcode
@@ -529,6 +544,7 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 			// bit 5 == op2
 			// value 0 == small constant
 			// value 1 == variable
+
 			int types=(opcodeByte & (BIT_6))>>6;
 			operandTypes.push_back(types ? ZOPERANDTYPE_VAR : ZOPERANDTYPE_SMALL_CONST);
 			types=(opcodeByte & (BIT_5))>>5;
@@ -594,6 +610,15 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 			}
 			opcodeSize+=read_offset;
 		}
+		/* "Store" instructions return a value: e.g., mul multiplies its two operands together.
+		Such instructions must be followed by a single byte giving the variable number of
+		where to put the result. 
+		*/
+		if(opcodeHasStore()){
+			storeInfo.hasStore=true;
+			storeInfo.storeVar=zMem.readZByte(addr+this->opcodeSize);
+			opcodeSize++;
+		}
 		/*	now we need to check for branch/no branch
 			otherwise our program will run amok	*/
 		if(opcodeHasBranch()){
@@ -602,7 +627,7 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 			branchInfo.hasBranch=true;
 			branchInfo.byte1=zMem.readZByte(addr+opcodeSize);
 			// there is a second branch byte if bit 6 is not set
-			int bit6=(branchInfo.byte1|BIT_6);
+			int bit6=(branchInfo.byte1 & BIT_6) >> 6;
 			if(!bit6){
 				// fetch second byte
 				branchInfo.byte2=zMem.readZByte(addr+opcodeSize+1);
@@ -650,15 +675,6 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 				}
 			}
 			opcodeString=vectorToArray<zword>(zcharStr);
-		}
-		/* "Store" instructions return a value: e.g., mul multiplies its two operands together.
-		Such instructions must be followed by a single byte giving the variable number of
-		where to put the result. 
-		*/
-		if(opcodeHasStore()){
-			storeInfo.hasStore=true;
-			storeInfo.storeVar=zMem.readZByte(addr+this->opcodeSize);
-			opcodeSize++;
 		}
 	}catch(ZMemoryReadOutOfBounds e){
 		throw IllegalZOpcode();

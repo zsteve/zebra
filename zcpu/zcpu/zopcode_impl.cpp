@@ -130,12 +130,13 @@ namespace ZOpcodeImpl{
 		// operand 1 : a, operand 2 : b
 		// jumps if a == b
 		try{
-			int a, b;
+			zword a, b;
 			a=retrieveOperandValue(zOp, 0);
 			b=retrieveOperandValue(zOp, 1);
 			bool cond=(a==b);
 			if(zOp.branchInfo.branchCond==cond){
 				// jump
+
 				if(zOp.branchInfo.branchOffset==0){
 					// return false
 					routineReturn(zOp, 0);
@@ -161,7 +162,7 @@ namespace ZOpcodeImpl{
 		// operand 1 : a, operand 2 : b
 		// jumps if a < b
 		try{
-			int a, b;
+			szword a, b;
 			a=retrieveOperandValue(zOp, 0);
 			b=retrieveOperandValue(zOp, 1);
 			bool cond=(a<b);
@@ -192,7 +193,7 @@ namespace ZOpcodeImpl{
 		// operand 1 : a, operand 2 : b
 		// jumps if a > b
 		try{
-			int a, b;
+			szword a, b;
 			a=retrieveOperandValue(zOp, 0);
 			b=retrieveOperandValue(zOp, 1);
 			bool cond=(a>b);
@@ -225,10 +226,10 @@ namespace ZOpcodeImpl{
 		*/
 		try{
 			int var, val;
-			val=zOp.getOperandTypes()[1];
-
+			zOp.getOperandTypes()[0]=ZOPERANDTYPE_VAR;
 			// var's type is implied as a VARIABLE
 			var=retrieveOperandValue(zOp, 0);
+			zOp.getOperandTypes()[0]=ZOPERANDTYPE_SMALL_CONST;
 			val=retrieveOperandValue(zOp, 1);
 			
 			var--;
@@ -271,7 +272,7 @@ namespace ZOpcodeImpl{
 			val=retrieveOperandValue(zOp, 1);
 			
 			var++;
-			bool cond=(var<val);
+			bool cond=(var>val);
 			if(zOp.branchInfo.branchCond==cond){
 				// jump
 				if(zOp.branchInfo.branchOffset==0){
@@ -299,7 +300,7 @@ namespace ZOpcodeImpl{
 		//  jin obj1 obj2 ?(label)
 		/* Jump if object a is a direct child of b, i.e., if parent of a is b.  */
 		try{
-			int a, b;
+			zword a, b;
 			a=retrieveOperandValue(zOp, 0);
 			b=retrieveOperandValue(zOp, 1);
 			bool cond=(zObject->getObjectChild(b)==a);
@@ -383,14 +384,14 @@ namespace ZOpcodeImpl{
 		//Jump if object has attribute. 
 		try{
 			zword object=retrieveOperandValue(zOp, 0);
-			ulong attrib=retrieveOperandValue(zOp, 1);
+			zword attrib=retrieveOperandValue(zOp, 1);
 			ulong objectAttrib;
 			try{
 				objectAttrib=zObject->getObjectAttributeFlags32(object);
 			}catch(...){
 				objectAttrib=NULL;
 			}
-			bool cond=(objectAttrib & (1<<(31-attrib)));
+			bool cond=(objectAttrib & (1<<(attrib)));
 			if(zOp.branchInfo.branchCond==cond){
 				// jump
 				if(zOp.branchInfo.branchOffset==0){
@@ -416,8 +417,8 @@ namespace ZOpcodeImpl{
 		try{
 			zword object=retrieveOperandValue(zOp, 0);
 			zword attrib=retrieveOperandValue(zOp, 1);
-			zword objectAttrib=zObject->getObjectAttributeFlags32(object);
-			zObject->setObjectAttributeFlags32(object, objectAttrib|(1<<(32-attrib)));
+			ulong objectAttrib=zObject->getObjectAttributeFlags32(object);
+			zObject->setObjectAttributeFlags32(object, objectAttrib|(1<<(attrib)));
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -428,8 +429,8 @@ namespace ZOpcodeImpl{
 		try{
 			zword object=retrieveOperandValue(zOp, 0);
 			zword attrib=retrieveOperandValue(zOp, 1);
-			zword objectAttrib=zObject->getObjectAttributeFlags32(object);
-			zObject->setObjectAttributeFlags32(object, objectAttrib & (0xFFFFFFFF^(1<<(31-attrib))));
+			ulong objectAttrib=zObject->getObjectAttributeFlags32(object);
+			zObject->setObjectAttributeFlags32(object, objectAttrib & (0xFFFFFFFF^(1<<(attrib))));
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -439,7 +440,7 @@ namespace ZOpcodeImpl{
 	int STORE(ZOpcode& zOp){
 		try{
 			zword value=retrieveOperandValue(zOp, 1);
-			storeVariable(retrieveOperandValue(zOp, 0), value);
+			storeVariable(zOp.getOperands()[0], value);
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -485,7 +486,7 @@ namespace ZOpcodeImpl{
 			// result
 			zword arr=retrieveOperandValue(zOp, 0);
 			zword byteIndex=retrieveOperandValue(zOp, 1);
-			zbyte byte=zMemory->readZWord(arr+byteIndex);
+			zbyte byte=zMemory->readZByte(arr+byteIndex);
 			storeVariable(zOp.storeInfo.storeVar, byte);
 		}catch(...){
 			throw IllegalZOpcode();
@@ -921,8 +922,10 @@ namespace ZOpcodeImpl{
 		try{
 			//inc (variable)
 			//Increment variable by 1. (This is signed, so -1 increments to 0.)
+			zOp.getOperandTypes()[0]=ZOPERANDTYPE_VAR;
 			szword a=retrieveOperandValue(zOp, 0);
-			storeVariable(zOp.getOperands()[0], a--);
+			zOp.getOperandTypes()[0]=ZOPERANDTYPE_SMALL_CONST;
+			storeVariable(zOp.getOperands()[0], ++a);
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -933,8 +936,10 @@ namespace ZOpcodeImpl{
 		try{
 			//inc (variable)
 			//Increment variable by 1. (This is signed, so -1 increments to 0.)
+			zOp.getOperandTypes()[0]=ZOPERANDTYPE_VAR;
 			szword a=retrieveOperandValue(zOp, 0);
-			storeVariable(zOp.getOperands()[0], a--);
+			zOp.getOperandTypes()[0]=ZOPERANDTYPE_SMALL_CONST;
+			storeVariable(zOp.getOperands()[0], --a);
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -1008,7 +1013,7 @@ namespace ZOpcodeImpl{
 	int RET(ZOpcode& zOp){
 		//ret value
 		try{
-			int value=zOp.getOperands()[0];
+			int value=retrieveOperandValue(zOp, 0);
 			routineReturn(zOp, value);
 		}catch(...){
 			throw IllegalZOpcode();
@@ -1054,7 +1059,9 @@ namespace ZOpcodeImpl{
 	int LOAD(ZOpcode& zOp){
 		try{
 			// load (variable) -> result
+			zOp.getOperandTypes()[0]=ZOPERANDTYPE_SMALL_CONST;
 			storeVariable(zOp.storeInfo.storeVar, retrieveOperandValue(zOp, 0));
+			zOp.getOperandTypes()[0]=ZOPERANDTYPE_VAR;
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -1927,6 +1934,8 @@ namespace ZOpcodeImpl{
 			}else{
 				direction=FORWARD;
 			}
+			// make size absolute
+			size=abs(size);
 			if(direction==FORWARD){
 				for(int i=0; i<size; i++){
 					zMemory->storeZByte(second+i, zMemory->readZByte(first+i));

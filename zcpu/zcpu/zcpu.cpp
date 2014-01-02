@@ -126,6 +126,7 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 				ZOpcodeImpl::PIRACY(zOp);
 				break;
 			default:
+				throw IllegalZOpcode();
 				break;
 			}
 		}
@@ -182,6 +183,7 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 				ZOpcodeImpl::CALL_1N(zOp);
 				break;
 			default:
+				throw IllegalZOpcode();
 				break;
 			}
 		}
@@ -274,6 +276,7 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 				ZOpcodeImpl::THROW(zOp);
 				break;
 			default:
+				throw IllegalZOpcode();
 				break;
 			}
 		}
@@ -372,7 +375,7 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 				ZOpcodeImpl::ENCODE_TEXT(zOp);
 				break;
 			default:
-
+				throw IllegalZOpcode();
 				break;
 			}
 		}

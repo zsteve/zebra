@@ -219,6 +219,7 @@ private:
 	bool opcodeHasBranch();
 	bool opcodeHasStore();
 	bool opcodeHasTrailingString();
+	bool longOpcodeHasLargeOperands();
 	
 public:
     ZOpcode();

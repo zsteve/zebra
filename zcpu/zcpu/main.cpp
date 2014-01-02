@@ -49,7 +49,7 @@ int main()
 	header.screen_height=25;
 	header.screen_width=80;
 	header.standard_revision_number=1;
-	zMem.writeHeaderData(header);
+	//zMem.writeHeaderData(header);
 	ZObjectTable zObj(&zMem);
 	ZStack zStack;
 	ZInOut zInOut;

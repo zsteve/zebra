@@ -125,9 +125,9 @@ struct ZDictionaryParseTableEntry{
      * the zword value (zbytes 0, 1) is big endianized
      */
     zbyte* getPackedEntry(){
-        zbyte outData[4];
-        outData[0]=(zbyte)(dictWordAddr)>>8;
-        outData[1]=(zbyte)(dictWordAddr)&255;
+        zbyte* outData=new zbyte[4];
+        outData[0]=(zbyte)((dictWordAddr)>>8);
+        outData[1]=(zbyte)((dictWordAddr)&255);
         outData[2]=letterCount;
         outData[3]=textBufferPos;
         return outData;
@@ -204,7 +204,7 @@ struct ZDictionaryParseTable{
             numWords=maxWords;
         }
         // byte 1 of parse buffer contains the written number of words
-		if(!writeUnrecognized){
+		if(writeUnrecognized){
 		   zMem.storeZByte(addr+1, numWords);
 		}else{
 			int num=0;
@@ -213,7 +213,7 @@ struct ZDictionaryParseTable{
 					num++;
 				}
 			}
-			 zMem.storeZByte(addr+1, num);		// manually determine word count
+			zMem.storeZByte(addr+1, num);		// manually determine word count
 		}
         // from byte 2 onwards, each 4 byte block is one entry
         // (of 4 byte block)
@@ -227,6 +227,7 @@ struct ZDictionaryParseTable{
             for(int j=0; j<4; j++){
                 zMem.storeZByte(addr+(4*i)+2+j, zData[j]);
             }
+			delete[] zData;
         }
     }
     const ZDictionaryParseTable& operator=(const ZDictionaryParseTable& a)
