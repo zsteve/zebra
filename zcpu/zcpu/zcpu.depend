@@ -8,13 +8,13 @@
 	<iostream>
 	"zcpu.h"
 
-1388213822 source:c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\main.cpp
+1388572989 source:c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\main.cpp
 	<iostream>
 	<cstdlib>
 	"zcpu.h"
 	"../../zmemory/zmemory/zmemory.h"
 
-1388213757 c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zcpu.h
+1388542944 c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zcpu.h
 	"../../zmemory/zmemory/zmemory.h"
 	"../../zmemory/zmemory/zobject.h"
 	"../../zstack/zstack/zstack.h"
@@ -24,7 +24,7 @@
 	"../../zinout/zinout/zinout.h"
 	"zopcode.h"
 
-1388217601 c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zopcode.h
+1388555697 c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zopcode.h
 	"../../zglobal/zglobal.h"
 	"../../zglobal/zglobaldefines.h"
 	"../../zmemory/zmemory/zmemory.h"
@@ -45,7 +45,7 @@
 
 1388098667 c:\users\stephen\code\zebra-zmachine-interpreter\zglobal\zglobaldefines.h
 
-1387712536 c:\users\stephen\code\zebra-zmachine-interpreter\zmemory\zmemory\zmemory.h
+1388302537 c:\users\stephen\code\zebra-zmachine-interpreter\zmemory\zmemory\zmemory.h
 	"../../zglobal/zglobal.h"
 	"../../zerror/zerror/zerror.h"
 	<exception>
@@ -66,14 +66,14 @@
 	"../../zmemory/zmemory/zmemory.h"
 	"../../zerror/zerror/zerror.h"
 
-1388213727 source:c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zcpu.cpp
+1388648476 source:c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zcpu.cpp
 	"zcpu.h"
 	"zopcode_impl.h"
 	"../../zstack/zstack/zstack.h"
 	"../../zmemory/zmemory/zobject.h"
 	"../../zdictionary/zdictionary/zdictionary.h"
 
-1388192613 c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zopcode_impl.h
+1388266834 c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zopcode_impl.h
 	"zopcode.h"
 	"zcpu.h"
 
@@ -85,25 +85,25 @@
 	"zglobal.h"
 	<vector>
 
-1387712549 source:c:\users\stephen\code\zebra-zmachine-interpreter\zmemory\zmemory\zmemory.cpp
+1388302536 source:c:\users\stephen\code\zebra-zmachine-interpreter\zmemory\zmemory\zmemory.cpp
 	"zmemory.h"
 	"../../zglobal/zglobal.h"
 
-1388132487 source:c:\users\stephen\code\zebra-zmachine-interpreter\zmemory\zmemory\zobject.cpp
+1388618375 source:c:\users\stephen\code\zebra-zmachine-interpreter\zmemory\zmemory\zobject.cpp
 	"zobject.h"
 
-1387767032 source:c:\users\stephen\code\zebra-zmachine-interpreter\zstack\zstack\zstack.cpp
+1388380505 source:c:\users\stephen\code\zebra-zmachine-interpreter\zstack\zstack\zstack.cpp
 	"zstack.h"
 	"../../zerror/zerror/zerror.h"
 
-1388217601 source:c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zopcode.cpp
+1388572198 source:c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zopcode.cpp
 	"zopcode.h"
 	"../../zglobal/zglobal.h"
 	"../../zglobal/zglobaldefines.h"
 	"../../zmemory/zmemory/zmemory.h"
 	"../../zstack/zstack/zstack.h"
 
-1388219595 source:c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zopcode_impl.cpp
+1388645886 source:c:\users\stephen\code\zebra-zmachine-interpreter\zcpu\zcpu\zopcode_impl.cpp
 	"zopcode_impl.h"
 	"zopcode.h"
 	"zcpu.h"
@@ -115,7 +115,7 @@
 	"../../num2ascii/num2ascii/num2ascii.h"
 	<cmath>
 
-1388219351 c:\users\stephen\code\zebra-zmachine-interpreter\zdictionary\zdictionary\zdictionary.h
+1388628126 c:\users\stephen\code\zebra-zmachine-interpreter\zdictionary\zdictionary\zdictionary.h
 	<cstdio>
 	<string>
 	<exception>
@@ -138,14 +138,14 @@
 	<string>
 	<cctype>
 
-1388265458 source:c:\users\stephen\code\zebra-zmachine-interpreter\zinout\zinout\zinout.cpp
+1388265911 source:c:\users\stephen\code\zebra-zmachine-interpreter\zinout\zinout\zinout.cpp
 	"zinout.h"
 	<iostream>
 	<cstdlib>
 	<cstdio>
 	<conio.h>
 
-1387263303 source:c:\users\stephen\code\zebra-zmachine-interpreter\ztext\ztext\ztext.cpp
+1388312211 source:c:\users\stephen\code\zebra-zmachine-interpreter\ztext\ztext\ztext.cpp
 	"ztext.h"
 	"../../zmemory/zmemory/zmemory.h"
 	<vector>

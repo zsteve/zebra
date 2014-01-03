@@ -581,6 +581,8 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 				types2=(typeByte & (BIT_1 | BIT_0));
 				operandTypes.push_back(getOperandType(types2));
 				extraTypeByte=true;
+			}else{
+				extraTypeByte=false;
 			}
 		}
 		// operands are given next
@@ -676,10 +678,6 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 			}
 			opcodeString=vectorToArray<zword>(zcharStr);
 		}
-	}catch(ZMemoryReadOutOfBounds e){
-		throw IllegalZOpcode();
-	}catch(ZException e){
-		throw IllegalZOpcode();
 	}catch(...){
 		throw IllegalZOpcode();
 	}
