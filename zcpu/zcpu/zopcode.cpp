@@ -608,7 +608,7 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 			int read_offset=0;
 			int extra_offset=extraTypeByte ? 2 : 1;
 			for(int i=0; i<operandTypes.size() && operandTypes[i]!=ZOPERANDTYPE_OMITTED; i++){
-				operands.push_back(getOperand((addr+extra_offset+read_offset), operandTypes[i], zMem, read_offset));
+				operands.push_back(getOperand((addr+extra_offset+read_offset+1), operandTypes[i], zMem, read_offset));
 			}
 			opcodeSize+=read_offset;
 		}
