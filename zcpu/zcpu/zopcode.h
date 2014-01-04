@@ -212,7 +212,7 @@ private:
 	zbyte opcodeByte;
 	int opcodeSize;			/// opcode size in bytes
 	zword* opcodeString;	/// trailing string (if any)
-	
+
 	int getZOpcodeName(zbyte zOp) throw (ZException);
 	ulong getOperand(ulong addr, ZOperandType type, ZMemory& zMem, int& counter);
 	ZOperandType getOperandType(int types);
@@ -220,7 +220,7 @@ private:
 	bool opcodeHasStore();
 	bool opcodeHasTrailingString();
 	bool longOpcodeHasLargeOperands();
-	
+
 public:
     ZOpcode();
     ZOpcode(ulong addr, ZMemory& zMem);
@@ -230,6 +230,14 @@ public:
 	int getOpcodeSize(){return opcodeSize;}
 	ZOpcodeType getOpcodeType(){return opcodeType;}
 	ZOperandCount getOperandCount(){return operandCount;}
+	int countOperands(){
+		for(int i=0; i<operands.size(); i++){
+			if(operandTypes[i]==ZOPERANDTYPE_OMITTED){
+				return i+1;
+			}
+		}
+		return operands.size();
+	}
 	vector<ZOperandType>& getOperandTypes(){return operandTypes;}
 	vector<ulong>& getOperands(){return operands;}
 	int getOpcodeName(){return opcodeName;}

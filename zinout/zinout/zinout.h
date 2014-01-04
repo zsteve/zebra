@@ -5,7 +5,10 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
+
+#ifdef PLATFORM_WIN32_CONSOLE
 #include <conio.h>
+#endif
 
 using namespace std;
 
@@ -23,6 +26,7 @@ class ZInOutBase{
     void clearScreen();
     void clearLine();
     void setCursorPos(int line, int col);
+    char getChar();
     private:
     protected:
 };
@@ -99,6 +103,8 @@ class ZInOut : public ZInOutBase{
     void restoreCursorPos(){
         print("\033[u");
     }
+
+    char getChar();
 
     private:
     char* readLineLastRead;

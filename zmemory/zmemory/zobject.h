@@ -77,6 +77,7 @@ class ZObjectTable{
         zbyte getPropertySize(zword addr) throw (ZMemoryReadOutOfBounds);
         zword getPropertySize(zword addr, bool &isWordSizeFlag) throw (ZMemoryReadOutOfBounds);
 		zbyte getPropertyNumber(zword addr) throw (ZMemoryReadOutOfBounds);
+		void unlinkObject(zword index) throw (IllegalObjectIndex);
 protected:
 };
 

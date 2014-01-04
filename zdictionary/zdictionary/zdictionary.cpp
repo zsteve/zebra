@@ -95,7 +95,7 @@ vector<ZSCIIDictionaryToken> ZDictionary::tokenizeZSCIIString(zchar* zstring)
 	makeLowerCase(zstring);
 	std::vector<ZSCIIDictionaryToken> tokenVector(0);	// vector for our tokens
 	string tempToken("");
-	int wordBeginPos=0;
+	int wordBeginPos=1;
 	for(int i=0; ; i++)
 	{
 		if(zstring[i]==' '){	// space is always regarded as word separator

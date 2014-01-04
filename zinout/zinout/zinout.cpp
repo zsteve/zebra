@@ -2,7 +2,10 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
+
+#ifdef PLATFORM_WIN32_CONSOLE
 #include <conio.h>
+#endif
 
 void ZInOut::print(char* str){
    // #ifdef PLATFORM_LINUX_CONSOLE || PLATFORM_WIN32_CONSOLE
@@ -23,11 +26,15 @@ char* ZInOut::readLine(){
         delete[] buffer;
     }
     buffer=new char[80];
-    scanf("%s", buffer);
+    gets(buffer);
     return buffer;
     //#endif
 }
 
 char ZInOut::getChar(){
+	#ifdef PLATFORM_WIN32_CONSOLE
 	return _getch();
+	#elif defined PLATFORM_LINUX_CONSOLE
+	return getchar();
+	#endif
 }

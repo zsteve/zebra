@@ -614,7 +614,7 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 		}
 		/* "Store" instructions return a value: e.g., mul multiplies its two operands together.
 		Such instructions must be followed by a single byte giving the variable number of
-		where to put the result. 
+		where to put the result.
 		*/
 		if(opcodeHasStore()){
 			storeInfo.hasStore=true;
@@ -624,7 +624,7 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 		/*	now we need to check for branch/no branch
 			otherwise our program will run amok	*/
 		if(opcodeHasBranch()){
-			// if there's a branch, it resides at 
+			// if there's a branch, it resides at
 			// addr+opcodeSize
 			branchInfo.hasBranch=true;
 			branchInfo.byte1=zMem.readZByte(addr+opcodeSize);
@@ -656,12 +656,17 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 										 BIT_0 ));
 				offset<<=8;
 				offset|=(branchInfo.byte2);
-				branchInfo.branchOffset=offset;
+				// we need to propagate sign bit it it is signed
+				if(offset & 0x2000){
+                    // sign bit present
+                    offset|=0xc000;
+				}
+				branchInfo.branchOffset=(int)offset;
 			}
 			opcodeSize+=branchInfo.branchSize;
 		}
 		/*	and we still need to check if this opcode has a trailing
-			Z-character text string 
+			Z-character text string
 		*/
 		if(opcodeHasTrailingString()){
 			// if text exists, it begins at addr+opcodeSize

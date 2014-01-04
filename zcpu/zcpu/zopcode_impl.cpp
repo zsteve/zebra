@@ -30,7 +30,7 @@ namespace ZOpcodeImpl{
 	 * if true, a jump needs to be made
 	 */
 	int* jumpFlag=NULL;
-	szword* jumpValue=NULL;	// pointer to var to hold byte offset for jump 
+	szword* jumpValue=NULL;	// pointer to var to hold byte offset for jump
 	ZCpu* cpuObj=NULL;		// pointer to ZCpu object
 
 	/** cpu peripherals **/
@@ -125,15 +125,27 @@ namespace ZOpcodeImpl{
 			storeVariable(returnVar, value);
 	}
 
+	zword zargs[4];
+	int retrieveVarOps(ZOpcode& zOp){
+		zbyte numOps=zOp.countOperands();
+		for(int i=0; i<numOps && i<4; i++){
+			zargs[i]=retrieveOperandValue(zOp, i);
+		}
+		return numOps;
+	}
+
 	// implementation of JE instruction
 	int JE(ZOpcode& zOp){
 		// operand 1 : a, operand 2 : b
+		// if VAR op, there can be up to 4 operands
 		// jumps if a == b
 		try{
-			zword a, b;
-			a=retrieveOperandValue(zOp, 0);
-			b=retrieveOperandValue(zOp, 1);
-			bool cond=(a==b);
+			bool cond=false;
+			int opNum=retrieveVarOps(zOp);
+			cond=	opNum > 1 && (zargs[0] == zargs[1] || (
+					opNum > 2 && (zargs[0] == zargs[2] || (
+					opNum > 3 && (zargs[0] == zargs[3])))));
+
 			if(zOp.branchInfo.branchCond==cond){
 				// jump
 
@@ -225,13 +237,13 @@ namespace ZOpcodeImpl{
 		now less than the given value.
 		*/
 		try{
-			int var, val;
+			szword var, val;
 			zOp.getOperandTypes()[0]=ZOPERANDTYPE_VAR;
 			// var's type is implied as a VARIABLE
 			var=retrieveOperandValue(zOp, 0);
 			zOp.getOperandTypes()[0]=ZOPERANDTYPE_SMALL_CONST;
 			val=retrieveOperandValue(zOp, 1);
-			
+
 			var--;
 			bool cond=(var<val);
 			if(zOp.branchInfo.branchCond==cond){
@@ -262,7 +274,7 @@ namespace ZOpcodeImpl{
 		/*Increment variable, and branch if it is
 		now more than the given value.
 		*/
-			int var, val;
+			szword var, val;
 			// var's type is implied as a VARIABLE
 			// Inform translates the variable name as a "small constant"
 			// dirty trick to make it think it's a variable...
@@ -270,7 +282,7 @@ namespace ZOpcodeImpl{
 			var=retrieveOperandValue(zOp, 0);
 			zOp.getOperandTypes()[0]=ZOPERANDTYPE_SMALL_CONST;
 			val=retrieveOperandValue(zOp, 1);
-			
+
 			var++;
 			bool cond=(var>val);
 			if(zOp.branchInfo.branchCond==cond){
@@ -326,7 +338,7 @@ namespace ZOpcodeImpl{
 
 	// implementation of TEST instruction
 	int TEST(ZOpcode& zOp){
-		// Jump if all of the flags in bitmap are set (i.e. if bitmap & flags == flags). 
+		// Jump if all of the flags in bitmap are set (i.e. if bitmap & flags == flags).
 		try{
 			zword bmp=0, flags=0;
 			bmp=retrieveOperandValue(zOp, 0);
@@ -381,7 +393,7 @@ namespace ZOpcodeImpl{
 	// implementation of TEST_ATTR instruction
 	int TEST_ATTR(ZOpcode& zOp){
 		//test_attr object attribute ?(label)
-		//Jump if object has attribute. 
+		//Jump if object has attribute.
 		try{
 			zword object=retrieveOperandValue(zOp, 0);
 			zword attrib=retrieveOperandValue(zOp, 1);
@@ -451,13 +463,21 @@ namespace ZOpcodeImpl{
 		try{
 			// insert_obj object destination
 			zword object=retrieveOperandValue(zOp, 0);
-			zword destination=retrieveOperandValue(zOp, 1);
-			// "object" becomes the direct child of
-			// "destination", and the original child of 
-			// "destination" becomes the sibling of "object"
-			zword origChild=zObject->getObjectChild(destination);
-			zObject->setObjectChild(destination, object);
-			zObject->setObjectSibling(object, origChild);
+			zword dest=retrieveOperandValue(zOp, 1);
+			if(!object || !dest) throw IllegalZOpcode();
+
+			zObject->unlinkObject(object);
+
+			if(zVersion<=3){
+				zbyte child;
+				// make object the first child of dest
+				child=zObject->getObjectChild(dest);	// save orig
+				zObject->setObjectChild(dest, object);
+				zObject->setObjectParent(object, dest);
+				zObject->setObjectSibling(object, child);
+			}else{
+
+			}
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -575,7 +595,7 @@ namespace ZOpcodeImpl{
 				}
 				if(propNumber==prop){
 					// found property
-					propAddr=i;
+					propAddr=i+1;
 					break;
 				}
 				if(zVersion<=3){
@@ -600,7 +620,7 @@ namespace ZOpcodeImpl{
 			// number may be 0. this indicates that that the
 			// specified property was the last in the list.
 			// if called with 0, gives the first property number
-			// it is illegal to find the next property of a property 
+			// it is illegal to find the next property of a property
 			// which does not exist
 			zword object=retrieveOperandValue(zOp, 0);
 			zword prop=retrieveOperandValue(zOp, 1);
@@ -903,7 +923,7 @@ namespace ZOpcodeImpl{
 	int GET_PROP_LEN(ZOpcode& zOp){
 		try{
 			//get_prop_len property-address -> (result)
-			zword propAddr=retrieveOperandValue(zOp, 0);
+			zword propAddr=retrieveOperandValue(zOp, 0)-1;
 			zword propLen;
 			if(zVersion<=3){
 				propLen=zObject->getPropertySize(propAddr);
@@ -963,7 +983,7 @@ namespace ZOpcodeImpl{
 	int CALL_1S(ZOpcode& zOp){
 		try{
 			//call_1s routine -> (result)
-			//Stores routine(). 
+			//Stores routine().
 			// code taken from
 			ulong routineAddr=retrieveOperandValue(zOp, 0);
 			routineAddr=zMemory->unpackAddr(routineAddr);
@@ -988,8 +1008,7 @@ namespace ZOpcodeImpl{
 		//Detach the object from its parent, so that it no longer has any parent
 		try{
 			zword object=retrieveOperandValue(zOp, 0);
-			// now we set parent as 0
-			zObject->setObjectParent(object, 0);
+			zObject->unlinkObject(object);
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -1082,7 +1101,7 @@ namespace ZOpcodeImpl{
 	int CALL_1N(ZOpcode& zOp){
 		try{
 			//call_1s routine -> (result)
-			//Stores routine(). 
+			//Stores routine().
 			// code taken from
 			ulong routineAddr=retrieveOperandValue(zOp, 0);
 			routineAddr=zMemory->unpackAddr(routineAddr);
@@ -1235,7 +1254,7 @@ namespace ZOpcodeImpl{
 		try{
 			/*	calculate a checksum of the story file
 				starting from offset 0x40, modulo 0x10000.
-				then compares with the value in the game 
+				then compares with the value in the game
 				header, branching if the two values agree
 				*/
 			zword checkSum=0;
@@ -1286,11 +1305,12 @@ namespace ZOpcodeImpl{
 	int CALL(ZOpcode& zOp){
 		//call routine ...up to 3 args... -> (result)
 		try{
+			zword routine=0;
 			if(zOp.getOperandCount()<2){
 				// minimum 2 operands
 				throw IllegalZOpcode();
 			}
-			if(!zOp.getOperands()[0]){
+			if(!(routine=retrieveOperandValue(zOp, 0))){
 				// if addr==0, do nothing and set return value
 				// to false
 				int returnVar=zOp.storeInfo.storeVar;;	// retrieve last operand
@@ -1306,7 +1326,7 @@ namespace ZOpcodeImpl{
 			}
 			// now that we have the operands, we may begin to
 			// enter into the routine
-			routineEnter(zOp, zMemory->unpackAddr(retrieveOperandValue(zOp, 0)));
+			routineEnter(zOp, zMemory->unpackAddr(routine));
 			// load arguments into local vars
 			for(int i=1; i<routineArgs.size()+1 && i<cpuObj->currentRoutine->localCount+1; i++){
 				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i-1]);

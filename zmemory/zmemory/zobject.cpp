@@ -225,10 +225,10 @@ zword ZObjectTable::setObjectSiblingHelper(ulong indexObject, ulong indexSibling
     try{
         if(zVersion<=3)
         {
-            oldSibling=getObjectParent(indexObject);
+            oldSibling=getObjectSibling(indexObject);
             zMemObjPtr->storeZByte(getObjectAddr(indexObject)+5, indexSibling);
         }else if(zVersion>3){
-            oldSibling=getObjectChild(indexObject);
+            oldSibling=getObjectSibling(indexObject);
             zMemObjPtr->storeZWord(getObjectAddr(indexObject)+9, indexSibling);
         }
     }catch(ZMemoryWriteOutOfBounds e){
@@ -270,9 +270,9 @@ zword ZObjectTable::setObjectChildHelper(ulong indexParent, ulong indexChild) th
 
 zword ZObjectTable::setObjectParent(ulong indexChild, ulong indexParent) throw (IllegalObjectIndex)
 {
-	if(indexParent){
-		setObjectChildHelper(indexParent, indexChild);
-	}
+	//if(indexParent){
+	//	setObjectChildHelper(indexParent, indexChild);
+	//}
     return setObjectParentHelper(indexChild, indexParent);
 }
 
@@ -283,9 +283,9 @@ zword ZObjectTable::setObjectSibling(ulong indexObject, ulong indexSibling) thro
 
 zword ZObjectTable::setObjectChild(ulong indexParent, ulong indexChild) throw (IllegalObjectIndex)
 {
-	if(indexChild){
-		setObjectParentHelper(indexChild, indexParent);
-	}
+	//if(indexChild){
+	//	setObjectParentHelper(indexChild, indexParent);
+	//}
     return setObjectChildHelper(indexParent, indexChild);
 }
 
@@ -451,5 +451,36 @@ zbyte ZObjectTable::getPropertyNumber(zword addr) throw (ZMemoryReadOutOfBounds)
 		return (sizeByte & 31);
 	}else{
 		return (sizeByte & 63);
+	}
+}
+
+void ZObjectTable::unlinkObject(zword index) throw (IllegalObjectIndex){
+	if(!index) throw IllegalObjectIndex();
+	if(zVersion<=3){
+		zbyte parentObj, ySiblingObj, oSiblingObj;
+		// get parent object
+		parentObj=getObjectParent(index);
+		if(!parentObj) return;
+
+		// get older sibling of object
+		// and set parent and sibling to 0
+		setObjectParent(index, 0);
+		oSiblingObj=getObjectSibling(index);
+		setObjectSibling(index, 0);
+
+		// get first child of parent (youngest sibling)
+		ySiblingObj=getObjectChild(parentObj);
+
+		// remove object from sibling list
+		if(ySiblingObj==index){
+			setObjectChild(parentObj, oSiblingObj);
+		}else{
+			zbyte currentSibling=getObjectSibling(ySiblingObj);
+			while(currentSibling!=index){
+				ySiblingObj=currentSibling;
+				currentSibling=getObjectSibling(ySiblingObj);
+			}
+			setObjectSibling(ySiblingObj, oSiblingObj);
+		}
 	}
 }

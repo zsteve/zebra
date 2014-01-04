@@ -4,6 +4,9 @@
 #include "../../zmemory/zmemory/zobject.h"
 #include "../../zdictionary/zdictionary/zdictionary.h"
 
+#include <cstdlib>
+#include <cstdio>
+
 ZCpu::ZCpu(ZMemory& zMem, ZStack& zStack, ZObjectTable& zObject, ZInOut& zInOut, ZDictionary& zDict)\
 	: zMem(zMem), zStack(zStack), zObject(zObject), zInOut(zInOut), zDict(zDict){
 	// initial value of program counter is found at 0x6
@@ -41,6 +44,7 @@ void ZCpu::setPCounter(ulong pCounter){
  * should be run in a separate thread
  * @return undefined
  */
+
 int ZCpu::startExecution(){
 	return start();
 }
@@ -53,6 +57,11 @@ int ZCpu::start(){
 	ZOpcode* opCode;
 	int i=0;
 	while(!haltFlag){
+		{
+			FILE* f=fopen("dbg_out.txt", "a");
+			fprintf(f, "%x\n", pCounter);
+			fclose(f);
+		}
 		opCode=new ZOpcode(pCounter, zMem);
 		if(mainLoop(*opCode)!=1){
 			incrementPCounter(*opCode);
@@ -181,6 +190,9 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 				break;
 			case CALL_1N:
 				ZOpcodeImpl::CALL_1N(zOp);
+				break;
+			case GET_PROP_LEN:
+				ZOpcodeImpl::GET_PROP_LEN(zOp);
 				break;
 			default:
 				throw IllegalZOpcode();
