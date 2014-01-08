@@ -315,7 +315,7 @@ namespace ZOpcodeImpl{
 			zword a, b;
 			a=retrieveOperandValue(zOp, 0);
 			b=retrieveOperandValue(zOp, 1);
-			bool cond=(zObject->getObjectChild(b)==a);
+			bool cond=(zObject->getObjectParent(a)==b);
 			if(zOp.branchInfo.branchCond==cond){
 				// jump
 				if(zOp.branchInfo.branchOffset==0){
@@ -1551,7 +1551,9 @@ namespace ZOpcodeImpl{
 	// implementation of RANDOM opcode
 	int RANDOM(ZOpcode& zOp){
 		try{
-
+			zword range=retrieveOperandValue(zOp, 0);
+			zword val=rand()%range;
+			storeVariable(zOp.storeInfo.storeVar, val);
 		}catch(...){
 			throw IllegalZOpcode();
 		}
