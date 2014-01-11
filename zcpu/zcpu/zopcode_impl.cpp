@@ -1250,9 +1250,42 @@ namespace ZOpcodeImpl{
 	// implementation of SHOW_STATUS instruction
 	int SHOW_STATUS(ZOpcode& zOp){
 		try{
-			/** todo **/
-		}catch(...){
-			throw IllegalZOpcode();
+			zbyte flags=zMemory->readZByte(0x1);	// get flags 1
+			flags&=BIT_1;
+			if(!flags){	// score/turns
+				zInOut->saveCursorPos();
+				zInOut->setCursorPos(0, 0);
+				char statusLine[80];
+				for(int i=0; i<80; i++) statusLine[i]=' ';
+				// scores are held in global vars 1 and 2
+				char* scoreStr=IntegerToDecASCII(zMemory->readGlobalVar(0x11));
+				int scoreStrLen=strlen(scoreStr);
+
+				char* totalScoreStr=IntegerToDecASCII(zMemory->readGlobalVar(0x12));
+				int totalScoreStrLen=strlen(totalScoreStr);
+
+				for(int i=0; scoreStr[i]; i++){
+					statusLine[(80-scoreStrLen-totalScoreStrLen-3)+i]=scoreStr[i];
+				}
+				statusLine[(80-totalScoreStrLen-2)]='/';
+				for(int i=0; totalScoreStr[i]; i++){
+					statusLine[(80-totalScoreStrLen-1)+i]=totalScoreStr[i];
+				}
+				zword* objectName=zObject->getObjectName(zMemory->readGlobalVar(0x10));
+				char* objectNameStr=(char*)zCharStringtoZSCII(objectName, *zMemory);
+				for(int i=0; objectNameStr[i]; i++){
+					statusLine[i+1]=objectNameStr[i];
+				}
+				delete[] objectName;
+				delete[] objectNameStr;
+				zInOut->setTextColor(zInOut->BLUE, zInOut->RED);
+				zInOut->print(statusLine);
+				zInOut->setTextColor(zInOut->WHITE, zInOut->BLACK);
+				zInOut->restoreCursorPos();
+			}else{		// hours:mins
+				/** TODO **/
+			}
+		}catch (...){
 		}
 	}
 
@@ -1479,6 +1512,7 @@ namespace ZOpcodeImpl{
 			if(opType==SREAD_TP){
 				if(zVersion<=3){
 					// the status line is automatically redisplayed first
+					SHOW_STATUS(zOp);
 				}
 				// read chars until CRLF
 				// or in v5, any terminating char

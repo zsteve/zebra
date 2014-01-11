@@ -3,6 +3,12 @@
 #include "zcpu.h"
 #include "../../zmemory/zmemory/zmemory.h"
 
+#include "../../zglobal/zglobaldefines.h"
+
+#if defined(PLATFORM_LINUX_CONSOLE)
+#include <curses.h>
+#endif
+
 int zVersion=3;
 
 using namespace std;
@@ -19,6 +25,16 @@ long filesize(FILE *stream)
 
 int main()
 {
+	#if defined PLATFORM_LINUX_CONSOLE
+	initscr();
+	echo();
+	keypad(stdscr, true);
+	scrollok(stdscr, true);
+	printw("Zebra Z-Machine Interpreter v1.0 alpha\n");
+	printw("Code licensed under GPL v3 by Stephen Zhang\n");
+	printw("You are running the Linux version, powered by NCURSES\n\n");
+	refresh();
+	#endif
     FILE* storyFile=fopen("zork2.z3", "r");
     if(storyFile==NULL) return -1;
     zbyte* storyData=new zbyte[filesize(storyFile)];
@@ -56,5 +72,10 @@ int main()
 	ZDictionary zDict(&zMem);
 	ZCpu c(zMem, zStack, zObj, zInOut, zDict);
 	c.startExecution();
+	#ifdef PLATFORM_LINUX_CONSOLE
+	printw("Looks like interpretation thread has exited. Press any key to quit\n");
+	getch();
+	endwin();
+	#endif
     return 0;
 }

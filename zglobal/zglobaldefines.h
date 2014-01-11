@@ -11,7 +11,7 @@
 // define                   platform
 // SYSTEM_CONSOLE           console mode
 // SYSTEM_GUI               gui mode
-#define PLATFORM_WIN32
+#define PLATFORM_LINUX
 #define SYSTEM_CONSOLE
 
 #ifdef PLATFORM_LINUX && SYSTEM_CONSOLE
