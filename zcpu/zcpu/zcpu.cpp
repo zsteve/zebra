@@ -78,7 +78,7 @@ int ZCpu::start(){
  */
 int ZCpu::mainLoop(ZOpcode& zOp){
 	int jumpMade=0;
-	szword jumpValue=0;
+	slong jumpValue=0;
 	ZOpcodeImpl::registerJumpFlag(&jumpMade);
 	ZOpcodeImpl::registerJumpValue(&jumpValue);
 	ZOpcodeImpl::registerZCpuObj(this);
@@ -399,7 +399,7 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 		if(jumpMade==ZOpcodeImpl::JUMP_OFFSET){
 			branchPCounter(zOp.getOpcodeSize()+jumpValue);
 		}else if(jumpMade==ZOpcodeImpl::JUMP_POSITION){
-			setPCounter((ulong)(zword)jumpValue);
+			setPCounter((ulong)jumpValue);
 		}
 		return 1;
 	}

@@ -30,7 +30,7 @@ namespace ZOpcodeImpl{
 	 * if true, a jump needs to be made
 	 */
 	int* jumpFlag=NULL;
-	szword* jumpValue=NULL;	// pointer to var to hold byte offset for jump
+	slong* jumpValue=NULL;	// pointer to var to hold byte offset for jump
 	ZCpu* cpuObj=NULL;		// pointer to ZCpu object
 
 	/** cpu peripherals **/
@@ -44,7 +44,7 @@ namespace ZOpcodeImpl{
 		jumpFlag=f;
 	}
 
-	void registerJumpValue(szword* o){
+	void registerJumpValue(slong* o){
 		jumpValue=o;
 	}
 
@@ -157,7 +157,7 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
@@ -188,7 +188,7 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
@@ -219,7 +219,7 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
@@ -245,6 +245,8 @@ namespace ZOpcodeImpl{
 			val=retrieveOperandValue(zOp, 1);
 
 			var--;
+			// now we need to store again
+			storeVariable(zOp.getOperands()[0], var);
 			bool cond=(var<val);
 			if(zOp.branchInfo.branchCond==cond){
 				// jump
@@ -256,13 +258,11 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
 			}
-			// now we need to store again
-			storeVariable(zOp.getOperands()[0], var);
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -284,6 +284,8 @@ namespace ZOpcodeImpl{
 			val=retrieveOperandValue(zOp, 1);
 
 			var++;
+			// now we need to store again
+			storeVariable(zOp.getOperands()[0], var);
 			bool cond=(var>val);
 			if(zOp.branchInfo.branchCond==cond){
 				// jump
@@ -295,13 +297,11 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
 			}
-			// now we need to store again
-			storeVariable(zOp.getOperands()[0], var);
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -326,7 +326,7 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
@@ -354,7 +354,7 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
@@ -414,7 +414,7 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
@@ -636,6 +636,12 @@ namespace ZOpcodeImpl{
 					nextPropNumber=propNumber;
 					break;
 				}
+				if(!prop){
+					// prop == 0
+					// return the first property number
+					nextPropNumber=propNumber;
+					break;
+				}
 				// since property list is stored in descending numerical order\
 				// if propNumber < prop, prop doesn't exist
 				if(propNumber < prop){
@@ -646,7 +652,6 @@ namespace ZOpcodeImpl{
 				if(propNumber==prop){
 					// found property
 					foundProp=true;
-					break;
 				}
 				// add the size of current property
 				if(zVersion<=3){
@@ -838,7 +843,7 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
@@ -867,7 +872,7 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
@@ -896,11 +901,12 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
 			}
+		}catch(IllegalObjectIndex e){
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -1053,7 +1059,7 @@ namespace ZOpcodeImpl{
 				routineReturn(zOp, 1);
 			}else{
 				*jumpFlag=JUMP_OFFSET;
-				*jumpValue=offset;
+				*jumpValue=(szword)offset;
 			}
 		}catch(...){
 			throw IllegalZOpcode();
@@ -1153,6 +1159,7 @@ namespace ZOpcodeImpl{
 		try{
 			zchar* outString=zCharStringtoZSCII(zOp.getOpcodeString(), *zMemory);
 			zInOut->print((char*)outString);
+			zInOut->print("\n");
 			delete[] outString;
 			// return true
 			routineReturn(zOp, 1);
@@ -1272,7 +1279,7 @@ namespace ZOpcodeImpl{
 					routineReturn(zOp, 1);
 				}else{
 					*jumpFlag=JUMP_OFFSET;
-					*jumpValue=zOp.branchInfo.branchOffset;
+					*jumpValue=(szword)zOp.branchInfo.branchOffset;
 				}
 			}else{
 				*jumpFlag=JUMP_NONE;
@@ -1294,7 +1301,7 @@ namespace ZOpcodeImpl{
 				routineReturn(zOp, 1);
 			}else{
 				*jumpFlag=JUMP_OFFSET;
-				*jumpValue=zOp.branchInfo.branchOffset;
+				*jumpValue=(szword)zOp.branchInfo.branchOffset;
 			}
 		}catch(...){
 			throw IllegalZOpcode();
@@ -1500,6 +1507,7 @@ namespace ZOpcodeImpl{
 						zMemory->storeZByte(textBuffer+beginPos+i, text[i]);
 						i++;
 					}while(text[i]!=NULL && i<maxChars);
+					zMemory->storeZByte(textBuffer+beginPos+i, NULL);
 				}
 				// done
 				// now perform lexical analysis
@@ -1773,10 +1781,11 @@ namespace ZOpcodeImpl{
 						routineReturn(zOp, 1);
 					}else{
 						*jumpFlag=JUMP_OFFSET;
-						*jumpValue=zOp.branchInfo.branchOffset;
+						*jumpValue=(szword)zOp.branchInfo.branchOffset;
 					}
 				}
 			}
+			// TODO : Possibly buggy
 			// return 0 and don't branch
 			storeVariable(zOp.storeInfo.storeVar, 0);
 		}catch(...){

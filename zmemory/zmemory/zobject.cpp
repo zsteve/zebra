@@ -38,7 +38,7 @@ zword ZObjectTable::getDefaultProperty(ulong index) throw (IllegalPropertyIndex)
         {
             THROW_ILLEGALPROPERTYINDEX(__LINE__, __FUNCTION__, __FILE__);
         }
-        return zMemObjPtr->readZWord(zObjectTable+(index<<1));
+        return zMemObjPtr->readZWord(zObjectTable+((index-1)<<1));
     }else if(zVersion>3){
         if(index>63)
         {

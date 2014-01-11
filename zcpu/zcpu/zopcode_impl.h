@@ -9,7 +9,7 @@ namespace ZOpcodeImpl{
 	const int JUMP_OFFSET=1;
 	const int JUMP_POSITION=2;
 	void registerJumpFlag(int* f);
-	void registerJumpValue(szword* o);
+	void registerJumpValue(slong* o);
 	void registerZCpuObj(ZCpu* o);
 	// 2OP
 	int JE(ZOpcode& zOp);

@@ -222,7 +222,7 @@ struct ZDictionaryParseTable{
         // byte 3       : index of first letter of word in text buffer
         for(int i=0; i<entryVector.size(); i++)
         {
-			if(!entryVector[i].dictWordAddr && writeUnrecognized) continue;	// don't write ones which aren't in dictionary IF flag set
+			if(!entryVector[i].dictWordAddr && !writeUnrecognized) continue;	// don't write ones which aren't in dictionary IF flag set
             zbyte* zData=entryVector[i].getPackedEntry();
             for(int j=0; j<4; j++){
                 zMem.storeZByte(addr+(4*i)+2+j, zData[j]);
