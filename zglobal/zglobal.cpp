@@ -19,6 +19,24 @@ zword endianize(zword in)
     return out;
 }
 
+ulong endianize(ulong in){
+	// x86
+	// converts a little endian ulong to a big endian ulong
+	// (bytewise)
+	zword hiWord, loWord;
+	ulong out;
+	hiWord=(zword)in>>16;
+	loWord=(zword)in&65535;
+	out|=loWord;
+	out<<=16;
+	out|=hiWord;
+	return out;
+}
+
+zword readEndianized(zword* arr){
+	return endianize(*arr);
+}
+
 zword* endianizeString(zword* in)
 {
     // endianizes a whole string and returns a result

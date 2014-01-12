@@ -54,6 +54,7 @@ class ZStack{
 	ulong getStackPtr(){return stackPtr;}
 	void setStackPtr(ulong newPtr){stackPtr=newPtr;}
 	zword* getStackData(){return stackData;}
+	ulong getStackSize(){return stackSize;};
     protected:
 	};
 #endif

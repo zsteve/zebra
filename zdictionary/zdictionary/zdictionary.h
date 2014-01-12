@@ -129,7 +129,7 @@ struct ZDictionaryParseTableEntry{
         outData[0]=(zbyte)((dictWordAddr)>>8);
         outData[1]=(zbyte)((dictWordAddr)&255);
         outData[2]=letterCount;
-        outData[3]=textBufferPos;
+        outData[3]=textBufferPos==1 ? textBufferPos : textBufferPos+1;
         return outData;
     }
 };

@@ -16,7 +16,7 @@ using namespace std;
 
 class ZInOut{
     public:
-
+#ifdef PLATFORM_LINUX_CONSOLE
 	enum color{
 		BLACK=COLOR_BLACK,
 		RED=COLOR_RED,
@@ -27,7 +27,7 @@ class ZInOut{
 		CYAN=COLOR_CYAN,
 		WHITE=COLOR_WHITE
 	};
-
+#endif
     ZInOut();
     void printLine(char* str);
     void print(char* str);
@@ -45,9 +45,9 @@ class ZInOut{
     void saveCursorPos();
     void restoreCursorPos();
     char getChar();
-
-    void setTextColor(color fg, color bg);
-
+#ifdef PLATFORM_LINUX_CONSOLE
+    void setTextColor(int pair, color fg, color bg);
+#endif
     private:
 
     static const char symchars[];

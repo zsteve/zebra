@@ -1257,7 +1257,7 @@ namespace ZOpcodeImpl{
 				zInOut->setCursorPos(0, 0);
 				char statusLine[80];
 				for(int i=0; i<80; i++) statusLine[i]=' ';
-				// scores are held in global vars 1 and 2
+				// scores are held in global vars 0x11 and 0x12
 				char* scoreStr=IntegerToDecASCII(zMemory->readGlobalVar(0x11));
 				int scoreStrLen=strlen(scoreStr);
 
@@ -1278,10 +1278,14 @@ namespace ZOpcodeImpl{
 				}
 				delete[] objectName;
 				delete[] objectNameStr;
-				zInOut->setTextColor(zInOut->BLUE, zInOut->RED);
+				#ifdef PLATFORM_LINUX_CONSOLE
+				zInOut->setTextColor(1, zInOut->BLACK, zInOut->WHITE);
+				#endif
 				zInOut->print(statusLine);
-				zInOut->setTextColor(zInOut->WHITE, zInOut->BLACK);
 				zInOut->restoreCursorPos();
+				#ifdef PLATFORM_LINUX_CONSOLE
+				zInOut->setTextColor(2, zInOut->WHITE, zInOut->BLACK);
+				#endif
 			}else{		// hours:mins
 				/** TODO **/
 			}
@@ -1671,8 +1675,8 @@ namespace ZOpcodeImpl{
 			// enter into the routine
 			routineEnter(zOp, zMemory->unpackAddr(retrieveOperandValue(zOp, 0)));
 			// load arguments into local vars
-			for(int i=0; i<routineArgs.size() && i< cpuObj->currentRoutine->localCount; i++){
-				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i]);
+			for(int i=1; i<routineArgs.size() && i< cpuObj->currentRoutine->localCount+1; i++){
+				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i-1]);
 			}
 			// load return value destination
 			cpuObj->currentRoutine->retValueDest=zOp.storeInfo.storeVar;
@@ -1862,8 +1866,8 @@ namespace ZOpcodeImpl{
 			// enter into the routine
 			routineEnter(zOp, zMemory->unpackAddr(retrieveOperandValue(zOp, 0)));
 			// load arguments into local vars
-			for(int i=0; i<routineArgs.size() && i< cpuObj->currentRoutine->localCount; i++){
-				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i]);
+			for(int i=1; i<routineArgs.size() && i< cpuObj->currentRoutine->localCount+1; i++){
+				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i-1]);
 			}
 			// load return value destination
 			cpuObj->currentRoutine->keepRetValue=false;
@@ -1902,8 +1906,8 @@ namespace ZOpcodeImpl{
 			// enter into the routine
 			routineEnter(zOp, zMemory->unpackAddr(retrieveOperandValue(zOp, 0)));
 			// load arguments into local vars
-			for(int i=0; i<routineArgs.size() && i< cpuObj->currentRoutine->localCount; i++){
-				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i]);
+			for(int i=1; i<routineArgs.size() && i< cpuObj->currentRoutine->localCount+1; i++){
+				cpuObj->currentRoutine->storeLocalVar(*zStack, i, routineArgs[i-1]);
 			}
 			// load return value destination
 			cpuObj->currentRoutine->keepRetValue=false;

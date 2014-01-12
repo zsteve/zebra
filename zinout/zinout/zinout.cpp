@@ -112,12 +112,13 @@ void ZInOut::restoreCursorPos(){
 	setCursorPos(curx, cury);
 	#endif
 }
-
-void ZInOut::setTextColor(color fg, color bg){
+#ifdef PLATFORM_LINUX_CONSOLE
+void ZInOut::setTextColor(int pair, color fg, color bg){
 	#if defined PLATFORM_LINUX_CONSOLE
 	start_color();
-	init_pair(1, (int)fg, (int)bg);
-	attron(COLOR_PAIR(1));
+	init_pair(pair, (int)fg, (int)bg);
+	attron(COLOR_PAIR(pair));
 	#endif
 }
+#endif
 

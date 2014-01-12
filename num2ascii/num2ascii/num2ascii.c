@@ -1,7 +1,7 @@
 /************************************************
  num2ascii library : a library for converting
  integers to ASCII representations and vice versa
- 
+
  code by Stephen Zhang (zsteve) 2013
 *************************************************/
 
@@ -171,6 +171,7 @@ void ReverseString(CSTRING s)
 CSTRING IntegerToDecASCII(int n)
 {
 	int i=0;
+	int z=0;
 	int x=n;
 	int neg=0;
 	if(n<0){
@@ -179,6 +180,7 @@ CSTRING IntegerToDecASCII(int n)
 		x=abs(n);
 		i=1;
 	}
+	for(;z<sizeof(out_str); z++) out_str[z]=0;
 	do{
 		int m=(x%10);
 		out_str[i]=GetCharAt(DecASCIINums, m);
@@ -251,17 +253,17 @@ CSTRING FixASCIIPrefix(CSTRING s, int p)
 	if(p==PREFIX_DEC_0D &&
 		CmpChar(s[0], '0') &&
 		CmpChar(s[1], 'd')){
-		
+
 		StrCpy_Safe(out_str_1, s+2, sizeof(out_str_1));
 	}else if(p==PREFIX_HEX_0X &&
 		CmpChar(s[0], '0') &&
 		CmpChar(s[1], 'x')){
-		
+
 		StrCpy_Safe(out_str_1, s+2, sizeof(out_str_1));
 	}else if(p==PREFIX_BIN_0B &&
 		CmpChar(s[0], '0') &&
 		CmpChar(s[1], 'b')){
-		
+
 		StrCpy_Safe(out_str_1, s+2, sizeof(out_str_1));
 	}else{
 		StrCpy_Safe(out_str_1, s, sizeof(out_str_1));
