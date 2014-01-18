@@ -1256,10 +1256,18 @@ namespace ZOpcodeImpl{
 				zInOut->saveCursorPos();
 				zInOut->setCursorPos(0, 0);
 				char statusLine[80];
+				statusLine[80]=NULL;
 				for(int i=0; i<80; i++) statusLine[i]=' ';
 				// scores are held in global vars 0x11 and 0x12
 				char* scoreStr=IntegerToDecASCII(zMemory->readGlobalVar(0x11));
 				int scoreStrLen=strlen(scoreStr);
+				{
+				    char* str=scoreStr;
+				    scoreStr=new char[strlen(scoreStr)+1];
+				    for(int i=0; i<scoreStrLen+1; i++){
+                        scoreStr[i]=str[i];
+				    }
+				}
 
 				char* totalScoreStr=IntegerToDecASCII(zMemory->readGlobalVar(0x12));
 				int totalScoreStrLen=strlen(totalScoreStr);
@@ -1268,6 +1276,7 @@ namespace ZOpcodeImpl{
 					statusLine[(80-scoreStrLen-totalScoreStrLen-3)+i]=scoreStr[i];
 				}
 				statusLine[(80-totalScoreStrLen-2)]='/';
+
 				for(int i=0; totalScoreStr[i]; i++){
 					statusLine[(80-totalScoreStrLen-1)+i]=totalScoreStr[i];
 				}
@@ -1276,6 +1285,8 @@ namespace ZOpcodeImpl{
 				for(int i=0; objectNameStr[i]; i++){
 					statusLine[i+1]=objectNameStr[i];
 				}
+
+				delete[] scoreStr;
 				delete[] objectName;
 				delete[] objectNameStr;
 				#ifdef PLATFORM_LINUX_CONSOLE
@@ -1515,8 +1526,13 @@ namespace ZOpcodeImpl{
 			// now that we have determined the opcode type
 			if(opType==SREAD_TP){
 				if(zVersion<=3){
-					// the status line is automatically redisplayed first
+				    #ifdef PLATFORM_LINUX_CONSOLE
+				    /* workaround for Win32 using plain cstdio functions
+                    exists further down in the function
+                    */
+                    //the status line is automatically redisplayed first
 					SHOW_STATUS(zOp);
+					#endif
 				}
 				// read chars until CRLF
 				// or in v5, any terminating char
@@ -1559,6 +1575,10 @@ namespace ZOpcodeImpl{
 					// write parse table
 					parseTable.writeParseBuffer(parseBuffer, *zMemory);
 				}
+				/*  workaround for Win32 console mode using
+                    plain old cstdio functions
+                */
+                SHOW_STATUS(zOp);
 			}else if(opType==SREAD_TPTR){
 
 			}else if(opType==AREAD){
