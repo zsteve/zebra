@@ -52,3 +52,10 @@ zword ZStack::pull() throw (StackEmptyException)
     // or else we continue
     return endianize(stackData[stackPtr++]);
 }
+
+void ZStack::clearStack(){
+	for(int i=0; i<stackSize; i++){
+		stackData[i]=0;
+	}
+	stackPtr=stackSize;
+}

@@ -4,6 +4,7 @@
 ZMemory::ZMemory()
 {
     zMemPtr=NULL;
+    zMemOrig=NULL;
     zMemSize=0;
     zDynamicMemoryLower=zDynamicMemoryUpper=0;
     zStaticMemoryLower=zStaticMemoryUpper=0;
@@ -27,11 +28,17 @@ ZMemory::ZMemory(zbyte* zData, ulong zDataLength)
     zStaticMemoryUpper=(zDataLength<0xFFFF ? zDataLength : 0xFFFF);
     zHighMemoryLower=(ulong)endianize(*((zword*)(zData+0x4)));
     zHighMemoryUpper=zDataLength;
+    zMemSize=zDataLength;
     zVersion=(int)zData[0];
     zMemPtr=new zbyte[zDataLength];
     for(ulong i=0; i<zDataLength; i++)
     {
         zMemPtr[i]=zData[i];
+    }
+    zMemOrig=new zbyte[zDataLength];
+    for(ulong i=0; i<zDataLength; i++)
+    {
+        zMemOrig[i]=zData[i];
     }
     zGlobalVarsAddr=(ulong)(endianize(*((zword*)(zData+0xc))));
 }
@@ -272,4 +279,11 @@ void ZMemory::storeGlobalVar(zbyte varNum, zword newVal){
 	}
 	storeZWord(getGlobalVarsAddr()+((varNum-0x10)*2), newVal);
 	return;
+}
+
+void ZMemory::restoreOriginalMemory(){
+	// restore original memory (used for restarting the game)
+	for(int i=0; i<zMemSize; i++){
+		zMemPtr[i]=zMemOrig[i];
+	}
 }

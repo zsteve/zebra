@@ -1194,7 +1194,31 @@ namespace ZOpcodeImpl{
 	// implementation of RESTART instruction
 	int RESTART(ZOpcode& zOp){
 		try{
-			/** TODO **/
+			/*	only keep :
+				bit 0 of flags 2
+				bit 1 of flags 2
+			*/
+			bool bit0, bit1;
+			bit0=zMemory->readZWord(0x10) & BIT_0;
+			bit1=zMemory->readZWord(0x10) & BIT_1;
+			// reset memory and stack
+			zMemory->restoreOriginalMemory();
+			zStack->clearStack();
+			// restore bit 0 and bit 1
+			zword flags2=zMemory->readZWord(0x10);
+			flags2|=bit0 << 0;
+			flags2|=bit1 << 1;
+			zMemory->storeZWord(0x10, flags2);
+			// clear stack frame
+			ZCpuRoutine* &routine=cpuObj->currentRoutine;
+			while(routine->parentRoutine){
+				ZCpuRoutine* parent=routine->parentRoutine;
+				delete routine;
+				routine=parent;
+			}
+			// once we get here, we have "unwound" the stack frame back to the first frame
+			*jumpFlag=JUMP_POSITION;
+			*jumpValue=routine->codeStartAddr;
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -1713,6 +1737,14 @@ namespace ZOpcodeImpl{
 	int ERASE_WINDOW(ZOpcode& zOp){
 		try{
 			// todo
+			#ifdef PLATFORM_WIN32_CONSOLE
+			/*	simple outputting of 25 blank lines, assuming it's an 80x25 console
+				TODO : fix up when zInOut has console manipulation for Win32
+			*/
+			for(int i=0; i<25; i++) zInOut->print("\n");
+			#elif defined(PLATFORM_LINUX_CONSOLE)
+			zInOut->clearScreen();
+			#endif
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -1721,7 +1753,8 @@ namespace ZOpcodeImpl{
 	// implementation of ERASE_LINE opcode
 	int ERASE_LINE(ZOpcode& zOp){
 		try{
-			// todo
+			// function not yet implemented
+			//zInOut->clearLine();
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -1730,7 +1763,13 @@ namespace ZOpcodeImpl{
 	// implementation of SET_CURSOR opcode
 	int SET_CURSOR(ZOpcode& zOp){
 		try{
-			// todo
+			if(zVersion<6){
+				zword line=retrieveOperandValue(zOp, 0);
+				zword column=retrieveOperandValue(zOp, 1);
+				zInOut->setCursorPos(line, column);
+			}else{
+				/** TODO */
+			}
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -1739,7 +1778,11 @@ namespace ZOpcodeImpl{
 	// implementation of GET_CURSOR opcode
 	int GET_CURSOR(ZOpcode& zOp){
 		try{
-
+			zword array=retrieveOperandValue(zOp, 0);
+			zword x=zInOut->getCursorX();
+			zword y=zInOut->getCursorY();
+			zMemory->storeZWord(array+0, y);
+			zMemory->storeZWord(array+2, x);
 		}catch(...){
 			throw IllegalZOpcode();
 		}
@@ -1834,16 +1877,18 @@ namespace ZOpcodeImpl{
 					if(zOp.branchInfo.branchOffset==0){
 						// return false
 						routineReturn(zOp, 0);
+						return 0;
 					}else if(zOp.branchInfo.branchOffset==1){
 						// return true
 						routineReturn(zOp, 1);
+						return 0;
 					}else{
 						*jumpFlag=JUMP_OFFSET;
 						*jumpValue=(szword)zOp.branchInfo.branchOffset;
+						return 0;
 					}
 				}
 			}
-			// TODO : Possibly buggy
 			// return 0 and don't branch
 			storeVariable(zOp.storeInfo.storeVar, 0);
 		}catch(...){

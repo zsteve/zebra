@@ -93,6 +93,9 @@ class ZMemory{
     private:
     // raw memory data members
     zchar* zMemPtr;
+	zchar* zMemOrig;			/*	"original" zMemOrig array holding original data
+									(used for restarting the game)
+								*/
     ulong zMemSize;
     // memory region members
     // these ints are the addresses of the lower and upper bounds
@@ -136,10 +139,10 @@ class ZMemory{
 
 	void writeHeaderData(ZHeaderData& headerData);
 
+	void restoreOriginalMemory();
+
     ZMemory();
-
     ZMemory(zbyte* zData, ulong zDataLength);
-
     ~ZMemory();
     protected:
 };

@@ -43,6 +43,7 @@ class ZStack{
     zword *stackData;
     ulong stackPtr;
     int stackSize;
+
     public:
     ZStack();
     ~ZStack();
@@ -50,11 +51,14 @@ class ZStack{
     bool initStack(int size);
     void push(zword val) throw (StackFullException);
     zword pull() throw (StackEmptyException);
+
+    void clearStack();
 	// accessor functions
 	ulong getStackPtr(){return stackPtr;}
 	void setStackPtr(ulong newPtr){stackPtr=newPtr;}
 	zword* getStackData(){return stackData;}
-	ulong getStackSize(){return stackSize;};
+	ulong getStackSize(){return stackSize;}
+
     protected:
 	};
 #endif
