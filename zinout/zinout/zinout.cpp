@@ -92,12 +92,14 @@ int ZInOut::getCursorX(){
 	#if defined PLATFORM_LINUX_CONSOLE
 	return getcurx(stdscr);
 	#endif
+	return 0;
 }
 
 int ZInOut::getCursorY(){
 	#if defined PLATFORM_LINUX_CONSOLE
 	return getcury(stdscr);
 	#endif
+	return 0;
 }
 
 void ZInOut::saveCursorPos(){

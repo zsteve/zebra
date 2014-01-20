@@ -1280,7 +1280,7 @@ namespace ZOpcodeImpl{
 				zInOut->saveCursorPos();
 				zInOut->setCursorPos(0, 0);
 				char statusLine[80];
-				statusLine[80]=NULL;
+				statusLine[79]=NULL;
 				for(int i=0; i<80; i++) statusLine[i]=' ';
 				// scores are held in global vars 0x11 and 0x12
 				char* scoreStr=IntegerToDecASCII(zMemory->readGlobalVar(0x11));

@@ -1,3 +1,7 @@
+#include <iostream>
+
+using namespace std;
+
 #include "ztext.h"
 #include "../../zmemory/zmemory/zmemory.h"
 #include <vector>
@@ -13,7 +17,7 @@ char zAlphaTable2[]={" \n0123456789.,!?_#'\"/\s\-:()"};
 char ZSCIIAlphaTable[]={" !\"#$%&'()*+,-./0123456789:;<=>?"\
 						"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_"\
 						"'abcdefghijklmnopqrstuvwxyz{!}~ "};
-						
+
 extern int zVersion;
 
 int defaultAlpha=ALPHABET_0;
@@ -45,6 +49,7 @@ int zCharStrLen(zword* str)
 void ZSCIIStrCat(zchar* src, zchar* cat)
 {
     // concatacenates two ZSCII strings
+    cout << "ZSCIIStrCat called" << endl;
     int i;
     for(i=0; src[i]!=0; i++);
     for(int j=0; cat[j]!=0; j++, i++)
@@ -52,7 +57,7 @@ void ZSCIIStrCat(zchar* src, zchar* cat)
         src[i]=cat[j];
     }
     src[i]=NULL;
-
+	cout << "ZSCIIStrCat completed" << endl;
 }
 
 void ZSCIIStrCpy(zchar* src, zchar* dest)
@@ -175,7 +180,7 @@ zchar* zCharStringtoZSCIIHelper(zchar* zCharString, ulong zStringLength, ZMemory
 			zsciiString.push_back(ZSCIIAlphaTable[zscii-0x20]);
 			i+=2;
 		}
-		
+
         // now we have to check for special chars
         // according to ZSpec, Z-chars 1, 2, 3, 4, 5
         // are special

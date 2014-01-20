@@ -10,8 +10,8 @@
 	<File name="main.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="zcpu.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="2675" topLine="97" />
+	<File name="zcpu.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="8473" topLine="317" />
 	</File>
 	<File name="zcpu.h" open="1" top="0" tabpos="7">
 		<Cursor position="4374" topLine="129" />
@@ -22,8 +22,8 @@
 	<File name="zopcode.h" open="0" top="0" tabpos="7">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="zopcode_impl.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="49212" topLine="1771" />
+	<File name="zopcode_impl.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="49041" topLine="1756" />
 	</File>
 	<File name="zopcode_impl.h" open="0" top="0" tabpos="6">
 		<Cursor position="0" topLine="0" />
@@ -31,8 +31,8 @@
 	<File name="..\..\zdictionary\zdictionary\zdictionary.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\..\zdictionary\zdictionary\zdictionary.h" open="0" top="0" tabpos="4">
-		<Cursor position="0" topLine="0" />
+	<File name="..\..\zdictionary\zdictionary\zdictionary.h" open="1" top="0" tabpos="9">
+		<Cursor position="1624" topLine="41" />
 	</File>
 	<File name="..\..\zerror\zerror\zerror.h" open="0" top="0" tabpos="1">
 		<Cursor position="0" topLine="0" />
@@ -64,8 +64,8 @@
 	<File name="..\..\zstack\zstack\zstack.h" open="1" top="0" tabpos="5">
 		<Cursor position="1579" topLine="30" />
 	</File>
-	<File name="..\..\ztext\ztext\ztext.cpp" open="0" top="0" tabpos="8">
-		<Cursor position="20036" topLine="592" />
+	<File name="..\..\ztext\ztext\ztext.cpp" open="1" top="0" tabpos="10">
+		<Cursor position="1281" topLine="55" />
 	</File>
 	<File name="..\..\ztext\ztext\ztext.h" open="0" top="0" tabpos="12">
 		<Cursor position="0" topLine="0" />
