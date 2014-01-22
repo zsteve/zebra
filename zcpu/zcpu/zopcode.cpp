@@ -684,6 +684,6 @@ void ZOpcode::decodeOp(ulong addr, ZMemory& zMem){
 			opcodeString=vectorToArray<zword>(zcharStr);
 		}
 	}catch(...){
-		throw IllegalZOpcode();
+		THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 	}
 }

@@ -56,7 +56,7 @@ namespace ZCpuInternal{
 		}
 
 		/**
-		 * creates local variables 
+		 * creates local variables
 		 * @param zStack reference of stack object
 		 * @throw ZException on any exception
 		 */
@@ -73,7 +73,7 @@ namespace ZCpuInternal{
 			}
 		}
 
-		/** 
+		/**
 		 * destroys local variables
 		 * @param zStack reference of stack object
 		 * @throw ZException on any exception
@@ -116,7 +116,7 @@ namespace ZCpuInternal{
 		void storeLocalVar(ZStack& zStack, int varNum, zword value) throw (ZException){
 			try{
 				if(varNumisInRange(varNum)){
-					// *(zStack.getStackData()+(zStack.getStackPtr()-localCount+(varNum-1)))=endianize(value); 
+					// *(zStack.getStackData()+(zStack.getStackPtr()-localCount+(varNum-1)))=endianize(value);
 					// above statement buggy
 					*((zStack.getStackData())+(localStartAddr-(varNum-1)))=endianize(value);
 				}else{
@@ -146,14 +146,14 @@ namespace ZCpuInternal{
 		zbyte retValueDest;		/// variable in which to put the return value
 
 		ulong resumeAddr;		/** address at which to resume execution upon a RETURN
-								 * should be set by the CALL instruction 
+								 * should be set by the CALL instruction
 								 */
 	};
 
 	class ZCpuStackFrame{
 	public:
 		ZCpuStackFrame() : stackFrame(0){
-			
+
 		}
 
 		int getSize(){return stackFrame.size();}

@@ -10,6 +10,9 @@
 
 using namespace std;
 
+#define THROW_ILLEGALZOPCODE(line, function, file)\
+    throw IllegalZOpcode((const int)line, (const char*)function, (const char*)file);
+
 class IllegalZOpcode : ZException{
     public:
     IllegalZOpcode(){

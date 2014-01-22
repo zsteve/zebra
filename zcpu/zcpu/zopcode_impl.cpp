@@ -19,7 +19,7 @@ extern int zVersion;
 		try{
 
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 	*/
@@ -164,7 +164,7 @@ namespace ZOpcodeImpl{
 			}
 			return 0;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 		return 0;
 	}
@@ -195,7 +195,7 @@ namespace ZOpcodeImpl{
 			}
 			return 0;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 		return 0;
 	}
@@ -226,7 +226,7 @@ namespace ZOpcodeImpl{
 			}
 			return 0;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 		return 0;
 	}
@@ -264,7 +264,7 @@ namespace ZOpcodeImpl{
 				*jumpFlag=JUMP_NONE;
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -303,7 +303,7 @@ namespace ZOpcodeImpl{
 				*jumpFlag=JUMP_NONE;
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -332,7 +332,7 @@ namespace ZOpcodeImpl{
 				*jumpFlag=JUMP_NONE;
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -360,7 +360,7 @@ namespace ZOpcodeImpl{
 				*jumpFlag=JUMP_NONE;
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -373,7 +373,7 @@ namespace ZOpcodeImpl{
 			b=retrieveOperandValue(zOp, 1);
 			storeVariable(zOp.storeInfo.storeVar, (a|b));
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -386,7 +386,7 @@ namespace ZOpcodeImpl{
 			b=retrieveOperandValue(zOp, 1);
 			storeVariable(zOp.storeInfo.storeVar, (a&b));
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -420,7 +420,7 @@ namespace ZOpcodeImpl{
 				*jumpFlag=JUMP_NONE;
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -432,7 +432,7 @@ namespace ZOpcodeImpl{
 			ulong objectAttrib=zObject->getObjectAttributeFlags32(object);
 			zObject->setObjectAttributeFlags32(object, objectAttrib|(1<<(attrib)));
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -444,7 +444,7 @@ namespace ZOpcodeImpl{
 			ulong objectAttrib=zObject->getObjectAttributeFlags32(object);
 			zObject->setObjectAttributeFlags32(object, objectAttrib & (0xFFFFFFFF^(1<<(attrib))));
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -454,7 +454,7 @@ namespace ZOpcodeImpl{
 			zword value=retrieveOperandValue(zOp, 1);
 			storeVariable(zOp.getOperands()[0], value);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -464,7 +464,7 @@ namespace ZOpcodeImpl{
 			// insert_obj object destination
 			zword object=retrieveOperandValue(zOp, 0);
 			zword dest=retrieveOperandValue(zOp, 1);
-			if(!object || !dest) throw IllegalZOpcode();
+			if(!object || !dest) THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 
 			zObject->unlinkObject(object);
 
@@ -479,7 +479,7 @@ namespace ZOpcodeImpl{
 
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -494,7 +494,7 @@ namespace ZOpcodeImpl{
 			zword word=zMemory->readZWord(arr+(2*wordIndex));
 			storeVariable(zOp.storeInfo.storeVar, word);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -509,7 +509,7 @@ namespace ZOpcodeImpl{
 			zbyte byte=zMemory->readZByte(arr+byteIndex);
 			storeVariable(zOp.storeInfo.storeVar, byte);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -569,7 +569,7 @@ namespace ZOpcodeImpl{
 			}
 			storeVariable(zOp.storeInfo.storeVar, propVal);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -608,7 +608,7 @@ namespace ZOpcodeImpl{
 			}
 			storeVariable(zOp.storeInfo.storeVar, propAddr);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -646,7 +646,7 @@ namespace ZOpcodeImpl{
 				// if propNumber < prop, prop doesn't exist
 				if(propNumber < prop){
 					// throw error
-					throw IllegalZOpcode();
+					THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 					break;
 				}
 				if(propNumber==prop){
@@ -664,7 +664,7 @@ namespace ZOpcodeImpl{
 			}
 			storeVariable(zOp.storeInfo.storeVar, nextPropNumber);
 		}catch(IllegalPropertyIndex e){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -677,7 +677,7 @@ namespace ZOpcodeImpl{
 			szword b=retrieveOperandValue(zOp, 1);
 			storeVariable(zOp.storeInfo.storeVar, (a+b));
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -690,7 +690,7 @@ namespace ZOpcodeImpl{
 			szword b=retrieveOperandValue(zOp, 1);
 			storeVariable(zOp.storeInfo.storeVar, (a-b));
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -703,7 +703,7 @@ namespace ZOpcodeImpl{
 			szword b=retrieveOperandValue(zOp, 1);
 			storeVariable(zOp.storeInfo.storeVar, (a*b));
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -714,11 +714,11 @@ namespace ZOpcodeImpl{
 			szword b=retrieveOperandValue(zOp, 1);
 			if(!b){
 				// division by 0
-				throw IllegalZOpcode();
+				THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 			}
 			storeVariable(zOp.storeInfo.storeVar, (a/b));
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -730,11 +730,11 @@ namespace ZOpcodeImpl{
 			szword b=retrieveOperandValue(zOp, 1);
 			if(!b){
 				// division by 0
-				throw IllegalZOpcode();
+				THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 			}
 			storeVariable(zOp.storeInfo.storeVar, (a%b));
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -757,7 +757,7 @@ namespace ZOpcodeImpl{
 			*jumpFlag=JUMP_POSITION;
 			*jumpValue=cpuObj->currentRoutine->codeStartAddr;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -780,7 +780,7 @@ namespace ZOpcodeImpl{
 			*jumpFlag=JUMP_POSITION;
 			*jumpValue=cpuObj->currentRoutine->codeStartAddr;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -793,7 +793,7 @@ namespace ZOpcodeImpl{
 			zword bg=retrieveOperandValue(zOp, 1);
 			// TODO
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -823,7 +823,7 @@ namespace ZOpcodeImpl{
 				}
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -849,7 +849,7 @@ namespace ZOpcodeImpl{
 				*jumpFlag=JUMP_NONE;
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -878,7 +878,7 @@ namespace ZOpcodeImpl{
 				*jumpFlag=JUMP_NONE;
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -908,7 +908,7 @@ namespace ZOpcodeImpl{
 			}
 		}catch(IllegalObjectIndex e){
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -921,7 +921,7 @@ namespace ZOpcodeImpl{
 			zword parent=zObject->getObjectParent(object);
 			storeVariable(zOp.storeInfo.storeVar, parent);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -939,7 +939,7 @@ namespace ZOpcodeImpl{
 			}
 			storeVariable(zOp.storeInfo.storeVar, propLen);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -953,7 +953,7 @@ namespace ZOpcodeImpl{
 			zOp.getOperandTypes()[0]=ZOPERANDTYPE_SMALL_CONST;
 			storeVariable(zOp.getOperands()[0], ++a);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -967,7 +967,7 @@ namespace ZOpcodeImpl{
 			zOp.getOperandTypes()[0]=ZOPERANDTYPE_SMALL_CONST;
 			storeVariable(zOp.getOperands()[0], --a);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -981,7 +981,7 @@ namespace ZOpcodeImpl{
 			zInOut->print((char*)outString);
 			delete[] outString;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1004,7 +1004,7 @@ namespace ZOpcodeImpl{
 			*jumpFlag=JUMP_POSITION;
 			*jumpValue=cpuObj->currentRoutine->codeStartAddr;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1016,7 +1016,7 @@ namespace ZOpcodeImpl{
 			zword object=retrieveOperandValue(zOp, 0);
 			zObject->unlinkObject(object);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1030,7 +1030,7 @@ namespace ZOpcodeImpl{
 			zInOut->print((char*)outString);
 			delete[] outString;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1041,7 +1041,7 @@ namespace ZOpcodeImpl{
 			int value=retrieveOperandValue(zOp, 0);
 			routineReturn(zOp, value);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1062,7 +1062,7 @@ namespace ZOpcodeImpl{
 				*jumpValue=(szword)offset;
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1076,7 +1076,7 @@ namespace ZOpcodeImpl{
 			zInOut->print((char*)outString);
 			delete[] outString;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1088,7 +1088,7 @@ namespace ZOpcodeImpl{
 			storeVariable(zOp.storeInfo.storeVar, retrieveOperandValue(zOp, 0));
 			zOp.getOperandTypes()[0]=ZOPERANDTYPE_VAR;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1099,7 +1099,7 @@ namespace ZOpcodeImpl{
 			zword value=retrieveOperandValue(zOp, 0);
 			storeVariable(zOp.storeInfo.storeVar, ~value);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1121,7 +1121,7 @@ namespace ZOpcodeImpl{
 			*jumpFlag=JUMP_POSITION;
 			*jumpValue=cpuObj->currentRoutine->codeStartAddr;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1130,7 +1130,7 @@ namespace ZOpcodeImpl{
 		try{
 			routineReturn(zOp, 1);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1139,7 +1139,7 @@ namespace ZOpcodeImpl{
 		try{
 			routineReturn(zOp, 0);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1150,7 +1150,7 @@ namespace ZOpcodeImpl{
 			zInOut->print((char*)outString);
 			delete[] outString;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1164,7 +1164,7 @@ namespace ZOpcodeImpl{
 			// return true
 			routineReturn(zOp, 1);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1179,7 +1179,7 @@ namespace ZOpcodeImpl{
 		try{
 			/** TODO **/
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1187,7 +1187,7 @@ namespace ZOpcodeImpl{
 		try{
 			/** TODO **/
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1220,7 +1220,7 @@ namespace ZOpcodeImpl{
 			*jumpFlag=JUMP_POSITION;
 			*jumpValue=routine->codeStartAddr;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1230,7 +1230,7 @@ namespace ZOpcodeImpl{
 			zword value=zStack->pull();
 			routineReturn(zOp, value);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1239,7 +1239,7 @@ namespace ZOpcodeImpl{
 		try{
 			zStack->pull();
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1249,7 +1249,7 @@ namespace ZOpcodeImpl{
 			zword currentFrame=cpuObj->stackFrame.readEntry(cpuObj->stackFrame.getSize()-1);
 			storeVariable(zOp.storeInfo.storeVar, currentFrame);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1258,7 +1258,7 @@ namespace ZOpcodeImpl{
 		try{
 			cpuObj->haltFlag=true;	// halt execution
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1267,7 +1267,7 @@ namespace ZOpcodeImpl{
 		try{
 			zInOut->print("\n");
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1279,8 +1279,8 @@ namespace ZOpcodeImpl{
 			if(!flags){	// score/turns
 				zInOut->saveCursorPos();
 				zInOut->setCursorPos(0, 0);
-				char statusLine[80];
-				statusLine[79]=NULL;
+				char statusLine[81];
+				statusLine[80]=NULL;
 				for(int i=0; i<80; i++) statusLine[i]=' ';
 				// scores are held in global vars 0x11 and 0x12
 				char* scoreStr=IntegerToDecASCII(zMemory->readGlobalVar(0x11));
@@ -1357,7 +1357,7 @@ namespace ZOpcodeImpl{
 				*jumpFlag=JUMP_NONE;
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1376,7 +1376,7 @@ namespace ZOpcodeImpl{
 				*jumpValue=(szword)zOp.branchInfo.branchOffset;
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1387,7 +1387,7 @@ namespace ZOpcodeImpl{
 			zword routine=0;
 			if(zOp.getOperandCount()<2){
 				// minimum 2 operands
-				throw IllegalZOpcode();
+				THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 			}
 			if(!(routine=retrieveOperandValue(zOp, 0))){
 				// if addr==0, do nothing and set return value
@@ -1417,7 +1417,7 @@ namespace ZOpcodeImpl{
 			*jumpFlag=JUMP_POSITION;
 			*jumpValue=cpuObj->currentRoutine->codeStartAddr;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1427,7 +1427,7 @@ namespace ZOpcodeImpl{
 			// same as CALL
 			CALL(zOp);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1441,7 +1441,7 @@ namespace ZOpcodeImpl{
 			zword value=retrieveOperandValue(zOp, 2);
 			zMemory->storeZWord(arr+(2*index), value);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1455,7 +1455,7 @@ namespace ZOpcodeImpl{
 			zword value=retrieveOperandValue(zOp, 2);
 			zMemory->storeZByte(arr+index, value);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1477,7 +1477,7 @@ namespace ZOpcodeImpl{
 				// if propNumber < prop, prop doesn't exist
 				if(propNumber < prop){
 					// illegal : property not present
-					throw IllegalZOpcode();
+					THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 					break;
 				}
 				if(propNumber==prop){
@@ -1489,7 +1489,7 @@ namespace ZOpcodeImpl{
 						}else if(propSize==2){
 							zMemory->storeZWord(i+1, value);
 						}else{
-							throw IllegalZOpcode();
+							THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 						}
 						break;
 					}else{
@@ -1501,7 +1501,7 @@ namespace ZOpcodeImpl{
 						}else if(propSize==2){
 							zMemory->storeZWord(i+add+1, value);
 						}else{
-							throw IllegalZOpcode();
+							THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 						}
 						break;
 					}
@@ -1515,7 +1515,7 @@ namespace ZOpcodeImpl{
 				}
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1544,7 +1544,7 @@ namespace ZOpcodeImpl{
 				}else if(i==4){
 					opType=SREAD_TPTR;
 				}else{
-					throw IllegalZOpcode();
+					THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 				}
 			}
 			// now that we have determined the opcode type
@@ -1609,7 +1609,7 @@ namespace ZOpcodeImpl{
 
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1624,7 +1624,7 @@ namespace ZOpcodeImpl{
 			zInOut->print((char*)str);
 			delete[] str;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1634,7 +1634,7 @@ namespace ZOpcodeImpl{
 			zword num=retrieveOperandValue(zOp, 0);
 			zInOut->print(IntegerToDecASCII((int)num));
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1645,7 +1645,7 @@ namespace ZOpcodeImpl{
 			zword val=rand()%range;
 			storeVariable(zOp.storeInfo.storeVar, val);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1656,7 +1656,7 @@ namespace ZOpcodeImpl{
 			zword value=retrieveOperandValue(zOp, 0);
 			zStack->push(value);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1670,7 +1670,7 @@ namespace ZOpcodeImpl{
 				storeVariable(var, zStack->pull());
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1679,7 +1679,7 @@ namespace ZOpcodeImpl{
 		try{
 			// todo
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1688,7 +1688,7 @@ namespace ZOpcodeImpl{
 		try{
 
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1699,7 +1699,7 @@ namespace ZOpcodeImpl{
 			//  call_vs2 routine ...up to 7 args... -> (result)
 			if(zOp.getOperandCount()<2){
 				// minimum 2 operands
-				throw IllegalZOpcode();
+				THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 			}
 			if(!zOp.getOperands()[0]){
 				// if addr==0, do nothing and set return value
@@ -1729,7 +1729,7 @@ namespace ZOpcodeImpl{
 			*jumpFlag=JUMP_POSITION;
 			*jumpValue=cpuObj->currentRoutine->codeStartAddr;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1746,7 +1746,7 @@ namespace ZOpcodeImpl{
 			zInOut->clearScreen();
 			#endif
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1756,7 +1756,7 @@ namespace ZOpcodeImpl{
 			// function not yet implemented
 			//zInOut->clearLine();
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1771,7 +1771,7 @@ namespace ZOpcodeImpl{
 				/** TODO */
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1784,7 +1784,7 @@ namespace ZOpcodeImpl{
 			zMemory->storeZWord(array+0, y);
 			zMemory->storeZWord(array+2, x);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1793,7 +1793,7 @@ namespace ZOpcodeImpl{
 		try{
 
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1802,7 +1802,7 @@ namespace ZOpcodeImpl{
 		try{
 
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1811,7 +1811,7 @@ namespace ZOpcodeImpl{
 		try{
 
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1820,7 +1820,7 @@ namespace ZOpcodeImpl{
 		try{
 
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1829,7 +1829,7 @@ namespace ZOpcodeImpl{
 		try{
 
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1841,13 +1841,13 @@ namespace ZOpcodeImpl{
 			// currently just returning char
 			zword var1=retrieveOperandValue(zOp, 0);
 			if(var1!=1){
-				throw IllegalZOpcode();
+				THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 			}
 			// otherwise
 			char result=zInOut->getChar();
 			storeVariable(zOp.storeInfo.storeVar, result);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1892,7 +1892,7 @@ namespace ZOpcodeImpl{
 			// return 0 and don't branch
 			storeVariable(zOp.storeInfo.storeVar, 0);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1902,7 +1902,7 @@ namespace ZOpcodeImpl{
 			// same as NOT
 			NOT(zOp);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1911,7 +1911,7 @@ namespace ZOpcodeImpl{
 		try{
 			if(zOp.getOperandCount()<2){
 				// minimum 2 operands
-				throw IllegalZOpcode();
+				THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 			}
 			if(!zOp.getOperands()[0]){
 				// if addr==0, do nothing and set return value
@@ -1940,7 +1940,7 @@ namespace ZOpcodeImpl{
 			*jumpFlag=JUMP_POSITION;
 			*jumpValue=cpuObj->currentRoutine->codeStartAddr;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -1951,7 +1951,7 @@ namespace ZOpcodeImpl{
 			//  call_vs2 routine ...up to 7 args... -> (result)
 			if(zOp.getOperandCount()<2){
 				// minimum 2 operands
-				throw IllegalZOpcode();
+				THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 			}
 			if(!zOp.getOperands()[0]){
 				// if addr==0, do nothing and set return value
@@ -1980,7 +1980,7 @@ namespace ZOpcodeImpl{
 			*jumpFlag=JUMP_POSITION;
 			*jumpValue=cpuObj->currentRoutine->codeStartAddr;
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -2000,7 +2000,7 @@ namespace ZOpcodeImpl{
 			parseTable.trimTable(maxWords);
 			parseTable.writeParseBuffer(parse, *zMemory, (bool)flag);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -2033,7 +2033,7 @@ namespace ZOpcodeImpl{
 			}
 			// all done!
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -2080,7 +2080,7 @@ namespace ZOpcodeImpl{
 				}
 			}
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -2089,7 +2089,7 @@ namespace ZOpcodeImpl{
 		try{
 
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 
@@ -2116,7 +2116,7 @@ namespace ZOpcodeImpl{
 			// store
 			storeVariable(zOp.storeInfo.storeVar, number);
 		}catch(...){
-			throw IllegalZOpcode();
+			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
 	}
 };

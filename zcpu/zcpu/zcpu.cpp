@@ -1,4 +1,5 @@
 #include "zcpu.h"
+#include "zopcode.h"
 #include "zopcode_impl.h"
 #include "../../zstack/zstack/zstack.h"
 #include "../../zmemory/zmemory/zobject.h"
@@ -135,7 +136,7 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 				ZOpcodeImpl::PIRACY(zOp);
 				break;
 			default:
-				throw IllegalZOpcode();
+				THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 				break;
 			}
 		}
@@ -195,7 +196,7 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 				ZOpcodeImpl::GET_PROP_LEN(zOp);
 				break;
 			default:
-				throw IllegalZOpcode();
+				THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 				break;
 			}
 		}
@@ -288,7 +289,7 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 				ZOpcodeImpl::THROW(zOp);
 				break;
 			default:
-				throw IllegalZOpcode();
+				THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 				break;
 			}
 		}
@@ -387,13 +388,13 @@ int ZCpu::mainLoop(ZOpcode& zOp){
 				ZOpcodeImpl::ENCODE_TEXT(zOp);
 				break;
 			default:
-				throw IllegalZOpcode();
+				THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 				break;
 			}
 		}
 		break;
 	default:
-		throw IllegalZOpcode();	// wasn't 0, 1, 2, or VAR ops, must be a bad one!
+		THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);	// wasn't 0, 1, 2, or VAR ops, must be a bad one!
 	}
 	if(jumpMade){
 		if(jumpMade==ZOpcodeImpl::JUMP_OFFSET){
