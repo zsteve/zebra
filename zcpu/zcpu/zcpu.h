@@ -20,7 +20,7 @@ namespace ZCpuInternal{
 		bool varNumisInRange(int v){
 			// checks if var num is in range\
 			// v==0 == top of stack
-			if(v>=0 && v<=localCount && v<15){
+			if(v>=0 && v<=localCount && v<=15){
 				return true;
 			}
 			return false;

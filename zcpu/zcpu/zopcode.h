@@ -16,10 +16,10 @@ using namespace std;
 class IllegalZOpcode : ZException{
     public:
     IllegalZOpcode(){
-        zErrorLogger.addError("Error : IllegalZOpcode thrown");
+        zErrorLogger.addError("Error : IllegalZOpcode thrown", ZError::ERROR_FATAL);
     }
     IllegalZOpcode(const int line, const char* function, const char* file){
-        zErrorLogger.addError(("Error : IllegalZOpcode thrown at : "+compileErrorMsg(line, function, file)).c_str());
+        zErrorLogger.addError(("Error : IllegalZOpcode thrown at : "+compileErrorMsg(line, function, file)).c_str(), ZError::ERROR_FATAL);
     }
 };
 

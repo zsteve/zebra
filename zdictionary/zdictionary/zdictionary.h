@@ -45,7 +45,7 @@ struct ZSCIIDictionaryToken{
 	ZSCIIDictionaryToken(){wordData=NULL; textBufferPos=NULL;}
 	ZSCIIDictionaryToken(zchar* wordData, int textBufferPos)
 	{
-		this->wordData=new zchar[ZSCIIStrLen(wordData)];
+		this->wordData=new zchar[ZSCIIStrLen(wordData)+1];
 		this->wordData[0]=NULL;
 		ZSCIIStrCat(this->wordData, wordData);
 		this->textBufferPos=textBufferPos;

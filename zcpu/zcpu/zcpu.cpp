@@ -58,11 +58,13 @@ int ZCpu::start(){
 	ZOpcode* opCode;
 	int i=0;
 	while(!haltFlag){
-		/*{
+//#if defined(_DEBUG) || defined(DEBUG)
+		{
 			FILE* f=fopen("dbg_out.txt", "a");
 			fprintf(f, "%x\n", pCounter);
 			fclose(f);
-		}*/
+		}
+//#endif
 		opCode=new ZOpcode(pCounter, zMem);
 		if(mainLoop(*opCode)!=1){
 			incrementPCounter(*opCode);
@@ -70,6 +72,7 @@ int ZCpu::start(){
 		delete opCode;
 		i++;
 	}
+
 	return 0;
 }
 

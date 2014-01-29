@@ -49,15 +49,13 @@ int zCharStrLen(zword* str)
 void ZSCIIStrCat(zchar* src, zchar* cat)
 {
     // concatacenates two ZSCII strings
-    cout << "ZSCIIStrCat called" << endl;
     int i;
     for(i=0; src[i]!=0; i++);
-    for(int j=0; cat[j]!=0; j++, i++)
+    for(int j=0; cat[j]!=0; j++)
     {
-        src[i]=cat[j];
+        src[i++]=cat[j];
     }
     src[i]=NULL;
-	cout << "ZSCIIStrCat completed" << endl;
 }
 
 void ZSCIIStrCpy(zchar* src, zchar* dest)

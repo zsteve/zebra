@@ -12,9 +12,28 @@
 // SYSTEM_CONSOLE           console mode
 // SYSTEM_GUI               gui mode
 
-#define PLATFORM_WIN32
-#define SYSTEM_CONSOLE
+// compiler specific #defines
 
+// Visual Studio
+
+#ifdef WIN32
+#define PLATFORM_WIN32
+#endif
+
+#ifdef _CONSOLE
+#define SYSTEM_CONSOLE
+#endif
+
+// Visual Studio
+
+// g++
+
+#ifndef WIN32
+#define PLATFORM_LINUX
+#define SYSTEM_CONSOLE
+#endif
+
+// g++
 
 #ifdef PLATFORM_LINUX && SYSTEM_CONSOLE
 #define PLATFORM_LINUX_CONSOLE

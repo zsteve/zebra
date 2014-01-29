@@ -6,10 +6,16 @@
 #include "../../ztext/ztext/ztext.h"
 #include "../../zinout/zinout/zinout.h"
 #include "../../zdictionary/zdictionary/zdictionary.h"
+#include "../../zglobal/zglobal.h"
+#include "../../zglobal/zglobaldefines.h"
 
 #include "../../num2ascii/num2ascii/num2ascii.h"
 
 #include <cmath>
+
+#ifdef PLATFORM_WIN32
+#include <windows.h>
+#endif
 
 extern int zVersion;
 
@@ -571,6 +577,7 @@ namespace ZOpcodeImpl{
 		}catch(...){
 			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);
 		}
+		return 0;
 	}
 
 	// implementation of GET_PROP_ADDR
@@ -1325,6 +1332,7 @@ namespace ZOpcodeImpl{
 				/** TODO **/
 			}
 		}catch (...){
+			throw IllegalZOpcode();
 		}
 	}
 
@@ -1640,9 +1648,54 @@ namespace ZOpcodeImpl{
 
 	// implementation of RANDOM opcode
 	int RANDOM(ZOpcode& zOp){
+		static struct{
+			zword seed;
+			bool state;	// true = random, false = predictable
+		}randData;
+		static bool called=false;
+		static zword lastValue=0;
+		static int count=0;
+		if(!called){
+			/* initialize static data */
+			#ifdef PLATFORM_WIN32
+			randData.seed=(zword)GetTickCount();
+			#else
+			randData.seed=0x56c3;
+			#endif
+			randData.state=true;	// random
+			called=true;
+		}
 		try{
-			zword range=retrieveOperandValue(zOp, 0);
-			zword val=rand()%range;
+			szword range=retrieveOperandValue(zOp, 0);
+			zword val=0;
+			if(range<0){
+				// seed random number generator to range
+				if(!range){
+					/* TODO : retrieve time in ms as random seed for UNIX*/
+					#ifdef PLATFORM_WIN32
+					randData.seed=(zword)GetTickCount();
+					#else
+					randData.seed=0x56c3;
+					#endif
+				}else
+					randData.seed=(zword)(-range);
+					if(lastValue==range){
+						// switch to predictable mode
+						randData.state=false;
+					}
+					val=0;
+			}else{
+				if(randData.state){
+					// RANDOM mode
+					ulong v=randData.seed;
+					v*=v;		// square
+					v=(int)sqrt((float)v);	// square root
+					val=(v%range)+1;
+				}else{
+					// PREDICTABLE mode
+
+				}
+			}
 			storeVariable(zOp.storeInfo.storeVar, val);
 		}catch(...){
 			THROW_ILLEGALZOPCODE(__LINE__, __FUNCTION__, __FILE__);

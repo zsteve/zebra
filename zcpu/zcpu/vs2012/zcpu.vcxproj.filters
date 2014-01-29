@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\zcpu">
+      <UniqueIdentifier>{0f27714d-6cc9-4ab5-9695-425c6352c455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\zmemory">
+      <UniqueIdentifier>{aee76199-0157-4bf1-83d7-29c5b995fe68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\zerror">
+      <UniqueIdentifier>{09d1b087-7dff-40b9-8785-f733bac84b44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\zglobal">
+      <UniqueIdentifier>{2ec6263b-16a5-4b2e-accc-1736f5ed71ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\zcpu">
+      <UniqueIdentifier>{fe6ee75a-405b-4a8d-9ec8-8f94e9ffaa1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\zmemory">
+      <UniqueIdentifier>{0a94223b-ac00-43d1-b870-e244c5182261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\zerror">
+      <UniqueIdentifier>{63cc6857-38e9-4850-93fe-9f58faa8a691}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\zglobal">
+      <UniqueIdentifier>{ab297e62-f939-4cb7-bde0-c8e672104ff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\zstack">
+      <UniqueIdentifier>{550ab16f-e10b-404f-9326-88a469a2e680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\zstack">
+      <UniqueIdentifier>{f44dd82e-684a-44d2-bdc6-0acf721ec786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ztext">
+      <UniqueIdentifier>{58df6a3c-9c74-4f05-8425-81ae2f102906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ztext">
+      <UniqueIdentifier>{a51ff374-b948-475a-b1ef-832f3d0df7ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\zinout">
+      <UniqueIdentifier>{2db5a902-b99a-4bed-bc57-a2ffc2613032}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\zinout">
+      <UniqueIdentifier>{46e65e77-9067-4ffb-bfe9-dd501171669b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\zdictionary">
+      <UniqueIdentifier>{e174b5b2-80ff-4029-a8cc-acb2f2983a0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\zdictionary">
+      <UniqueIdentifier>{973657d4-a674-4bbd-ba73-e59d567971ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\num2ascii">
+      <UniqueIdentifier>{78cd3466-edeb-4b25-86b8-eb483794902f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\num2ascii">
+      <UniqueIdentifier>{2b733086-24c0-49c4-9a7e-4df85b028c8e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\main.cpp">
+      <Filter>Source Files\zcpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zcpu.cpp">
+      <Filter>Source Files\zcpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zopcode.cpp">
+      <Filter>Source Files\zcpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zmemory\zmemory\zmemory.cpp">
+      <Filter>Source Files\zmemory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zmemory\zmemory\zobject.cpp">
+      <Filter>Source Files\zmemory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zglobal\zglobal.cpp">
+      <Filter>Source Files\zglobal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zerror\zerror\zerror.cpp">
+      <Filter>Source Files\zerror</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zopcode_impl.cpp">
+      <Filter>Source Files\zcpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zstack\zstack\zstack.cpp">
+      <Filter>Source Files\zstack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ztext\ztext\ztext.cpp">
+      <Filter>Source Files\ztext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zinout\zinout\zinout.cpp">
+      <Filter>Source Files\zinout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\zdictionary\zdictionary\zdictionary.cpp">
+      <Filter>Source Files\zdictionary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\num2ascii\num2ascii\num2ascii.c">
+      <Filter>Source Files\num2ascii</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\zcpu.h">
+      <Filter>Header Files\zcpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zopcode.h">
+      <Filter>Header Files\zcpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zmemory\zmemory\zmemory.h">
+      <Filter>Header Files\zmemory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zmemory\zmemory\zobject.h">
+      <Filter>Header Files\zmemory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zerror\zerror\zerror.h">
+      <Filter>Header Files\zerror</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zglobal\zglobal.h">
+      <Filter>Header Files\zglobal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zglobal\zglobaldefines.h">
+      <Filter>Header Files\zglobal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zopcode_impl.h">
+      <Filter>Header Files\zcpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zstack\zstack\zstack.h">
+      <Filter>Header Files\zstack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ztext\ztext\ztext.h">
+      <Filter>Header Files\ztext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zinout\zinout\zinout.h">
+      <Filter>Header Files\zinout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\zdictionary\zdictionary\zdictionary.h">
+      <Filter>Header Files\zdictionary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\num2ascii\num2ascii\num2ascii.h">
+      <Filter>Header Files\num2ascii</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
