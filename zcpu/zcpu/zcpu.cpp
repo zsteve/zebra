@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include <cstdio>
 
+int zVersion;
+
 ZCpu::ZCpu(ZMemory& zMem, ZStack& zStack, ZObjectTable& zObject, ZInOut& zInOut, ZDictionary& zDict)\
 	: zMem(zMem), zStack(zStack), zObject(zObject), zInOut(zInOut), zDict(zDict){
 	// initial value of program counter is found at 0x6
@@ -58,13 +60,13 @@ int ZCpu::start(){
 	ZOpcode* opCode;
 	int i=0;
 	while(!haltFlag){
-//#if defined(_DEBUG) || defined(DEBUG)
+#if defined(_DEBUG) || defined(DEBUG)
 		{
 			FILE* f=fopen("dbg_out.txt", "a");
 			fprintf(f, "%x\n", pCounter);
 			fclose(f);
 		}
-//#endif
+#endif
 		opCode=new ZOpcode(pCounter, zMem);
 		if(mainLoop(*opCode)!=1){
 			incrementPCounter(*opCode);

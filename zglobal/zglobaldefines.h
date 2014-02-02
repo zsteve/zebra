@@ -16,12 +16,16 @@
 
 // Visual Studio
 
-#ifdef WIN32
+/*#ifdef WIN32
 #define PLATFORM_WIN32
 #endif
 
 #ifdef _CONSOLE
 #define SYSTEM_CONSOLE
+#endif
+
+#if defined(WIN32) && !defined(_CONSOLE)
+#define PLATFORM_WIN32_GUI
 #endif
 
 // Visual Studio
@@ -41,7 +45,9 @@
 
 #ifdef PLATFORM_WIN32 && SYSTEM_CONSOLE
 #define PLATFORM_WIN32_CONSOLE
-#endif
+#endif*/
+
+#define PLATFORM_WIN32_GUI
 
 // Bit masks, 16 bits
 

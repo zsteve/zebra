@@ -10,11 +10,19 @@
 #include <conio.h>
 #elif defined PLATFORM_LINUX_CONSOLE
 #include <ncurses.h>
+#ifndef PLATFORM_WIN32_GUI
+#define PLATFORM_WIN32_GUI
+#endif
+#elif defined PLATFORM_WIN32_GUI
+#include "../../zwin32/zwin32/zwin32/mainwin.h"
 #endif
 
 using namespace std;
 
 class ZInOut{
+#ifdef PLATFORM_WIN32_GUI
+	friend class GUIInput;
+#endif
     public:
 #ifdef PLATFORM_LINUX_CONSOLE
 	enum color{

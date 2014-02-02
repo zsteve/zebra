@@ -3,10 +3,16 @@
 #include <cstdlib>
 #include <cctype>
 
+#ifndef PLATFORM_WIN32_GUI
+#define PLATFORM_WIN32_GUI
+#endif
+
 #ifdef PLATFORM_WIN32_CONSOLE
 #include <conio.h>
 #elif defined (PLATFORM_LINUX_CONSOLE)
 #include <curses.h>
+#elif defined (PLATFORM_WIN32_GUI)
+#include "../../zwin32/zwin32/zwin32/mainwin.h"
 #endif
 
 // symbolic chars
@@ -35,10 +41,12 @@ ZInOut::ZInOut(){
 void ZInOut::print(char* str){
     #if defined (PLATFORM_WIN32_CONSOLE)
     cout << str;
+	#elif defined (PLATFORM_WIN32_GUI)
+	GUIInput::Print(str);
     #elif defined (PLATFORM_LINUX_CONSOLE)
 	printw("%s", str);
 	refresh();
-    #endif
+	#endif
 }
 
 void ZInOut::printLine(char* str){
@@ -63,6 +71,20 @@ char* ZInOut::readLine(){
     buffer=new char[80];
     gets(buffer);
     return buffer;
+#elif defined (PLATFORM_WIN32_GUI)
+	static char* buffer=NULL;
+	if (buffer){
+		delete[] buffer;
+	}
+	buffer=new char[80];
+	// wait until return hit
+	while (!GUIInput::returnHit){
+		Sleep(10);
+	}
+	strcpy(buffer, GUIInput::inputStream.c_str());
+	GUIInput::inputStream = ("");
+	GUIInput::returnHit = false;
+	return buffer;
     #elif defined(PLATFORM_LINUX_CONSOLE)
     static char* buffer=NULL;
     if(buffer){
@@ -77,6 +99,8 @@ char* ZInOut::readLine(){
 char ZInOut::getChar(){
 	#ifdef PLATFORM_WIN32_CONSOLE
 	return _getch();
+#elif defined PLATFORM_WIN32_GUI
+	return 0;
 	#elif defined PLATFORM_LINUX_CONSOLE
 	return getch();
 	#endif
