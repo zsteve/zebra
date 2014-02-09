@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <cstdio>
 
-int zVersion;
+extern int zVersion;
 
 ZCpu::ZCpu(ZMemory& zMem, ZStack& zStack, ZObjectTable& zObject, ZInOut& zInOut, ZDictionary& zDict)\
 	: zMem(zMem), zStack(zStack), zObject(zObject), zInOut(zInOut), zDict(zDict){

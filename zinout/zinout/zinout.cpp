@@ -3,21 +3,19 @@
 #include <cstdlib>
 #include <cctype>
 
-#ifndef PLATFORM_WIN32_GUI
-#define PLATFORM_WIN32_GUI
-#endif
+#include "../../zwin32/zwin32/io.h"
 
 #ifdef PLATFORM_WIN32_CONSOLE
 #include <conio.h>
 #elif defined (PLATFORM_LINUX_CONSOLE)
 #include <curses.h>
-#elif defined (PLATFORM_WIN32_GUI)
-#include "../../zwin32/zwin32/zwin32/mainwin.h"
 #endif
 
 // symbolic chars
 const char ZInOut::symchars[]={"!@#$%^&*()_+|/\\?<>~"};
 const char ZInOut::ctrlchars[]={0x0D, 0x0A, 0x00};
+
+IO* ioObj=IO::getInstance();
 
 bool ZInOut::issym(int c){
 	// is character symbolic
@@ -38,14 +36,17 @@ bool ZInOut::isctrl(int c){
 ZInOut::ZInOut(){
 }
 
+#undef PLATFORM_WIN32_CONSOLE
+#define PLATFORM_WIN32_GUI
+
 void ZInOut::print(char* str){
     #if defined (PLATFORM_WIN32_CONSOLE)
     cout << str;
-	#elif defined (PLATFORM_WIN32_GUI)
-	GUIInput::Print(str);
     #elif defined (PLATFORM_LINUX_CONSOLE)
 	printw("%s", str);
 	refresh();
+#elif defined (PLATFORM_WIN32_GUI)
+	ioObj->print(str);
 	#endif
 }
 
@@ -59,6 +60,8 @@ void ZInOut::readLine(char* buffer){
     scanf("%s", buffer);
 	#elif defined(PLATFORM_LINUX_CONSOLE)
 	getstr(buffer);
+#elif defined(PLATFORM_WIN32_GUI)
+	ioObj->scan(buffer);
 	#endif
 }
 
@@ -71,20 +74,6 @@ char* ZInOut::readLine(){
     buffer=new char[80];
     gets(buffer);
     return buffer;
-#elif defined (PLATFORM_WIN32_GUI)
-	static char* buffer=NULL;
-	if (buffer){
-		delete[] buffer;
-	}
-	buffer=new char[80];
-	// wait until return hit
-	while (!GUIInput::returnHit){
-		Sleep(10);
-	}
-	strcpy(buffer, GUIInput::inputStream.c_str());
-	GUIInput::inputStream = ("");
-	GUIInput::returnHit = false;
-	return buffer;
     #elif defined(PLATFORM_LINUX_CONSOLE)
     static char* buffer=NULL;
     if(buffer){
@@ -93,16 +82,24 @@ char* ZInOut::readLine(){
     buffer=new char[80];
 	getstr(buffer);
 	return buffer;
+#elif defined (PLATFORM_WIN32_GUI)
+	static char* buffer=NULL;
+	if(buffer){
+		delete[] buffer;
+	}
+	buffer=new char[80];
+	ioObj->scan(buffer);
+	return buffer;
     #endif
 }
 
 char ZInOut::getChar(){
 	#ifdef PLATFORM_WIN32_CONSOLE
 	return _getch();
-#elif defined PLATFORM_WIN32_GUI
-	return 0;
 	#elif defined PLATFORM_LINUX_CONSOLE
 	return getch();
+#elif defined PLATFORM_WIN32_GUI
+	return 0;
 	#endif
 }
 
