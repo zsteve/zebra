@@ -1,0 +1,80 @@
+Printing ZORK II: The Wizard of Frobozz
+Copyright (c) 1981, 1982, 1983 Infocom, Inc. Printing All rights reserved.Printing 
+Printing ZORK is a registered trademark of Infocom, Inc.
+Version Printing 48Printing  / Serial number Printing 8Printing 4Printing 0Printing 9Printing 0Printing 4Printing 
+Printing 
+Printing Inside the BarrowPrinting 
+Printing You are inside an ancient barrow hidden deep within a dark forest. The barrow opens into a narrow tunnel at its southern end. You can see a faint glow at the far end.Printing 
+Printing A strangely familiar brass lantern is lying on the ground.Printing 
+Printing A sword of Elvish workmanship is on the ground.Printing 
+Printing 
+Printing > Printing ZORK II: The Wizard of Frobozz
+Copyright (c) 1981, 1982, 1983 Infocom, Inc. Printing All rights reserved.Printing 
+Printing ZORK is a registered trademark of Infocom, Inc.
+Version Printing 48Printing  / Serial number Printing 8Printing 4Printing 0Printing 9Printing 0Printing 4Printing 
+Printing 
+Printing Inside the BarrowPrinting 
+Printing You are inside an ancient barrow hidden deep within a dark forest. The barrow opens into a narrow tunnel at its southern end. You can see a faint glow at the far end.Printing 
+Printing A strangely familiar brass lantern is lying on the ground.Printing 
+Printing A sword of Elvish workmanship is on the ground.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /0 Printing I don't know the word "Printing aPrinting aPrinting aPrinting dPrinting aPrinting aPrinting aPrinting aPrinting ".Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /0 Printing Inside the BarrowPrinting 
+Printing You are inside an ancient barrow hidden deep within a dark forest. The barrow opens into a narrow tunnel at its southern end. You can see a faint glow at the far end.Printing 
+Printing A strangely familiar brass lantern is lying on the ground.Printing 
+Printing A sword of Elvish workmanship is on the ground.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /1 Printing I don't know the word "Printing tPrinting hPrinting iPrinting iPrinting kPrinting ".Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /1 Printing I don't know the word "Printing tPrinting hPrinting iPrinting nPrinting kPrinting ".Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /1 Printing I don't know the word "Printing tPrinting rPrinting yPrinting ".Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /1 Printing Inside the BarrowPrinting 
+Printing You are inside an ancient barrow hidden deep within a dark forest. The barrow opens into a narrow tunnel at its southern end. You can see a faint glow at the far end.Printing 
+Printing A strangely familiar brass lantern is lying on the ground.Printing 
+Printing A sword of Elvish workmanship is on the ground.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /2 Printing I don't know the word "Printing tPrinting hPrinting iPrinting nPrinting kPrinting ".Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /2 Printing Inside the BarrowPrinting 
+Printing You are inside an ancient barrow hidden deep within a dark forest. The barrow opens into a narrow tunnel at its southern end. You can see a faint glow at the far end.Printing 
+Printing A strangely familiar brass lantern is lying on the ground.Printing 
+Printing A sword of Elvish workmanship is on the ground.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /3 Printing Inside the BarrowPrinting 
+Printing You are inside an ancient barrow hidden deep within a dark forest. The barrow opens into a narrow tunnel at its southern end. You can see a faint glow at the far end.Printing 
+Printing A strangely familiar brass lantern is lying on the ground.Printing 
+Printing A sword of Elvish workmanship is on the ground.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /4 Printing Inside the BarrowPrinting 
+Printing You are inside an ancient barrow hidden deep within a dark forest. The barrow opens into a narrow tunnel at its southern end. You can see a faint glow at the far end.Printing 
+Printing A strangely familiar brass lantern is lying on the ground.Printing 
+Printing A sword of Elvish workmanship is on the ground.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /5 Printing You can't go that way.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /6 Printing You can't go that way.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /7 Printing You can't go that way.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /8 Printing You can't go that way.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                         0 /9 Printing You can't go that way.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                        0 /10 Printing There was no verb in that sentence!Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                        0 /10 Printing There is no princess here.Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                        0 /11 Printing You can't see anyPrinting  Printing mPrinting oPrinting sPrinting sPrinting  here!Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                        0 /12 Printing I don't know the word "Printing pPrinting oPrinting sPrinting sPrinting ".Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                        0 /12 Printing You can't see anyPrinting  Printing zPrinting uPrinting rPrinting iPrinting cPrinting hPrinting  here!Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                        0 /13 Printing You can't see anyPrinting  Printing zPrinting uPrinting rPrinting iPrinting cPrinting hPrinting  here!Printing 
+Printing 
+Printing > Printing  Inside the Barrow                                                        0 /14 Printing You can't see anyPrinting  Printing zPrinting uPrinting rPrinting iPrinting cPrinting hPrinting  here!Printing 
+Printing 
+Printing > 

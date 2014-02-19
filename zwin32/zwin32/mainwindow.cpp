@@ -10,8 +10,12 @@
 
 #include "io.h"
 
+#include "resource.h"
+
 #include "../../zcpu/zcpu/zcpu.h"
 #include "../../zglobal/zglobaldefines.h"
+
+#include "../../num2ascii/num2ascii/num2ascii.h"
 
 HINSTANCE MainWindow::m_hInstance;
 
@@ -21,11 +25,13 @@ namespace nsMainWindow{
 
 	int winW=450, winH=380;
 
+	int fontW=8, fontH=16;
+
 	Positioner pos;
 }
 
 namespace nsGameData{
-	LPWSTR lpGameText=NULL;
+	wchar_t* lpGameText=NULL;
 
 	IO* ioObj=IO::getInstance();
 }
@@ -71,7 +77,12 @@ namespace nsGameCode{
 			it!=ioObj->getOutBuffer().end();
 			++it){
 			gameTextString+=*it;
-			gameTextString+='\n';
+			gameTextString+="\r\n";
+		}
+		// remove the last to \r\n characters
+		if(gameTextString.size()>=2){
+			gameTextString.pop_back();
+			gameTextString.pop_back();
 		}
 		return gameTextString;
 	}
@@ -128,7 +139,7 @@ ATOM MainWindow::Register(HINSTANCE hInstance){
 	wcx.hIcon			= LoadIcon(NULL, IDI_APPLICATION);
 	wcx.hCursor			= LoadCursor(NULL, IDC_ARROW);
 	wcx.hbrBackground	= (HBRUSH)GetStockObject(WHITE_BRUSH);
-	wcx.lpszMenuName	= NULL;
+	wcx.lpszMenuName	= MAKEINTRESOURCE(IDR_MENU1);
 	wcx.lpszClassName	= nsMainWindow::WndClass;
 	wcx.hInstance		= hInstance;
 	wcx.hIconSm			= LoadIcon(NULL, IDI_APPLICATION);
@@ -161,7 +172,7 @@ int MainWindow::WM_Create(HWND hWnd, WPARAM wParam, LPARAM lParam){
 		pos.SetH(winH);
 	}
 	// set font
-	hMainFont=CreateFont(14, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE,\
+	hMainFont=CreateFont(fontH, fontW, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE,\
 				ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,\
 				ANTIALIASED_QUALITY, FF_DONTCARE, _T("Lucida Console"));
 	hDC=GetDC(hWnd);
@@ -171,10 +182,16 @@ int MainWindow::WM_Create(HWND hWnd, WPARAM wParam, LPARAM lParam){
 	SendMessage(hWnd, WM_SETFONT, (WPARAM)hMainFont, TRUE);
 	CreateChildren(hWnd);
 
+	ioObj->MAX_ROWS=winH/fontH;
+	ioObj->MAX_COLS=winW/fontW;
+
+	SendNotifyMessage(hWnd, WM_SIZE, winW, winH);
 	// set up game
 	nsGameCode::hGameThread=CreateThread(NULL, NULL, nsGameCode::GameThreadProc, NULL, NULL, NULL);
 
-	SetTimer(hWnd, 1, 20, NULL);
+	SetTimer(hWnd, 1, 10, NULL);
+
+	SetWindowText(hWnd, _T("ZWin32 - Zebra Z-Machine Interpreter"));
 	return 0;
 }
 
@@ -195,7 +212,7 @@ int MainWindow::WM_Paint(HWND hWnd, WPARAM wParam, LPARAM lParam){
 	HDC hMemDC=CreateCompatibleDC(hDC);
 	SetTextColor(hMemDC, RGB(255, 255, 255));
 	SetBkColor(hMemDC, RGB(0, 0, 0));
-	SelectObject(hMemDC, (HGDIOBJ)hMainFont);
+	HGDIOBJ hOldFont=SelectObject(hMemDC, (HGDIOBJ)hMainFont);
 	HBITMAP hMemBitmap=CreateCompatibleBitmap(hMemDC, ww, wh);
 	HBITMAP hMemOldBitmap=(HBITMAP)SelectObject(hMemDC, (HGDIOBJ)hMemBitmap);
 	FillRect(hMemDC, &wndRect, (HBRUSH)GetStockObject(BLACK_BRUSH));
@@ -210,25 +227,20 @@ int MainWindow::WM_Paint(HWND hWnd, WPARAM wParam, LPARAM lParam){
 	}
 
 	BitBlt(hDC, 0, 0, ww, wh, hMemDC, 0, 0, SRCCOPY);
-	SelectObject(hMemDC, (HGDIOBJ)hMemOldBitmap);
 	DeleteObject((HGDIOBJ)hMemBitmap);
-	ReleaseDC(hWnd, hMemDC);
+	DeleteDC(hMemDC);
 	EndPaint(hWnd, &ps);
 	return 0;
 }
 
 void MainWindow::ProcessOutput(){
+
 	string& gameText=CompileString();
+	gameText+=ioObj->get_input();
 	if(lpGameText){
 		delete[] lpGameText;
 	}
-	lpGameText=new TCHAR[gameText.size()+1];
-	MultiByteToWideChar(CP_ACP,
-						MB_COMPOSITE,
-						gameText.c_str(),
-						-1,
-						lpGameText,
-						gameText.size());
+	lpGameText=asciiToUnicode((char*)gameText.c_str());
 }
 
 char MainWindow::GetKeyDown(){
@@ -273,6 +285,11 @@ LRESULT CALLBACK MainWindow::MainWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 		break;
 	case WM_CHAR:
 		{
+			if(wParam==VK_RETURN){
+				break;
+			}else if(wParam==VK_BACK){
+				break;
+			}
 			ioObj->put_in(GetKeyDown());
 		}
 		break;
@@ -280,9 +297,15 @@ LRESULT CALLBACK MainWindow::MainWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 		switch(LOWORD(wParam)){
 		case VK_RETURN:
 			if(ioObj->has_input()){
+				ioObj->get_output().back().append(ioObj->get_input());
+				ioObj->get_output().back().append("\r\n");
 				ioObj->end_input();
 			}
 			break;
+		case VK_BACK:
+			if(!ioObj->get_input().empty()){
+				ioObj->get_input().pop_back();
+			}
 		}
 		break;
 	case WM_SIZE:
@@ -290,11 +313,26 @@ LRESULT CALLBACK MainWindow::MainWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 		winW=LOWORD(lParam);
 		pos.SetH(winH);
 		pos.SetW(winW);
+		ioObj->MAX_ROWS=(winH/fontH)-5;
+		ioObj->MAX_COLS=(winW/fontW)-1;
 		MoveChildren(hWnd);
+		SendMessage(hWnd, WM_TIMER, 1, NULL);
 		break;
 	case WM_COMMAND:
 		switch(LOWORD(wParam)){
-
+		case ID_FILE_EXIT:
+			SendMessage(hWnd, WM_CLOSE, NULL, NULL);
+			break;
+		case ID_ABOUT_ABOUTZEBRA:
+			MessageBox(hWnd,\
+						_T(	"Zebra Z-Machine Interpreter\n",
+							"Interpreter for Infocom Z-code games\n",
+							"Licensed under the GNU GPL v3\n",
+							"Code by Stephen Zhang (zsteve)\n",
+							"http://zsteve.phatcode.net/zebra"),
+						_T("About"),
+						MB_ICONINFORMATION);
+			break;
 		}
 		break;
 	case WM_TIMER:

@@ -1,5 +1,7 @@
 #include "zglobal.h"
+
 #include <vector>
+#include <cstring>
 
 using namespace std;
 
@@ -76,4 +78,14 @@ zword reverseBitSequence(zbyte in)
     outByte=(outByte|(bits[6]<<1));
     outByte=(outByte|(bits[7]));
     return outByte;
+}
+
+wchar_t* asciiToUnicode(char* ascii){
+	int len=strlen(ascii)+1;
+	wchar_t* wstr=new wchar_t[len];
+	for(int i=0; i<len-1; i++){
+		wstr[i]=NULL | ascii[i];
+	}
+	wstr[len-1]=L'\0';
+	return wstr;
 }

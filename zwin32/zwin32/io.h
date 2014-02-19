@@ -5,12 +5,15 @@
 #include <list>
 #include <string>
 
+#include <iostream>
+
+#include "../../num2ascii/num2ascii/num2ascii.h"
+
 using namespace std;
 
 class IO{
 	// implemented as singleton class
 private:
-	static const int MAX_LINES = 100;
 
 	static bool hasInstance;
 	static IO* single;
@@ -26,6 +29,12 @@ private:
 	bool inputReady;
 
 public:
+
+	static int MAX_ROWS;
+	static int MAX_COLS;
+
+	int nRows;
+
 	static IO* getInstance();
 	~IO(){
 		hasInstance=false;
@@ -37,17 +46,51 @@ public:
 		int i=0;
 		string str;
 		do{
-			if(s[i]=='\r' || s[i]=='\n'){
-				// one line
-				out.push_back(str);
-				if(out.size()>MAX_LINES){
-					out.pop_front();
+			if(str.size()>MAX_COLS){
+				// exceeded max columns
+				// we will have to clip...
+				if(!out.empty()){
+					out.back()+=str;
+				}else{
+					out.push_back(str);
+				}
+				out.push_back("");
+				if(out.size()>=MAX_ROWS){
+					while(out.size()>=MAX_ROWS){
+						out.pop_front();
+					}
 				}
 				str.clear();
+				if(s[i]=='\r' || s[i]=='\n'){
+					if(!out.empty()){
+						out.back()+=str;
+					}else{
+						out.push_back(str);
+					}
+					out.push_back("");
+					continue;
+				}
+			}
+			if(s[i]=='\r' || s[i]=='\n'){
+				// one line
+				if(!out.empty()){
+					out.back()+=str;
+				}else{
+					out.push_back(str);
+				}
+				out.push_back("");
+				if(out.size()>=MAX_ROWS){
+					while(out.size()>=MAX_ROWS){
+						out.pop_front();
+					}
+				}
+				str.clear();
+				continue;
 			}
 			str+=s[i];
-		}while(s[++i]!=NULL);
+		}while(s[++i]);
 		out.back()+=str;
+		nRows=out.size();
 	}
 
 	void scan(char* in){
@@ -81,6 +124,14 @@ public:
 
 	void unput_out(){
 		out.back().pop_back();
+	}
+
+	string& get_input(){
+		return in;
+	}
+
+	std::list<string>& get_output(){
+		return out;
 	}
 };
 

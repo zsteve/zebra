@@ -24,6 +24,7 @@ typedef wchar_t wchar;
 zword endianize(zword in);
 zword* endianizeString(zword* in);
 zword reverseBitSequence(zbyte in);
+wchar_t* asciiToUnicode(char* ascii);
 
 // classes
 

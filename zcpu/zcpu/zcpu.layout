@@ -7,8 +7,8 @@
 	<File name="..\..\num2ascii\num2ascii\num2ascii.h" open="0" top="0" tabpos="9">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="0">
-		<Cursor position="1444" topLine="39" />
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="2191" topLine="51" />
 	</File>
 	<File name="zcpu.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="1597" topLine="29" />
@@ -43,8 +43,8 @@
 	<File name="..\..\zglobal\zglobaldefines.h" open="0" top="0" tabpos="4">
 		<Cursor position="615" topLine="15" />
 	</File>
-	<File name="..\..\zinout\zinout\zinout.cpp" open="0" top="0" tabpos="7">
-		<Cursor position="0" topLine="0" />
+	<File name="..\..\zinout\zinout\zinout.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="374" topLine="2" />
 	</File>
 	<File name="..\..\zinout\zinout\zinout.h" open="0" top="0" tabpos="6">
 		<Cursor position="252" topLine="36" />
