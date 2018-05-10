@@ -1,0 +1,2 @@
+zebra: num2ascii/num2ascii.c zcpu/main.cpp zcpu/zcpu.cpp zcpu/zopcode.cpp zcpu/zopcode_impl.cpp zdictionary/zdictionary.cpp zerror/zerror.cpp zglobal/zglobal.cpp zinout/zinout.cpp zmemory/zmemory.cpp zmemory/zobject.cpp zquetzal/zquetzal.cpp zstack/zstack.cpp ztext/ztext.cpp
+	g++ -std=c++11 -o zebra num2ascii/num2ascii.c zcpu/main.cpp zcpu/zcpu.cpp zcpu/zopcode.cpp zcpu/zopcode_impl.cpp zdictionary/zdictionary.cpp zerror/zerror.cpp zglobal/zglobal.cpp zinout/zinout.cpp zmemory/zmemory.cpp zmemory/zobject.cpp zquetzal/zquetzal.cpp zstack/zstack.cpp ztext/ztext.cpp -lncurses

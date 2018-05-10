@@ -1,6 +1,6 @@
 #ifndef ZGLOBAL_H
 #define ZGLOBAL_H
-#include "../zerror/zerror/zerror.h"
+#include "../zerror/zerror.h"
 #include <vector>
 #include <exception>
 #include <string>
